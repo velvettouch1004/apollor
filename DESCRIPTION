@@ -1,0 +1,11 @@
+Package: apollor
+Title: WApollo as an R package
+Version: 0.0.0.9000
+Author: Remko Duursma
+Maintainer: Remko Duursma <remko@shintolabs.nl>
+Description: Apollo as an R package. Used in apollo Frontend
+Depends: DBI
+License: CC0
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
