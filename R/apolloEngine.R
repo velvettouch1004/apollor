@@ -3,10 +3,12 @@
 #' @importsFrom shintobag shinto_db_connection
 #' @importsFrom pool dbPool poolClose
 #' @importsFrom R6 R6Class
+#' @importsFrom dbplyr in_schema collect
+#' @importsFrom dplyr tbl left_join 
 #' @importsFrom safer encrypt_string decrypt_string
 #' @export
 
-LinkItEngine <- R6::R6Class(
+ApolloEngine <- R6::R6Class(
   public = list(
     
     con = NULL,
@@ -15,6 +17,12 @@ LinkItEngine <- R6::R6Class(
     sel = NULL,
     gemeente = NULL,
     gebruikers = NULL,
+    bedrijf = NULL,
+    persoon = NULL,
+    adres = NULL,
+    signals = NULL,
+    actions = NULL,
+    indicators = NULL,
     
     initialize = function(gemeente, schema, pool, config_file = "conf/config.yml"){
       
@@ -39,9 +47,9 @@ LinkItEngine <- R6::R6Class(
         self$con <- response
       }
       
-      persoon <- self$read_table("persoon")
-      bedrijf <- self$read_table("bedrijf")
-      adres <- self$read_table("adres")
+      self$persoon <- self$read_table("persoon")
+      self$bedrijf <- self$read_table("bedrijf")
+      self$adres <- self$read_table("adres")
       
       
     },
@@ -73,13 +81,47 @@ LinkItEngine <- R6::R6Class(
         flog.info("Not closing an invalid or null connection", name = "DBR6")
       }
       
+    },   
+    read_table = function(table, lazy = FALSE){
+      
+      flog.info(glue("tbl({table})"), name = "DBR6")
+      
+      if(!is.null(self$schema)){
+        table <- dbplyr::in_schema(self$schema, table)
+      }
+      
+      out <- dplyr::tbl(self$con, table)
+      
+      if(!lazy){
+        out <- dplyr::collect(out)
+      }
+      
+      out
+      
     },
-    read_signals = function(user=NULL){
+    read_signals = function(){ 
+      self$signals <- self$read_table('registraties') 
+      self$signals 
+    },
+    read_actions = function(){ 
+      self$actions <- self$read_table('actielijst') 
+      self$actions
+    },
+    read_indicators = function(){ 
+      self$indicators <- self$read_table('indicator') 
+      self$indicators
+    },
+    get_actions = function(update=FALSE){
+      if(is.null(self$actions)  || update){
+        self$read_actions() 
+      } 
+      if(is.null(self$signals)  || update){ 
+        self$read_signals()
+      } 
       
-      DBI::dbGetQuery(self$con,
-                      glue("SELECT registraties FROM information_schema.tables
-                   WHERE table_schema='{self$schema}'"))
       
+       dplyr::left_join( self$actions, self$signals, by=c('registratie_id' = 'id_registratie'), suffix = c(".actie", ".signaal"),)
     }
+    
   )
 )
