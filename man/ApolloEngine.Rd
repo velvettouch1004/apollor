@@ -17,7 +17,6 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-read_table}{\code{ApolloEngine$read_table()}}
 \item \href{#method-append_data}{\code{ApolloEngine$append_data()}}
 \item \href{#method-execute_query}{\code{ApolloEngine$execute_query()}}
-\item \href{#method-log_user_event}{\code{ApolloEngine$log_user_event()}}
 \item \href{#method-read_signals}{\code{ApolloEngine$read_signals()}}
 \item \href{#method-read_actions}{\code{ApolloEngine$read_actions()}}
 \item \href{#method-read_indicators}{\code{ApolloEngine$read_indicators()}}
@@ -25,6 +24,10 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-read_bedrijf}{\code{ApolloEngine$read_bedrijf()}}
 \item \href{#method-read_adres}{\code{ApolloEngine$read_adres()}}
 \item \href{#method-read_favourites}{\code{ApolloEngine$read_favourites()}}
+\item \href{#method-read_log}{\code{ApolloEngine$read_log()}}
+\item \href{#method-read_data_actualiteit}{\code{ApolloEngine$read_data_actualiteit()}}
+\item \href{#method-get_log_ping}{\code{ApolloEngine$get_log_ping()}}
+\item \href{#method-log_user_event}{\code{ApolloEngine$log_user_event()}}
 \item \href{#method-list_actions}{\code{ApolloEngine$list_actions()}}
 \item \href{#method-list_favourites}{\code{ApolloEngine$list_favourites()}}
 \item \href{#method-add_favourite}{\code{ApolloEngine$add_favourite()}}
@@ -93,15 +96,6 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-log_user_event"></a>}}
-\if{latex}{\out{\hypertarget{method-log_user_event}{}}}
-\subsection{Method \code{log_user_event()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$log_user_event(username, action)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-read_signals"></a>}}
 \if{latex}{\out{\hypertarget{method-read_signals}{}}}
 \subsection{Method \code{read_signals()}}{
@@ -165,6 +159,42 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-read_log"></a>}}
+\if{latex}{\out{\hypertarget{method-read_log}{}}}
+\subsection{Method \code{read_log()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_log()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-read_data_actualiteit"></a>}}
+\if{latex}{\out{\hypertarget{method-read_data_actualiteit}{}}}
+\subsection{Method \code{read_data_actualiteit()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_data_actualiteit()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_log_ping"></a>}}
+\if{latex}{\out{\hypertarget{method-get_log_ping}{}}}
+\subsection{Method \code{get_log_ping()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_log_ping()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-log_user_event"></a>}}
+\if{latex}{\out{\hypertarget{method-log_user_event}{}}}
+\subsection{Method \code{log_user_event()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$log_user_event(username, action)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-list_actions"></a>}}
 \if{latex}{\out{\hypertarget{method-list_actions}{}}}
 \subsection{Method \code{list_actions()}}{
@@ -208,6 +238,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_action(
   registratie_id,
   username,
+  actie_naam,
   datum_actie,
   omschrijving,
   status
@@ -222,6 +253,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$update_action(
   action_id,
+  actie_naam,
   registratie_id,
   username,
   datum_actie,
@@ -236,7 +268,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \if{latex}{\out{\hypertarget{method-archive_action}{}}}
 \subsection{Method \code{archive_action()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_action(action_id, username)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_action(action_id, username, actie_naam = NULL)}\if{html}{\out{</div>}}
 }
 
 }
@@ -294,7 +326,6 @@ The objects of this class are cloneable with this method.
 \item \href{#method-read_table}{\code{ApolloEngine$read_table()}}
 \item \href{#method-append_data}{\code{ApolloEngine$append_data()}}
 \item \href{#method-execute_query}{\code{ApolloEngine$execute_query()}}
-\item \href{#method-log_user_event}{\code{ApolloEngine$log_user_event()}}
 \item \href{#method-read_signals}{\code{ApolloEngine$read_signals()}}
 \item \href{#method-read_actions}{\code{ApolloEngine$read_actions()}}
 \item \href{#method-read_indicators}{\code{ApolloEngine$read_indicators()}}
@@ -302,6 +333,10 @@ The objects of this class are cloneable with this method.
 \item \href{#method-read_bedrijf}{\code{ApolloEngine$read_bedrijf()}}
 \item \href{#method-read_adres}{\code{ApolloEngine$read_adres()}}
 \item \href{#method-read_favourites}{\code{ApolloEngine$read_favourites()}}
+\item \href{#method-read_log}{\code{ApolloEngine$read_log()}}
+\item \href{#method-read_data_actualiteit}{\code{ApolloEngine$read_data_actualiteit()}}
+\item \href{#method-get_log_ping}{\code{ApolloEngine$get_log_ping()}}
+\item \href{#method-log_user_event}{\code{ApolloEngine$log_user_event()}}
 \item \href{#method-list_actions}{\code{ApolloEngine$list_actions()}}
 \item \href{#method-list_favourites}{\code{ApolloEngine$list_favourites()}}
 \item \href{#method-add_favourite}{\code{ApolloEngine$add_favourite()}}
@@ -370,15 +405,6 @@ The objects of this class are cloneable with this method.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-log_user_event"></a>}}
-\if{latex}{\out{\hypertarget{method-log_user_event}{}}}
-\subsection{Method \code{log_user_event()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$log_user_event(username, action)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-read_signals"></a>}}
 \if{latex}{\out{\hypertarget{method-read_signals}{}}}
 \subsection{Method \code{read_signals()}}{
@@ -442,6 +468,42 @@ The objects of this class are cloneable with this method.
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-read_log"></a>}}
+\if{latex}{\out{\hypertarget{method-read_log}{}}}
+\subsection{Method \code{read_log()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_log()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-read_data_actualiteit"></a>}}
+\if{latex}{\out{\hypertarget{method-read_data_actualiteit}{}}}
+\subsection{Method \code{read_data_actualiteit()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_data_actualiteit()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_log_ping"></a>}}
+\if{latex}{\out{\hypertarget{method-get_log_ping}{}}}
+\subsection{Method \code{get_log_ping()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_log_ping()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-log_user_event"></a>}}
+\if{latex}{\out{\hypertarget{method-log_user_event}{}}}
+\subsection{Method \code{log_user_event()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$log_user_event(username, action)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-list_actions"></a>}}
 \if{latex}{\out{\hypertarget{method-list_actions}{}}}
 \subsection{Method \code{list_actions()}}{
@@ -485,6 +547,7 @@ The objects of this class are cloneable with this method.
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_action(
   registratie_id,
   username,
+  actie_naam,
   datum_actie,
   omschrijving,
   status
@@ -499,6 +562,7 @@ The objects of this class are cloneable with this method.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$update_action(
   action_id,
+  actie_naam,
   registratie_id,
   username,
   datum_actie,
@@ -513,7 +577,7 @@ The objects of this class are cloneable with this method.
 \if{latex}{\out{\hypertarget{method-archive_action}{}}}
 \subsection{Method \code{archive_action()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_action(action_id, username)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_action(action_id, username, actie_naam = NULL)}\if{html}{\out{</div>}}
 }
 
 }

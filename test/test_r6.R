@@ -26,14 +26,18 @@ b <- .sys$read_indicators()
 c <- .sys$read_actions()  
 
 
+
+print('-- testing log functionality --') 
+print(.sys$get_log_ping())
+
 print('-- testing favorieten functionality --') 
 .sys$add_favourite(username='apollo_test', oid=1, object_type='persoon')
 .sys$remove_favourite(username='apollo_test', favo=3)
 
 print('-- testing actielijst functionality --') 
-.sys$create_action(username='apollo_test', registratie_id=1, omschrijving='Surveillance zonder resultaat', datum_actie='2022-05-31', status='In behandeling')
+.sys$create_action(username='apollo_test', actie_naam= 'Olielek A', registratie_id=1, omschrijving='Surveillance zonder resultaat', datum_actie='2022-05-31', status='In behandeling')
 
-.sys$update_action(action_id = 3, username='apollo_test', registratie_id=1, omschrijving='Surveillance met resultaat', datum_actie='2022-06-01', status='Afgehandeld')
+.sys$update_action(action_id = 3, username='apollo_test', actie_naam= 'Olielek A', registratie_id=1, omschrijving='Surveillance met resultaat', datum_actie='2022-06-01', status='Afgehandeld')
 
 .sys$archive_action(action_id = 3, username='apollo_test')
  

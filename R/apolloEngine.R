@@ -25,6 +25,8 @@ ApolloEngine <- R6::R6Class(
     actions = NULL,
     indicators = NULL,
     favourites = NULL,
+    user_event_log = NULL,
+    data_actualiteit = NULL,
     
     initialize = function(gemeente, schema, pool, config_file = "conf/config.yml"){
       
@@ -139,14 +141,7 @@ ApolloEngine <- R6::R6Class(
     ######################################################################
     # ---------------  APOLLO SPECIFIC FUNCTIONS ----------------------- #
     ######################################################################
-    
-    log_user_event = function(username, action){
-      
-      self$append_data('user_event_log', 
-                       data.frame (user  =  username,
-                                   action =  action,
-                                   timestamp = Sys.time()))
-    },
+  
     read_signals = function(){
       self$signals <- self$read_table('registraties') 
       self$signals 
@@ -175,10 +170,17 @@ ApolloEngine <- R6::R6Class(
       self$favourites <- self$read_table('favorieten') 
       self$favourites
     },
-    
-    
+    read_log = function(){ 
+      self$user_event_log <- self$read_table('user_event_log') 
+      self$user_event_log
+    },
+    read_data_actualiteit = function(){ 
+      self$data_actualiteit <- self$read_table('data_actualiteit') 
+      self$data_actualiteit
+    },
+ 
     ######################################################
-    # -------------- LIST FUNCTIONS --------------------- #
+    # -------------- LIST FUNCTIONS -------------------- #
     ######################################################
     
     list_actions = function(update=FALSE){
@@ -210,7 +212,24 @@ ApolloEngine <- R6::R6Class(
       plyr::join_all(list(A,B,C,D), by='favo_id', type='left') 
     
     },
+    ################################################
+    # -------------- LOGGING --------------------- #
+    ################################################  
+    get_log_ping = function(){
+      try( 
+        self$execute_query(glue("select max(timestamp) from {self$schema}.user_event_log;"))
+        
+      ) 
+    },
     
+    
+    log_user_event = function(username, action){
+      
+      self$append_data('user_event_log', 
+                       data.frame (user  =  username,
+                                   action =  action,
+                                   timestamp = Sys.time()))
+    },
     ###################################################
     # -------------- FAVOURITES --------------------- #
     ###################################################
@@ -242,12 +261,13 @@ ApolloEngine <- R6::R6Class(
     #######################################################
     
     # add actie to actielijst
-    create_action = function(registratie_id, username, datum_actie, omschrijving, status){
-      self$log_user_event(username, action=glue("Heeft actie aangemaakt"))
+    create_action = function(registratie_id, username, actie_naam, datum_actie, omschrijving, status){
+      self$log_user_event(username, action=glue("Heeft actie {actie_naam} aangemaakt"))
       
       try( 
         self$append_data('actielijst', 
-                         data.frame (registratie_id  =  registratie_id,
+                         data.frame (actie_naam = actie_naam,
+                                     registratie_id  =  registratie_id,
                                      creator =  username,
                                      datum_actie = datum_actie,
                                      omschrijving = omschrijving,
@@ -256,27 +276,23 @@ ApolloEngine <- R6::R6Class(
       ) 
     },
     # update actie in actielijst
-    update_action = function(action_id, registratie_id, username, datum_actie, omschrijving, status){  
-      self$log_user_event(username, action=glue("Heeft actie {action_id} gewijzigd"))
+    update_action = function(action_id,actie_naam,  registratie_id, username, datum_actie, omschrijving, status){  
+      self$log_user_event(username, action=glue("Heeft actie {actie_naam} gewijzigd"))
       
       try( 
-        self$execute_query(glue("UPDATE {self$schema}.actielijst SET registratie_id = {registratie_id}, creator = '{username}', datum_actie = '{datum_actie}', omschrijving = '{omschrijving}', status = '{status}', timestamp = '{Sys.time()}' WHERE actie_id = {action_id}"))
+        self$execute_query(glue("UPDATE {self$schema}.actielijst SET actie_naam = '{actie_naam}', registratie_id = {registratie_id}, creator = '{username}', datum_actie = '{datum_actie}', omschrijving = '{omschrijving}', status = '{status}', timestamp = '{Sys.time()}' WHERE actie_id = {action_id}"))
       ) 
     },
     # archiveer actie in actielijst
-    archive_action = function(action_id, username){  
-      self$log_user_event(username, action=glue("Heeft actie {action_id} gearchiveerd"))
+    archive_action = function(action_id, username, actie_naam=NULL){
+      
+      self$log_user_event(username, action=glue("Heeft actie {ifelse(!is.null(actie_naam), actie_naam, action_id)} gearchiveerd"))
       
       try( 
         self$execute_query(glue("UPDATE {self$schema}.actielijst SET archief = TRUE, timestamp = '{Sys.time()}' WHERE actie_id = {action_id}"))
       ) 
     },
-    
-    #######################################################
-    # ---------------  DETAILPAGINA --------------------- #
-    #######################################################
-    
-    
+      
     #######################################################
     # ---------------  DETAILPAGINA --------------------- #
     #######################################################
