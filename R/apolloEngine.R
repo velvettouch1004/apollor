@@ -5,6 +5,7 @@
 #' @importsFrom R6 R6Class
 #' @importsFrom dbplyr in_schema collect
 #' @importsFrom dplyr tbl left_join 
+#' @importsFrom plyr join_all 
 #' @importsFrom safer encrypt_string decrypt_string
 #' @export
 
@@ -23,6 +24,7 @@ ApolloEngine <- R6::R6Class(
     signals = NULL,
     actions = NULL,
     indicators = NULL,
+    favourites = NULL,
     
     initialize = function(gemeente, schema, pool, config_file = "conf/config.yml"){
       
@@ -99,7 +101,53 @@ ApolloEngine <- R6::R6Class(
       out
       
     },
-    read_signals = function(){ 
+    append_data = function(table, data){
+      
+      flog.info(glue("append {nrow(data)} rows to '{table}'"), name = "DBR6")
+      
+      if(!is.null(self$schema)){
+        tm <- try(
+          dbWriteTable(self$con,
+                       name = Id(schema = self$schema, table = table),
+                       value = data,
+                       append = TRUE)
+        )
+      } else {
+        tm <- try(
+          dbWriteTable(self$con,
+                       name = table,
+                       value = data,
+                       append = TRUE)
+        )
+        
+      }
+      
+      return(invisible(!inherits(tm, "try-error")))
+    },
+    
+    execute_query = function(txt, glue = TRUE){
+      
+      if(glue)txt <- glue::glue(txt)
+      
+      flog.info(glue("query({txt})"), name = "DBR6")
+      
+      try(
+        dbExecute(self$con, txt)
+      )
+      
+    },
+    ######################################################################
+    # ---------------  APOLLO SPECIFIC FUNCTIONS ----------------------- #
+    ######################################################################
+    
+    log_user_event = function(username, action){
+      
+      self$append_data('user_event_log', 
+                       data.frame (user  =  username,
+                                   action =  action,
+                                   timestamp = Sys.time()))
+    },
+    read_signals = function(){
       self$signals <- self$read_table('registraties') 
       self$signals 
     },
@@ -111,17 +159,142 @@ ApolloEngine <- R6::R6Class(
       self$indicators <- self$read_table('indicator') 
       self$indicators
     },
-    get_actions = function(update=FALSE){
+    read_persoon = function(){ 
+      self$persoon <- self$read_table('persoon') 
+      self$persoon
+    },
+    read_bedrijf = function(){ 
+      self$bedrijf <- self$read_table('bedrijf') 
+      self$bedrijf
+    }, 
+    read_adres = function(){ 
+      self$adres <- self$read_table('adres') 
+      self$adres
+    },
+    read_favourites = function(){ 
+      self$favourites <- self$read_table('favorieten') 
+      self$favourites
+    },
+    
+    
+    ######################################################
+    # -------------- LIST FUNCTIONS --------------------- #
+    ######################################################
+    
+    list_actions = function(update=FALSE){
       if(is.null(self$actions)  || update){
         self$read_actions() 
       } 
       if(is.null(self$signals)  || update){ 
         self$read_signals()
+      }  
+       dplyr::left_join( self$actions, self$signals, by=c('registratie_id' ), suffix = c(".actie", ".signaal"),)
+    },
+    
+    list_favourites = function(user=NULL, update=FALSE){
+      if(is.null(self$bedrijf)  || update){
+        self$read_bedrijf() 
       } 
+      if(is.null(self$persoon)  || update){ 
+        self$read_persoon()
+      } 
+      if(is.null(self$adres)  || update){ 
+        self$read_adres()
+      } 
+      self$read_favourites()
+      A <- dplyr::left_join( dplyr::filter( self$favourites, object_type == 'registratie')  , self$signals, by=c('oid' ='registratie_id'), suffix = c("fav", ".signaal"))
+      B <- dplyr::left_join( dplyr::filter( self$favourites, object_type == 'persoon')  , self$persoon, by=c('oid'='persoon_id'), suffix = c("fav", ".persoon"))
+      C <- dplyr::left_join( dplyr::filter( self$favourites, object_type == 'bedrijf')  , self$bedrijf, by=c('oid'='bedrijf_id'), suffix = c("fav", ".bedrijf"))
+      D <- dplyr::left_join( dplyr::filter( self$favourites, object_type == 'adres')  , self$adres, by=c('oid'='adres_id'), suffix = c("fav", ".adres"))
+       
+      plyr::join_all(list(A,B,C,D), by='favo_id', type='left') 
+    
+    },
+    
+    ###################################################
+    # -------------- FAVOURITES --------------------- #
+    ###################################################
+    # add to favourites
+    add_favourite = function(username, oid, object_type){
+      self$log_user_event(username, action=glue("Heeft {object_type} {oid} aan favorieten toegevoegd"))
+      
+      try( 
+        self$append_data('favorieten', 
+                         data.frame (username =  username,
+                                     oid = oid,
+                                     object_type = object_type, 
+                                     timestamp = Sys.time()))
+      ) 
+    },
+    # remove from favourites
+    remove_favourite = function(username, favo_id){
+      self$log_user_event(username, action=glue("Heeft {favo_id} uit favorieten verwijderd"))
+      
+      try( 
+        self$execute_query(glue("DELETE from {self$schema}.favorieten WHERE favo_id = {favo_id}"))
+        
+      ) 
+    },
+    
+    
+    #######################################################
+    # ---------------  ACTIELIJST ----------------------- #
+    #######################################################
+    
+    # add actie to actielijst
+    create_action = function(registratie_id, username, datum_actie, omschrijving, status){
+      self$log_user_event(username, action=glue("Heeft actie aangemaakt"))
+      
+      try( 
+        self$append_data('actielijst', 
+                         data.frame (registratie_id  =  registratie_id,
+                                     creator =  username,
+                                     datum_actie = datum_actie,
+                                     omschrijving = omschrijving,
+                                     status = status,
+                                     timestamp = Sys.time()))
+      ) 
+    },
+    # update actie in actielijst
+    update_action = function(action_id, registratie_id, username, datum_actie, omschrijving, status){  
+      self$log_user_event(username, action=glue("Heeft actie {action_id} gewijzigd"))
+      
+      try( 
+        self$execute_query(glue("UPDATE {self$schema}.actielijst SET registratie_id = {registratie_id}, creator = '{username}', datum_actie = '{datum_actie}', omschrijving = '{omschrijving}', status = '{status}', timestamp = '{Sys.time()}' WHERE actie_id = {action_id}"))
+      ) 
+    },
+    # archiveer actie in actielijst
+    archive_action = function(action_id, username){  
+      self$log_user_event(username, action=glue("Heeft actie {action_id} gearchiveerd"))
+      
+      try( 
+        self$execute_query(glue("UPDATE {self$schema}.actielijst SET archief = TRUE, timestamp = '{Sys.time()}' WHERE actie_id = {action_id}"))
+      ) 
+    },
+    
+    #######################################################
+    # ---------------  DETAILPAGINA --------------------- #
+    #######################################################
+    
+    
+    #######################################################
+    # ---------------  DETAILPAGINA --------------------- #
+    #######################################################
+    # Voor persoon detail pagina
+    get_persoon_details = function(bsn){
       
       
-       dplyr::left_join( self$actions, self$signals, by=c('registratie_id' = 'id_registratie'), suffix = c(".actie", ".signaal"),)
-    }
+    },
+    # voor adres detail pagina
+    get_adres_details = function(adreseerbaarobject){
+      
+      
+    },
+    # voor bedrijf detailpagina
+    get_bedrijf_details = function(kvknummer){
+      
+      
+    } 
     
   )
 )
