@@ -26,7 +26,6 @@ ApolloEngine <- R6::R6Class(
                           secret = "",
                           data_files = "", 
                           geo_file = NULL,
-                          netwerk_settings = list(),
                           detail_timeline_settings = list(
                             recode_icon=list(),
                             recode_title=list(),
