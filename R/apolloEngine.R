@@ -20,7 +20,7 @@ ApolloEngine <- R6::R6Class(
       self$gemeente <- gemeente
       self$pool <- pool
       self$schema <- schema
-      what <- tolower(gemeente)
+      what <- gemeente
       
       cf <- config::get(what, file = config_file)
       print("----CONNECTING TO----")
