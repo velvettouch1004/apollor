@@ -307,10 +307,14 @@ ApolloEngine <- R6::R6Class(
         return(NULL) # TODO might need something else here
       }
       
-      out <- tbl(self$bag_con, in_schema("bagactueel","adres_plus")) %>%
-        filter(adresseerbaarobject_id %in% !!id_lookup) %>%
-        select(all_of(cols)) %>%
-        collect
+      qu <- tbl(self$bag_con, in_schema("bagactueel","adres_plus")) %>%
+        filter(adresseerbaarobject_id %in% !!id_lookup)
+      
+      if(cols[1] != "*"){
+        qu <- qu %>% select(all_of(cols))
+      }
+      
+      out <- collect(qu)
       
       if(spatial){
         out$geopunt <- st_as_sfc(out$geopunt)
