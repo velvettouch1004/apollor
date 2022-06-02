@@ -10,23 +10,8 @@
 #' @export
 
 ApolloEngine <- R6::R6Class(
+  lock_objects = FALSE,
   public = list(
-    
-    con = NULL,
-    schema = NULL,
-    pool = NULL,
-    sel = NULL,
-    gemeente = NULL,
-    gebruikers = NULL,
-    bedrijf = NULL,
-    persoon = NULL,
-    adres = NULL,
-    signals = NULL,
-    actions = NULL,
-    indicators = NULL,
-    favourites = NULL,
-    user_event_log = NULL,
-    data_actualiteit = NULL,
     
     initialize = function(gemeente, schema, pool, config_file = "conf/config.yml"){
       
@@ -138,6 +123,8 @@ ApolloEngine <- R6::R6Class(
       )
       
     },
+    
+    
     ######################################################################
     # ---------------  APOLLO SPECIFIC FUNCTIONS ----------------------- #
     ######################################################################
@@ -302,7 +289,7 @@ ApolloEngine <- R6::R6Class(
       
     },
     # voor adres detail pagina
-    get_adres_details = function(adreseerbaarobject){
+    get_adres_details = function(addreseerbaarobject){
       
       
     },
