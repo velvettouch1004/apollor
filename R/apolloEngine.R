@@ -18,7 +18,7 @@ ApolloEngine <- R6::R6Class(
   lock_objects = FALSE,
   
   public = list(
-     
+    
     # ---- Init
     initialize = function(tenant,
                           gemeente, schema, pool, 
@@ -85,6 +85,10 @@ ApolloEngine <- R6::R6Class(
           self$read_indicator()
         }
         
+        if(self$has_dataset("filter")){
+          self$read_filter()
+        }
+        
         if(self$has_dataset("signals")){
           self$read_signals()
         }
@@ -100,7 +104,7 @@ ApolloEngine <- R6::R6Class(
         if(self$has_dataset("model_privacy_protocol")){
           self$model_privacy_protocol <- self$read_table("model_privacy_protocol")
         }
-
+        
         # if(self$has_dataset("bag")){
         #   self$bag <- shintobag::get_bag_from_cache(gemeente)
         # }
@@ -215,7 +219,7 @@ ApolloEngine <- R6::R6Class(
       } else if(level == "wijk") {
         c("wijk_naam","gemeente_naam")
       }
-
+      
       geo <- if(level == "buurt"){
         self$geo$buurten 
       } else if(level == "wijk"){
@@ -245,7 +249,7 @@ ApolloEngine <- R6::R6Class(
                       wijk_naam = wk_naam,
                       gemeente_naam = gm_naam)
       }
-        
+      
       out <- left_join(data, key, by = id_col)
       
       if(spatial){
@@ -341,7 +345,7 @@ ApolloEngine <- R6::R6Class(
       
     },
     
-
+    
     bag_adres_cols = c("openbareruimtenaam","huisnummer","huisletter","huisnummertoevoeging","woonplaatsnaam"), 
     
     join_bag = function(data, id_column = "adresseerbaarobject_id", bag_columns = NULL, spatial = TRUE){
@@ -376,14 +380,14 @@ ApolloEngine <- R6::R6Class(
       }
       
       mutate(data,  
-            adres_formatted = paste0(
-              openbareruimtenaam, " ",
-              huisnummer, 
-              ifelse(is.na(huisletter),"",huisletter),
-              ifelse(is.na(huisnummertoevoeging),"", paste0(" ", huisnummertoevoeging)),
-              " ", woonplaatsnaam
-            )
-          )
+             adres_formatted = paste0(
+               openbareruimtenaam, " ",
+               huisnummer, 
+               ifelse(is.na(huisletter),"",huisletter),
+               ifelse(is.na(huisnummertoevoeging),"", paste0(" ", huisnummertoevoeging)),
+               " ", woonplaatsnaam
+             )
+      )
       
     },
     
@@ -517,6 +521,11 @@ ApolloEngine <- R6::R6Class(
       invisible(self$indicator)
     },
     
+    read_filter = function(){ 
+      self$filter <- self$read_table('filter') 
+      invisible(self$filter)
+    },
+    
     read_metadata = function(){ 
       self$metadata <- self$read_table('metadata') 
       invisible(self$metadata)
@@ -640,13 +649,13 @@ ApolloEngine <- R6::R6Class(
     # Add 'address' to signals based on object_relations,
     # and KvK branches based on selected business, if any.
     combine_signals_relations_business = function(signals, relations, sbi_colname, sbi_key, sbi_mapping){
-
+      
       # assume there is at most one primary address per registration
       hoofdadressen <-  relations %>% 
         filter(object_type == 'address' & relation_type == 'primary') %>%
         distinct(collector_id, .keep_all = TRUE) # als per ongeluk toch meer dan 1 hoofdadres
       
-    
+      
       # for hollands kroon
       if(!hasName(signals, "adresseerbaarobject")){
         signals$adresseerbaarobject <- NA_character_
@@ -709,7 +718,7 @@ ApolloEngine <- R6::R6Class(
                                      kvk_sub_branche_omsch=sbi_omschrijving), 
                   by="kvk_sub_branche") %>%
         left_join(sbi_mapping, by="afdeling")  
-        
+      
     },
     
     
@@ -989,7 +998,7 @@ ApolloEngine <- R6::R6Class(
       out
     },
     
-
+    
     #' @description Calculate riskmodel at address level
     #' @param data Combined indicator table at address level (made with `combine_indicator_tables`)
     #' @param theme Theme for the indicators; used to get weights from definition table
@@ -1100,6 +1109,80 @@ ApolloEngine <- R6::R6Class(
     },
     
     
+    #--------- FILTERS ----------
+    
+    #' @description Get unique addresses
+    #' @details Use this function to find all addresses in the dataset
+    get_address_vector = function(){
+      
+      self$address %>% 
+        select(address_id) %>%
+        pull(address_id) %>%
+        unique()
+      
+    },
+    
+    #' @description Get rows of filter table for a theme
+    #' @details Use this function to find definitions for filters in a theme.
+    get_filters_theme = function(theme){
+      
+      out <- self$filter %>% 
+        filter(grepl(!!theme, theme),
+               !disabled, !deleted)
+      
+      # if(nrow(out) == 0){
+      #   stop(paste("Theme",theme,"not found"))
+      # }
+      # 
+      out
+      
+    },
+    
+    #' @description Get unique values of a column in a dataset
+    #' @details Use this function to find the options for a select dropdown
+    get_filter_choices = function(object_dataset, column){
+      
+      self[[object_dataset]] %>%
+        select(!!sym(column)) %>%
+        pull(!!sym(column)) %>%
+        unique()
+      
+    },
+    
+    get_selectfiltered_addresses = function(dataset, column, choices){
+      
+      self[[dataset]] %>%
+        filter(!!sym(column) %in% choices) %>%
+        select(address_id) %>%
+        pull(address_id) %>%
+        unique()
+      
+    },
+    
+    get_minmax_num_val = function(object_dataset, column, min_max = c("min", "max")){
+      options <- self[[object_dataset]] %>%
+        select(!!sym(column)) %>%
+        pull(!!sym(column)) %>%
+        unique() 
+      
+      if(min_max == "min"){
+        return(min(options, na.rm = TRUE))
+      } else if(min_max == "max"){
+        return(max(options, na.rm = TRUE))
+      } else {
+        return(NULL)
+      }
+      
+    },
+    
+    get_numericfiltered_addresses = function(dataset, column, boundaries){
+      self[[dataset]] %>%
+        filter(!!sym(column) >= min(boundaries)) %>%
+        filter(!!sym(column) <= max(boundaries)) %>%
+        select(address_id) %>%
+        pull(address_id) %>%
+        unique()
+    },
     
     
     #--------- LIST FUNCTIONS -----------
@@ -1238,7 +1321,7 @@ ApolloEngine <- R6::R6Class(
     #' @description Get Obj Rel changes since a given timestamp
     #' @param time_since is timestamp
     get_object_relations_since_timestamp = function(time_since){ 
- 
+      
       self$query(glue("select count(*) from {self$schema}.object_relations where timestamp > '{time_since}'::timestamp;"),
                  quiet=TRUE)$count 
     },
@@ -1410,12 +1493,12 @@ ApolloEngine <- R6::R6Class(
     #' @param person_id Person's identifier FI: (pseudo)bsn 
     #' @param add_overlijden Boolean indicating if overlijden should be added as event 
     get_relocations_timeline = function(person_id, add_overlijden=TRUE){
- 
+      
       if(!self$has_dataset("relocations")){
         print("- No Relocations Data! -")
         return(NULL)
       } else {
-         
+        
         timelineData <- self$get_relocations_for_person(person_id)
         if(nrow(timelineData) > 0){
           timelineData <- timelineData%>%  
@@ -1429,7 +1512,7 @@ ApolloEngine <- R6::R6Class(
         }  else {
           return(NULL)
         }
-         
+        
         if(add_overlijden & nrow(timelineData) > 0 & !is.na(timelineData$datum_overlijden[1])){
           death_row = data.frame(timestamp=timelineData$datum_overlijden[1],
                                  title="Overleden",
@@ -1527,7 +1610,7 @@ ApolloEngine <- R6::R6Class(
                                   location_description = loc_descr,
                                   wijk = wijk,
                                   buurt = buurt )
-                       ) 
+      ) 
     }, 
     
     get_all_custom_locations = function(){
