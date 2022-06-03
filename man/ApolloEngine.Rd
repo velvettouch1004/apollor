@@ -31,7 +31,9 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-create_action}{\code{ApolloEngine$create_action()}}
 \item \href{#method-update_action}{\code{ApolloEngine$update_action()}}
 \item \href{#method-archive_action}{\code{ApolloEngine$archive_action()}}
-\item \href{#method-get_persoon_details}{\code{ApolloEngine$get_persoon_details()}}
+\item \href{#method-get_person_from_bsn}{\code{ApolloEngine$get_person_from_bsn()}}
+\item \href{#method-get_tags_for_person}{\code{ApolloEngine$get_tags_for_person()}}
+\item \href{#method-get_adress_from_id}{\code{ApolloEngine$get_adress_from_id()}}
 \item \href{#method-get_adres_details}{\code{ApolloEngine$get_adres_details()}}
 \item \href{#method-get_bedrijf_details}{\code{ApolloEngine$get_bedrijf_details()}}
 \item \href{#method-clone}{\code{ApolloEngine$clone()}}
@@ -246,11 +248,29 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_persoon_details"></a>}}
-\if{latex}{\out{\hypertarget{method-get_persoon_details}{}}}
-\subsection{Method \code{get_persoon_details()}}{
+\if{html}{\out{<a id="method-get_person_from_bsn"></a>}}
+\if{latex}{\out{\hypertarget{method-get_person_from_bsn}{}}}
+\subsection{Method \code{get_person_from_bsn()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_persoon_details(bsn)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_person_from_bsn(bsn)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_tags_for_person"></a>}}
+\if{latex}{\out{\hypertarget{method-get_tags_for_person}{}}}
+\subsection{Method \code{get_tags_for_person()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_tags_for_person(person_id)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_adress_from_id"></a>}}
+\if{latex}{\out{\hypertarget{method-get_adress_from_id}{}}}
+\subsection{Method \code{get_adress_from_id()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_adress_from_id(adres_id)}\if{html}{\out{</div>}}
 }
 
 }

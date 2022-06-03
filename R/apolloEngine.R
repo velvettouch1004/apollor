@@ -203,10 +203,18 @@ ApolloEngine <- R6::R6Class(
     # ---------------  DETAILPAGINA --------------------- #
     #######################################################
     # Voor persoon detail pagina
-    get_persoon_details = function(bsn){
-      
-      
+    get_person_from_bsn = function(bsn){
+      dplyr::filter(self$persoon, bsn==bsn) 
     },
+    get_tags_for_person = function(person_id){
+      c('Ondernemerschap', 'Duurzaamheid')
+    },
+    get_adress_from_id = function(adres_id){
+      dplyr::filter(self$persoon, adres_id==adres_id) 
+    },
+    
+    
+    
     # voor adres detail pagina
     get_adres_details = function(addreseerbaarobject){
       

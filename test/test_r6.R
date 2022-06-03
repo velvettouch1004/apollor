@@ -45,5 +45,14 @@ print('-- testing list functionality --')
 d <- .sys$list_actions() 
 e <- .sys$list_favourites()
 
+
+print('-- testing detail functionality --') 
+
+bsn <- 'dTyI6jJgE'
+pi <- .sys$get_persoon_from_bsn(bsn)
+print(pi)
+aa<-  .sys$get_adress_from_id(pi$adres_id)
+print(aa)
+ 
 print('done')
 
