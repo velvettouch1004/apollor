@@ -10,6 +10,8 @@
 #' @export
 
 ApolloEngine <- R6::R6Class(
+  inherit = databaseObject,
+  
   lock_objects = FALSE,
   public = list(
     
@@ -41,90 +43,7 @@ ApolloEngine <- R6::R6Class(
       self$adres <- self$read_table("adres")
       
       
-    },
-    
-    
-    #----- General method ----
-    list_tables = function(){
-      
-      DBI::dbGetQuery(self$con,
-                      glue("SELECT table_name FROM information_schema.tables
-                   WHERE table_schema='{self$schema}'"))
-    },
-    
-    
-    close = function(){
-      
-      if(!is.null(self$con) && dbIsValid(self$con)){
-        if(self$pool){
-          flog.info("poolClose", name = "DBR6")
-          
-          poolClose(self$con)
-        } else {
-          flog.info("dbDisconnect", name = "DBR6")
-          
-          DBI::dbDisconnect(self$con)
-        }
-        
-      } else {
-        flog.info("Not closing an invalid or null connection", name = "DBR6")
-      }
-      
-    },   
-    read_table = function(table, lazy = FALSE){
-      
-      flog.info(glue("tbl({table})"), name = "DBR6")
-      
-      if(!is.null(self$schema)){
-        table <- dbplyr::in_schema(self$schema, table)
-      }
-      
-      out <- dplyr::tbl(self$con, table)
-      
-      if(!lazy){
-        out <- dplyr::collect(out)
-      }
-      
-      out
-      
-    },
-    append_data = function(table, data){
-      
-      flog.info(glue("append {nrow(data)} rows to '{table}'"), name = "DBR6")
-      
-      if(!is.null(self$schema)){
-        tm <- try(
-          dbWriteTable(self$con,
-                       name = Id(schema = self$schema, table = table),
-                       value = data,
-                       append = TRUE)
-        )
-      } else {
-        tm <- try(
-          dbWriteTable(self$con,
-                       name = table,
-                       value = data,
-                       append = TRUE)
-        )
-        
-      }
-      
-      return(invisible(!inherits(tm, "try-error")))
-    },
-    
-    execute_query = function(txt, glue = TRUE){
-      
-      if(glue)txt <- glue::glue(txt)
-      
-      flog.info(glue("query({txt})"), name = "DBR6")
-      
-      try(
-        dbExecute(self$con, txt)
-      )
-      
-    },
-    
-    
+    }, 
     ######################################################################
     # ---------------  APOLLO SPECIFIC FUNCTIONS ----------------------- #
     ######################################################################
