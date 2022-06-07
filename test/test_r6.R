@@ -60,7 +60,7 @@ print(aa)
 
 print("-- testing calculating indicatoren --")
 
-
+# Add indicator to metadata table
 .sys$add_indicator(indicator_name = "test_indicator", 
                    type = "person", 
                    label = "Test 1",
@@ -73,7 +73,25 @@ print("-- testing calculating indicatoren --")
 
 .sys$remove_indicator("test_indicator")
 
+
+
+
+
+adres <- .sys$read_adres()
+
+
+
+
+
+
+
+
 print('done')
+
+
+
+
+
 
 
 

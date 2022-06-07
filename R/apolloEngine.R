@@ -65,40 +65,40 @@ ApolloEngine <- R6::R6Class(
     ######################################################################
   
     read_signals = function(){
-      self$signals <- self$read_table('registraties') 
+      self$signals <- self$read_table('registrations') 
       self$signals 
     },
     read_actions = function(){ 
-      self$actions <- self$read_table('actielijst') 
+      self$actions <- self$read_table('actionlist') 
       self$actions
     },
     read_indicators = function(){ 
       self$indicators <- self$read_table('indicator') 
       self$indicators
     },
-    read_persoon = function(){ 
-      self$persoon <- self$read_table('persoon') 
-      self$persoon
+    read_person = function(){ 
+      self$person <- self$read_table('person') 
+      self$person
     },
-    read_bedrijf = function(){ 
-      self$bedrijf <- self$read_table('bedrijf') 
-      self$bedrijf
+    read_business = function(){ 
+      self$business <- self$read_table('business') 
+      self$business
     }, 
-    read_adres = function(){ 
-      self$adres <- self$read_table('adres') 
-      self$adres
+    read_adress = function(){ 
+      self$adress <- self$read_table('adress') 
+      self$adress
     },
-    read_favourites = function(){ 
-      self$favourites <- self$read_table('favorieten') 
-      self$favourites
+    read_favorites = function(){ 
+      self$favorites <- self$read_table('favorites') 
+      self$favorites
     },
     read_log = function(){ 
       self$user_event_log <- self$read_table('user_event_log') 
       self$user_event_log
     },
-    read_data_actualiteit = function(){ 
-      self$data_actualiteit <- self$read_table('data_actualiteit') 
-      self$data_actualiteit
+    read_metadata = function(){ 
+      self$metadata <- self$read_table('metadata') 
+      self$metadata
     },
  
     
