@@ -165,6 +165,28 @@ ApolloEngine <- R6::R6Class(
     },
 
     
+    #' @description Convert raw indicator data to TRUE/FALSE
+    #' @param data Dataframe subset from `indicator` table, read with `$get_indicators_theme`
+    #' @param indicator Name of the indicator to convert
+    make_boolean_indicator = function(data, indicator){
+      
+      def <- filter(data, indicator_name == !!indicator)
+      
+      tab <- .sys[[def$object_type]]
+      if(is.null(tab)){
+        stop("object_type must refer to a dataset loaded in the R6 (adress, person, business)")
+      }
+      
+      values <- tab[[indicator]]
+      if(is.null(values)){
+        stop(paste(indicator, "not found in data - problem with config!"))
+      }
+      
+      # for now, only a simple threshold calculation
+      values >= def$threshold
+      
+    },
+    
     
     ######################################################
     # -------------- LIST FUNCTIONS -------------------- #
