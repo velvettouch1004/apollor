@@ -41,8 +41,9 @@ ApolloEngine <- R6::R6Class(
       }
       
       self$person <- self$read_table("person")
-      # self$bedrijf <- self$read_table("bedrijf")
-      # self$adres <- self$read_table("adres")
+      self$business <- self$read_table("business")
+      self$adress <- self$read_table("adress")
+      self$indicator <- self$read_table("indicator")
       
       
     }, 
@@ -116,7 +117,7 @@ ApolloEngine <- R6::R6Class(
     #' @param columns 
     #' @param 
     add_indicator = function(indicator_name, 
-                             type = c("adres","person"), 
+                             type = c("adress","person"), 
                              label,
                              description, 
                              creator, 
@@ -131,7 +132,7 @@ ApolloEngine <- R6::R6Class(
       
       data <- tibble::tibble(
         indicator_name = indicator_name,
-        object_type = "type",
+        object_type = type,
         label = label,
         description = description,
         creator = creator,
@@ -148,16 +149,21 @@ ApolloEngine <- R6::R6Class(
     },
     
     #' @description Remove an indicator's metadata from the 'indicator' table0
-    remove_indicator = function(indicator_name){
+    remove_indicator = function(indicator_name){ 
       
       self$delete_rows_where("indicator", "indicator_name", indicator_name)
       
     },
     
     
+    #' @description Get rows of indicators table for a theme
+    get_indicators_theme = function(theme){
     
-    
-    
+      self$indicator %>% 
+        filter(grepl(!!theme, theme))  
+      
+    },
+
     
     
     ######################################################
