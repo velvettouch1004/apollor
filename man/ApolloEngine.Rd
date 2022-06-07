@@ -26,6 +26,8 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-read_metadata}{\code{ApolloEngine$read_metadata()}}
 \item \href{#method-add_indicator}{\code{ApolloEngine$add_indicator()}}
 \item \href{#method-remove_indicator}{\code{ApolloEngine$remove_indicator()}}
+\item \href{#method-get_indicators_theme}{\code{ApolloEngine$get_indicators_theme()}}
+\item \href{#method-make_boolean_indicator}{\code{ApolloEngine$make_boolean_indicator()}}
 \item \href{#method-list_actions}{\code{ApolloEngine$list_actions()}}
 \item \href{#method-list_favorites}{\code{ApolloEngine$list_favorites()}}
 \item \href{#method-get_log_ping}{\code{ApolloEngine$get_log_ping()}}
@@ -226,6 +228,35 @@ Remove an indicator's metadata from the 'indicator' table0
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$remove_indicator(indicator_name)}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_indicators_theme"></a>}}
+\if{latex}{\out{\hypertarget{method-get_indicators_theme}{}}}
+\subsection{Method \code{get_indicators_theme()}}{
+Get rows of indicators table for a theme
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_indicators_theme(theme)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-make_boolean_indicator"></a>}}
+\if{latex}{\out{\hypertarget{method-make_boolean_indicator}{}}}
+\subsection{Method \code{make_boolean_indicator()}}{
+Convert raw indicator data to TRUE/FALSE
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$make_boolean_indicator(data, indicator)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data}}{Dataframe subset from \code{indicator} table, read with \verb{$get_indicators_theme}}
+
+\item{\code{indicator}}{Name of the indicator to convert}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-list_actions"></a>}}

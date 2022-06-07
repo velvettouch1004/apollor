@@ -112,7 +112,7 @@ ApolloEngine <- R6::R6Class(
     #' @param type Indicator type - refers to the table that has this column_name
     #' @param label Short label for the indicator
     #' @param description Long-form text explaining the indicator
-    #' @param creator Who are you?
+    #' @param user_id Who are you?
     #' @param theme Which theme(s) is the indicator used in? e.g. c("mensenhandel","drugs")
     #' @param columns 
     #' @param 
@@ -120,7 +120,7 @@ ApolloEngine <- R6::R6Class(
                              type = c("adress","person"), 
                              label,
                              description, 
-                             creator, 
+                             user_id, 
                              theme, 
                              columns, 
                              weight, 
@@ -135,7 +135,7 @@ ApolloEngine <- R6::R6Class(
         object_type = type,
         label = label,
         description = description,
-        creator = creator,
+        user_id = user_id,
         theme = self$to_json(theme),
         columns = self$to_json(columns),
         weight = weight,
@@ -232,31 +232,31 @@ ApolloEngine <- R6::R6Class(
     },
     
     
-    log_user_event = function(username, action){
+    log_user_event = function(user_id, description){
       
       self$append_data('user_event_log', 
-                       data.frame (username  =  username,
-                                   action =  action,
+                       data.frame (user_id  =  user_id,
+                                   description =  description,
                                    timestamp = Sys.time()))
     },
     ###################################################
     # -------------- FAVORITES --------------------- #
     ###################################################
     # add to favorites
-    add_favorite = function(username, object_id, object_type){
-      self$log_user_event(username, action=glue("Heeft {object_type} {object_id} aan favorieten toegevoegd"))
+    add_favorite = function(user_id, object_id, object_type){
+      self$log_user_event(user_id, description=glue("Heeft {object_type} {object_id} aan favorieten toegevoegd"))
       
       try( 
         self$append_data('favorites', 
-                         data.frame (username =  username,
+                         data.frame (user_id =  user_id,
                                      object_id = object_id,
                                      object_type = object_type, 
                                      timestamp = Sys.time()))
       ) 
     },
     # remove from favorites
-    remove_favorite = function(username, favorite_id){
-      self$log_user_event(username, action=glue("Heeft {favorite_id} uit favorieten verwijderd"))
+    remove_favorite = function(user_id, favorite_id){
+      self$log_user_event(user_id, description=glue("Heeft {favorite_id} uit favorieten verwijderd"))
       
       try( 
         self$execute_query(glue("DELETE from {self$schema}.favorites WHERE favorite_id = {favorite_id}"))
@@ -270,14 +270,14 @@ ApolloEngine <- R6::R6Class(
     #######################################################
     
     # add actie to actielijst
-    create_action = function(registration_id, username, action_name, action_date, description, status){
-      self$log_user_event(username, action=glue("Heeft actie {action_name} aangemaakt"))
+    create_action = function(registration_id, user_id, action_name, action_date, description, status){
+      self$log_user_event(user_id, description=glue("Heeft actie {action_name} aangemaakt"))
       
       try( 
         self$append_data('actionlist', 
                          data.frame (action_name = action_name,
                                      registration_id  =  registration_id,
-                                     creator =  username,
+                                     user_id =  user_id,
                                      action_date = action_date,
                                      description = description,
                                      status = status,
@@ -285,17 +285,17 @@ ApolloEngine <- R6::R6Class(
       ) 
     },
     # update actie in actielijst
-    update_action = function(action_id,action_name,  registration_id, username, action_date, description, status){  
-      self$log_user_event(username, action=glue("Heeft actie {action_name} gewijzigd"))
+    update_action = function(action_id,action_name,  registration_id, user_id, action_date, description, status){  
+      self$log_user_event(user_id, description=glue("Heeft actie {action_name} gewijzigd"))
       
       try( 
-        self$execute_query(glue("UPDATE {self$schema}.actionlist SET action_name = '{action_name}', registration_id = '{registration_id}', creator = '{username}', action_date = '{action_date}', description = '{description}', status = '{status}', timestamp = '{Sys.time()}' WHERE action_id = {action_id}"))
+        self$execute_query(glue("UPDATE {self$schema}.actionlist SET action_name = '{action_name}', registration_id = '{registration_id}', user_id = '{user_id}', action_date = '{action_date}', description = '{description}', status = '{status}', timestamp = '{Sys.time()}' WHERE action_id = {action_id}"))
       ) 
     },
     # archiveer actie in actielijst
-    archive_action = function(action_id, username, action_name=NULL){
+    archive_action = function(action_id, user_id, action_name=NULL){
       
-      self$log_user_event(username, action=glue("Heeft actie {ifelse(!is.null(action_name), action_name, action_id)} gearchiveerd"))
+      self$log_user_event(user_id, description=glue("Heeft actie {ifelse(!is.null(action_name), action_name, action_id)} gearchiveerd"))
       
       try( 
         self$execute_query(glue("UPDATE {self$schema}.actionlist SET expired = TRUE, timestamp = '{Sys.time()}' WHERE action_id = {action_id}"))
