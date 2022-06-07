@@ -20,7 +20,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-read_indicators}{\code{ApolloEngine$read_indicators()}}
 \item \href{#method-read_person}{\code{ApolloEngine$read_person()}}
 \item \href{#method-read_business}{\code{ApolloEngine$read_business()}}
-\item \href{#method-read_adress}{\code{ApolloEngine$read_adress()}}
+\item \href{#method-read_address}{\code{ApolloEngine$read_address()}}
 \item \href{#method-read_favorites}{\code{ApolloEngine$read_favorites()}}
 \item \href{#method-read_log}{\code{ApolloEngine$read_log()}}
 \item \href{#method-read_metadata}{\code{ApolloEngine$read_metadata()}}
@@ -39,8 +39,8 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-archive_action}{\code{ApolloEngine$archive_action()}}
 \item \href{#method-get_person_from_id}{\code{ApolloEngine$get_person_from_id()}}
 \item \href{#method-get_tags_for_person}{\code{ApolloEngine$get_tags_for_person()}}
-\item \href{#method-get_adress_from_id}{\code{ApolloEngine$get_adress_from_id()}}
-\item \href{#method-get_adress_details}{\code{ApolloEngine$get_adress_details()}}
+\item \href{#method-get_address_from_id}{\code{ApolloEngine$get_address_from_id()}}
+\item \href{#method-get_address_details}{\code{ApolloEngine$get_address_details()}}
 \item \href{#method-get_business_details}{\code{ApolloEngine$get_business_details()}}
 \item \href{#method-clone}{\code{ApolloEngine$clone()}}
 }
@@ -145,11 +145,11 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_adress"></a>}}
-\if{latex}{\out{\hypertarget{method-read_adress}{}}}
-\subsection{Method \code{read_adress()}}{
+\if{html}{\out{<a id="method-read_address"></a>}}
+\if{latex}{\out{\hypertarget{method-read_address}{}}}
+\subsection{Method \code{read_address()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_adress()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_address()}\if{html}{\out{</div>}}
 }
 
 }
@@ -188,10 +188,10 @@ Adds an indicator's metadata to the 'indicator' table
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$add_indicator(
   indicator_name,
-  type = c("adress", "person"),
+  type = c("address", "person"),
   label,
   description,
-  creator,
+  user_id,
   theme,
   columns,
   weight,
@@ -208,7 +208,7 @@ Adds an indicator's metadata to the 'indicator' table
 
 \item{\code{description}}{Long-form text explaining the indicator}
 
-\item{\code{creator}}{Who are you?}
+\item{\code{user_id}}{Who are you?}
 
 \item{\code{theme}}{Which theme(s) is the indicator used in? e.g. c("mensenhandel","drugs")}
 
@@ -290,7 +290,7 @@ Convert raw indicator data to TRUE/FALSE
 \if{latex}{\out{\hypertarget{method-log_user_event}{}}}
 \subsection{Method \code{log_user_event()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$log_user_event(username, action)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$log_user_event(user_id, description)}\if{html}{\out{</div>}}
 }
 
 }
@@ -299,7 +299,7 @@ Convert raw indicator data to TRUE/FALSE
 \if{latex}{\out{\hypertarget{method-add_favorite}{}}}
 \subsection{Method \code{add_favorite()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$add_favorite(username, object_id, object_type)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$add_favorite(user_id, object_id, object_type)}\if{html}{\out{</div>}}
 }
 
 }
@@ -308,7 +308,7 @@ Convert raw indicator data to TRUE/FALSE
 \if{latex}{\out{\hypertarget{method-remove_favorite}{}}}
 \subsection{Method \code{remove_favorite()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$remove_favorite(username, favorite_id)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$remove_favorite(user_id, favorite_id)}\if{html}{\out{</div>}}
 }
 
 }
@@ -319,7 +319,7 @@ Convert raw indicator data to TRUE/FALSE
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_action(
   registration_id,
-  username,
+  user_id,
   action_name,
   action_date,
   description,
@@ -337,7 +337,7 @@ Convert raw indicator data to TRUE/FALSE
   action_id,
   action_name,
   registration_id,
-  username,
+  user_id,
   action_date,
   description,
   status
@@ -350,7 +350,7 @@ Convert raw indicator data to TRUE/FALSE
 \if{latex}{\out{\hypertarget{method-archive_action}{}}}
 \subsection{Method \code{archive_action()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_action(action_id, username, action_name = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_action(action_id, user_id, action_name = NULL)}\if{html}{\out{</div>}}
 }
 
 }
@@ -373,20 +373,20 @@ Convert raw indicator data to TRUE/FALSE
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_adress_from_id"></a>}}
-\if{latex}{\out{\hypertarget{method-get_adress_from_id}{}}}
-\subsection{Method \code{get_adress_from_id()}}{
+\if{html}{\out{<a id="method-get_address_from_id"></a>}}
+\if{latex}{\out{\hypertarget{method-get_address_from_id}{}}}
+\subsection{Method \code{get_address_from_id()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_adress_from_id(adress_id)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_address_from_id(address_id)}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_adress_details"></a>}}
-\if{latex}{\out{\hypertarget{method-get_adress_details}{}}}
-\subsection{Method \code{get_adress_details()}}{
+\if{html}{\out{<a id="method-get_address_details"></a>}}
+\if{latex}{\out{\hypertarget{method-get_address_details}{}}}
+\subsection{Method \code{get_address_details()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_adress_details(addreseerbaarobject)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_address_details(addreseerbaarobject)}\if{html}{\out{</div>}}
 }
 
 }
