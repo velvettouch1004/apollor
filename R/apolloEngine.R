@@ -42,7 +42,7 @@ ApolloEngine <- R6::R6Class(
       
       self$person <- self$read_table("person")
       self$business <- self$read_table("business")
-      self$adress <- self$read_table("adress")
+      self$address <- self$read_table("address")
       self$indicator <- self$read_table("indicator")
       
       
@@ -85,9 +85,9 @@ ApolloEngine <- R6::R6Class(
       self$business <- self$read_table('business') 
       self$business
     }, 
-    read_adress = function(){ 
-      self$adress <- self$read_table('adress') 
-      self$adress
+    read_address = function(){ 
+      self$address <- self$read_table('address') 
+      self$address
     },
     read_favorites = function(){ 
       self$favorites <- self$read_table('favorites') 
@@ -117,7 +117,7 @@ ApolloEngine <- R6::R6Class(
     #' @param columns 
     #' @param 
     add_indicator = function(indicator_name, 
-                             type = c("adress","person"), 
+                             type = c("address","person"), 
                              label,
                              description, 
                              user_id, 
@@ -174,7 +174,7 @@ ApolloEngine <- R6::R6Class(
       
       tab <- .sys[[def$object_type]]
       if(is.null(tab)){
-        stop("object_type must refer to a dataset loaded in the R6 (adress, person, business)")
+        stop("object_type must refer to a dataset loaded in the R6 (address, person, business)")
       }
       
       values <- tab[[indicator]]
@@ -211,14 +211,14 @@ ApolloEngine <- R6::R6Class(
       if(is.null(self$person)  || update){ 
         self$read_person()
       } 
-      if(is.null(self$adress)  || update){ 
-        self$read_adress()
+      if(is.null(self$address)  || update){ 
+        self$read_address()
       } 
       self$read_favorites()
       A <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'registration')  , self$signals, by=c('object_id' ='registration_id'), suffix = c("fav", ".signaal"))
       B <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'person')  , self$person, by=c('object_id'='person_id'), suffix = c("fav", ".person"))
       C <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'business')  , self$business, by=c('object_id'='business_id'), suffix = c("fav", ".business"))
-      D <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'adress')  , self$adress, by=c('object_id'='adress_id'), suffix = c("fav", ".adress"))
+      D <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'address')  , self$address, by=c('object_id'='address_id'), suffix = c("fav", ".address"))
        
       plyr::join_all(list(A,B,C,D), by='favorite_id', type='left') 
     
@@ -314,14 +314,14 @@ ApolloEngine <- R6::R6Class(
     get_tags_for_person = function(person_id){
       c('Ondernemerschap', 'Duurzaamheid')
     },
-    get_adress_from_id = function(adress_id){
-      dplyr::filter(self$adress, adress_id==adress_id) 
+    get_address_from_id = function(address_id){
+      dplyr::filter(self$address, address_id==address_id) 
     },
     
     
     
-    # voor adress detail pagina
-    get_adress_details = function(addreseerbaarobject){
+    # voor address detail pagina
+    get_address_details = function(addreseerbaarobject){
       
       
     },
