@@ -10,13 +10,15 @@ library(glue)
 library(futile.logger)
 library(dplyr)
 
-options(config_file = glue("conf/config.yml"))
+#options(config_file = glue("conf/config.yml"))
+options(config_file = glue("c:/repos/apollo-ondermijning/conf/config.yml"))
 
 #library(apollor)
 devtools::load_all()
 
 .sys <- ApolloEngine$new(gemeente = "Ede", 
                          schema = "ede_ondermijning",  
+                         geo_file = "test/geo_Ede.rds", # !!
                          pool = TRUE)
 
 
@@ -83,12 +85,25 @@ make_boolean_indicator(indic, "actief_wmo") %>%
 
 
 
+# Make a table of TRUE/FALSE indicator values for a theme of a type
+dat1 <- .sys$make_indicator_table("mensenhandel", type = "address")
+dat2 <- .sys$make_indicator_table("mensenhandel", type = "person")
+
+
+
+# buurt codes omzetten
+.sys$geo_name_from_code(dat1$buurt_code_cbs[1:10])
+
+# alle geo kolommen toevoegen aan een dataframe met buurt_code_cbs
+microbenchmark(
+  dat1_2 = dat1 %>% .sys$add_geo_columns(.)
+)
+
+
+
+
+
 print('done')
-
-
-
-
-
 
 
 

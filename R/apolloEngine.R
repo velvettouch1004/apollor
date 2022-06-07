@@ -17,7 +17,9 @@ ApolloEngine <- R6::R6Class(
   lock_objects = FALSE,
   public = list(
     
-    initialize = function(gemeente, schema, pool, config_file = getOption("config_file","conf/config.yml")){
+    initialize = function(gemeente, schema, pool, 
+                          config_file = getOption("config_file","conf/config.yml"),
+                          geo_file = NULL){
       
       flog.info("DB Connection", name = "DBR6")
       
@@ -46,7 +48,77 @@ ApolloEngine <- R6::R6Class(
       self$indicator <- self$read_table("indicator")
       
       
-    }, 
+      # Geo data
+      if(is.null(geo_file)){
+        geo_file <- glue("data_public/{gemeente}/geo_{gemeente}.rds")  
+      }
+      if(!file.exists(geo_file)){
+        self$have_geo <- FALSE
+        message("No geo found. Continuing without geo data.")
+      } else {
+        self$have_geo <- TRUE
+        self$geo <- readRDS(geo_file)
+      }
+      
+    },
+    
+    
+    ######################################################################
+    # ---------------  GEO UTILITIES ----------------------------------- #
+    ######################################################################
+    
+    assert_geo = function(){
+      if(!self$have_geo){
+        stop("This method can only be tested when geo data is loaded")
+      }
+    },
+    
+    #' @description Translate buurt or wijk codes into names
+    #' @param code E.g. "WK022801" or "BU02280105"
+    geo_name_from_code = function(code){
+      
+      self$assert_geo()
+      
+      co <- substr(code[1],1,2) 
+      if(co == "BU"){
+        self$geo$buurten$bu_naam[match(code, self$geo$buurten$bu_code)]
+      } else if(co == "WK") {
+        self$geo$wijken$wk_naam[match(code, self$geo$wijken$wk_code)]
+      } else {
+        stop("Only use CBS buurt/wijk codes (BU..., WK...)")
+      }
+      
+    },
+    
+    #' @description Add wijk, gemeente columns to a dataframe with buurt_code_cbs column
+    #' @details Existing geo columns will be overwritten
+    add_geo_columns = function(data){
+      
+      self$assert_geo()
+      
+      if(!"buurt_code_cbs" %in% names(data)){
+        stop("buurt_code_cbs must be a column in data")
+      }
+      
+      geo_cols <- c("buurt_naam","wijk_code_cbs","wijk_naam","gemeente_naam")
+      have_geo_cols <- intersect(names(data), geo_cols)
+      if(length(have_geo_cols)){
+        data <- select(data, -all_of(have_geo_cols))
+      }
+      
+      key <- select(self$geo$buurten,
+                    buurt_code_cbs = bu_code,
+                    buurt_naam = bu_naam,
+                    wijk_code_cbs = wk_code,
+                    wijk_naam = wk_naam,
+                    gemeente_naam = gm_naam)
+      
+      left_join(data, key, by = "buurt_code_cbs")
+                    
+      
+    },
+    
+    
     
     ######################################################################
     # ---------------  UTILITIES --------------------------------------- #
@@ -157,10 +229,17 @@ ApolloEngine <- R6::R6Class(
     
     
     #' @description Get rows of indicators table for a theme
+    #' @details Use this function to find definitions for indicators in a theme.
     get_indicators_theme = function(theme){
     
-      self$indicator %>% 
+      out <- self$indicator %>% 
         filter(grepl(!!theme, theme))  
+      
+      if(nrow(out) == 0){
+        stop(paste("Theme",theme,"not found"))
+      }
+      
+      out
       
     },
 
@@ -187,6 +266,38 @@ ApolloEngine <- R6::R6Class(
       
     },
     
+    #' @description Make a table with indicator (boolean) values
+    #' @param theme One of the themes in the `indicator` table
+    #' @param type One of the [object_type]'s in the `indicator` table
+    #' @param id_columns Columns from the base table (e.g. person) that are copied to the indicator table
+    make_indicator_table = function(theme, 
+                                    type = c("address","person","business"),
+                                    id_columns = c("address_id","buurt_code_cbs")){
+      
+      type <- match.arg(type)
+      
+      def <- self$get_indicators_theme(theme) %>%
+        filter(object_type == !!type)
+      
+      # Selecteer alleen de adres id en buurt code,
+      tab <- self[[type]] %>% select(all_of(!!id_columns))
+      
+      # voeg alle boolean indicators toe
+      i_data <- lapply(def$indicator_name, function(x){
+        self$make_boolean_indicator(data = def, indicator = x)
+      })
+      
+      out <- do.call(cbind, i_data) %>%
+        as_tibble(., .name_repair = "minimal") %>%
+        setNames(def$indicator_name)
+      
+      if(nrow(out) != nrow(tab)){
+        stop("Fatal error 1 in `make_address_indicator_table`")
+      }
+      
+      cbind(tab, out)
+      
+    },
     
     ######################################################
     # -------------- LIST FUNCTIONS -------------------- #
