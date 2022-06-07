@@ -9,8 +9,7 @@ library(DBI)
 library(glue)
 library(futile.logger)
 
-options(config_file = glue("c:/repos/apollo-ondermijning/conf/config.yml")) 
-#source(file.path(here(), "preload/load_packages.R")) 
+options(config_file = glue("conf/config.yml"))
 
 #library(apollor)
 devtools::load_all()
@@ -32,25 +31,25 @@ print('-- testing log functionality --')
 print(.sys$get_log_ping())
 
 print('-- testing favorieten functionality --') 
-.sys$add_favourite(username='apollo_test', oid=1, object_type='persoon')
-.sys$remove_favourite(username='apollo_test', favo=3)
+.sys$add_favorite(username='apollo_test', object_id='1', object_type='person')
+.sys$remove_favorite(username='apollo_test', favorite_id='3')
 
 print('-- testing actielijst functionality --') 
-.sys$create_action(username='apollo_test', actie_naam= 'Olielek A', registratie_id=1, omschrijving='Surveillance zonder resultaat', datum_actie='2022-05-31', status='In behandeling')
+.sys$create_action(username='apollo_test', action_name= 'Olielek A', registration_id='test_1', description='Surveillance zonder resultaat', action_date='2022-05-31', status='In behandeling')
 
-.sys$update_action(action_id = 3, username='apollo_test', actie_naam= 'Olielek A', registratie_id=1, omschrijving='Surveillance met resultaat', datum_actie='2022-06-01', status='Afgehandeld')
+.sys$update_action(action_id = 3, username='apollo_test', action_name= 'Olielek A', registration_id='test_1', description='Surveillance met resultaat', action_date='2022-06-01', status='Afgehandeld')
 
 .sys$archive_action(action_id = 3, username='apollo_test')
  
 print('-- testing list functionality --') 
 d <- .sys$list_actions() 
-e <- .sys$list_favourites()
+e <- .sys$list_favorites()
 
 
 print('-- testing detail functionality --') 
 
 bsn <- 'dTyI6jJgE'
-pi <- .sys$get_persoon_from_bsn(bsn)
+pi <- .sys$get_person_from_id(bsn)
 print(pi)
 aa<-  .sys$get_adress_from_id(pi$adres_id)
 print(aa)
@@ -77,7 +76,7 @@ print("-- testing calculating indicatoren --")
 
 
 
-adres <- .sys$read_adres()
+adres <- .sys$read_adress()
 
 
 

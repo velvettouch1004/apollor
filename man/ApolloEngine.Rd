@@ -13,29 +13,33 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{ApolloEngine$new()}}
+\item \href{#method-to_json}{\code{ApolloEngine$to_json()}}
+\item \href{#method-from_json}{\code{ApolloEngine$from_json()}}
 \item \href{#method-read_signals}{\code{ApolloEngine$read_signals()}}
 \item \href{#method-read_actions}{\code{ApolloEngine$read_actions()}}
 \item \href{#method-read_indicators}{\code{ApolloEngine$read_indicators()}}
-\item \href{#method-read_persoon}{\code{ApolloEngine$read_persoon()}}
-\item \href{#method-read_bedrijf}{\code{ApolloEngine$read_bedrijf()}}
-\item \href{#method-read_adres}{\code{ApolloEngine$read_adres()}}
-\item \href{#method-read_favourites}{\code{ApolloEngine$read_favourites()}}
+\item \href{#method-read_person}{\code{ApolloEngine$read_person()}}
+\item \href{#method-read_business}{\code{ApolloEngine$read_business()}}
+\item \href{#method-read_adress}{\code{ApolloEngine$read_adress()}}
+\item \href{#method-read_favorites}{\code{ApolloEngine$read_favorites()}}
 \item \href{#method-read_log}{\code{ApolloEngine$read_log()}}
-\item \href{#method-read_data_actualiteit}{\code{ApolloEngine$read_data_actualiteit()}}
+\item \href{#method-read_metadata}{\code{ApolloEngine$read_metadata()}}
+\item \href{#method-add_indicator}{\code{ApolloEngine$add_indicator()}}
+\item \href{#method-remove_indicator}{\code{ApolloEngine$remove_indicator()}}
 \item \href{#method-list_actions}{\code{ApolloEngine$list_actions()}}
-\item \href{#method-list_favourites}{\code{ApolloEngine$list_favourites()}}
+\item \href{#method-list_favorites}{\code{ApolloEngine$list_favorites()}}
 \item \href{#method-get_log_ping}{\code{ApolloEngine$get_log_ping()}}
 \item \href{#method-log_user_event}{\code{ApolloEngine$log_user_event()}}
-\item \href{#method-add_favourite}{\code{ApolloEngine$add_favourite()}}
-\item \href{#method-remove_favourite}{\code{ApolloEngine$remove_favourite()}}
+\item \href{#method-add_favorite}{\code{ApolloEngine$add_favorite()}}
+\item \href{#method-remove_favorite}{\code{ApolloEngine$remove_favorite()}}
 \item \href{#method-create_action}{\code{ApolloEngine$create_action()}}
 \item \href{#method-update_action}{\code{ApolloEngine$update_action()}}
 \item \href{#method-archive_action}{\code{ApolloEngine$archive_action()}}
-\item \href{#method-get_person_from_bsn}{\code{ApolloEngine$get_person_from_bsn()}}
+\item \href{#method-get_person_from_id}{\code{ApolloEngine$get_person_from_id()}}
 \item \href{#method-get_tags_for_person}{\code{ApolloEngine$get_tags_for_person()}}
 \item \href{#method-get_adress_from_id}{\code{ApolloEngine$get_adress_from_id()}}
-\item \href{#method-get_adres_details}{\code{ApolloEngine$get_adres_details()}}
-\item \href{#method-get_bedrijf_details}{\code{ApolloEngine$get_bedrijf_details()}}
+\item \href{#method-get_adress_details}{\code{ApolloEngine$get_adress_details()}}
+\item \href{#method-get_business_details}{\code{ApolloEngine$get_business_details()}}
 \item \href{#method-clone}{\code{ApolloEngine$clone()}}
 }
 }
@@ -66,7 +70,30 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$new(gemeente, schema, pool, config_file = "conf/config.yml")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$new(
+  gemeente,
+  schema,
+  pool,
+  config_file = getOption("config_file", "conf/config.yml")
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-to_json"></a>}}
+\if{latex}{\out{\hypertarget{method-to_json}{}}}
+\subsection{Method \code{to_json()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$to_json(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-from_json"></a>}}
+\if{latex}{\out{\hypertarget{method-from_json}{}}}
+\subsection{Method \code{from_json()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$from_json(x)}\if{html}{\out{</div>}}
 }
 
 }
@@ -98,38 +125,38 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_persoon"></a>}}
-\if{latex}{\out{\hypertarget{method-read_persoon}{}}}
-\subsection{Method \code{read_persoon()}}{
+\if{html}{\out{<a id="method-read_person"></a>}}
+\if{latex}{\out{\hypertarget{method-read_person}{}}}
+\subsection{Method \code{read_person()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_persoon()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_person()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_bedrijf"></a>}}
-\if{latex}{\out{\hypertarget{method-read_bedrijf}{}}}
-\subsection{Method \code{read_bedrijf()}}{
+\if{html}{\out{<a id="method-read_business"></a>}}
+\if{latex}{\out{\hypertarget{method-read_business}{}}}
+\subsection{Method \code{read_business()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_bedrijf()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_business()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_adres"></a>}}
-\if{latex}{\out{\hypertarget{method-read_adres}{}}}
-\subsection{Method \code{read_adres()}}{
+\if{html}{\out{<a id="method-read_adress"></a>}}
+\if{latex}{\out{\hypertarget{method-read_adress}{}}}
+\subsection{Method \code{read_adress()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_adres()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_adress()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_favourites"></a>}}
-\if{latex}{\out{\hypertarget{method-read_favourites}{}}}
-\subsection{Method \code{read_favourites()}}{
+\if{html}{\out{<a id="method-read_favorites"></a>}}
+\if{latex}{\out{\hypertarget{method-read_favorites}{}}}
+\subsection{Method \code{read_favorites()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_favourites()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_favorites()}\if{html}{\out{</div>}}
 }
 
 }
@@ -143,11 +170,60 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_data_actualiteit"></a>}}
-\if{latex}{\out{\hypertarget{method-read_data_actualiteit}{}}}
-\subsection{Method \code{read_data_actualiteit()}}{
+\if{html}{\out{<a id="method-read_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-read_metadata}{}}}
+\subsection{Method \code{read_metadata()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_data_actualiteit()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_metadata()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-add_indicator"></a>}}
+\if{latex}{\out{\hypertarget{method-add_indicator}{}}}
+\subsection{Method \code{add_indicator()}}{
+Adds an indicator's metadata to the 'indicator' table
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$add_indicator(
+  indicator_name,
+  type = c("adress", "person"),
+  label,
+  description,
+  creator,
+  theme,
+  columns,
+  weight,
+  threshold
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{type}}{Indicator type - refers to the table that has this column_name}
+
+\item{\code{label}}{Short label for the indicator}
+
+\item{\code{description}}{Long-form text explaining the indicator}
+
+\item{\code{creator}}{Who are you?}
+
+\item{\code{theme}}{Which theme(s) is the indicator used in? e.g. c("mensenhandel","drugs")}
+
+\item{\code{columns}}{}
+
+\item{\code{column_name}}{Name of the column (indicator)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-remove_indicator"></a>}}
+\if{latex}{\out{\hypertarget{method-remove_indicator}{}}}
+\subsection{Method \code{remove_indicator()}}{
+Remove an indicator's metadata from the 'indicator' table0
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$remove_indicator(indicator_name)}\if{html}{\out{</div>}}
 }
 
 }
@@ -161,11 +237,11 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-list_favourites"></a>}}
-\if{latex}{\out{\hypertarget{method-list_favourites}{}}}
-\subsection{Method \code{list_favourites()}}{
+\if{html}{\out{<a id="method-list_favorites"></a>}}
+\if{latex}{\out{\hypertarget{method-list_favorites}{}}}
+\subsection{Method \code{list_favorites()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$list_favourites(user = NULL, update = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$list_favorites(user = NULL, update = FALSE)}\if{html}{\out{</div>}}
 }
 
 }
@@ -188,20 +264,20 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_favourite"></a>}}
-\if{latex}{\out{\hypertarget{method-add_favourite}{}}}
-\subsection{Method \code{add_favourite()}}{
+\if{html}{\out{<a id="method-add_favorite"></a>}}
+\if{latex}{\out{\hypertarget{method-add_favorite}{}}}
+\subsection{Method \code{add_favorite()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$add_favourite(username, oid, object_type)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$add_favorite(username, object_id, object_type)}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-remove_favourite"></a>}}
-\if{latex}{\out{\hypertarget{method-remove_favourite}{}}}
-\subsection{Method \code{remove_favourite()}}{
+\if{html}{\out{<a id="method-remove_favorite"></a>}}
+\if{latex}{\out{\hypertarget{method-remove_favorite}{}}}
+\subsection{Method \code{remove_favorite()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$remove_favourite(username, favo_id)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$remove_favorite(username, favorite_id)}\if{html}{\out{</div>}}
 }
 
 }
@@ -211,11 +287,11 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \subsection{Method \code{create_action()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_action(
-  registratie_id,
+  registration_id,
   username,
-  actie_naam,
-  datum_actie,
-  omschrijving,
+  action_name,
+  action_date,
+  description,
   status
 )}\if{html}{\out{</div>}}
 }
@@ -228,11 +304,11 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$update_action(
   action_id,
-  actie_naam,
-  registratie_id,
+  action_name,
+  registration_id,
   username,
-  datum_actie,
-  omschrijving,
+  action_date,
+  description,
   status
 )}\if{html}{\out{</div>}}
 }
@@ -243,16 +319,16 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \if{latex}{\out{\hypertarget{method-archive_action}{}}}
 \subsection{Method \code{archive_action()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_action(action_id, username, actie_naam = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_action(action_id, username, action_name = NULL)}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_person_from_bsn"></a>}}
-\if{latex}{\out{\hypertarget{method-get_person_from_bsn}{}}}
-\subsection{Method \code{get_person_from_bsn()}}{
+\if{html}{\out{<a id="method-get_person_from_id"></a>}}
+\if{latex}{\out{\hypertarget{method-get_person_from_id}{}}}
+\subsection{Method \code{get_person_from_id()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_person_from_bsn(bsn)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_person_from_id(person_id)}\if{html}{\out{</div>}}
 }
 
 }
@@ -270,25 +346,25 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \if{latex}{\out{\hypertarget{method-get_adress_from_id}{}}}
 \subsection{Method \code{get_adress_from_id()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_adress_from_id(adres_id)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_adress_from_id(adress_id)}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_adres_details"></a>}}
-\if{latex}{\out{\hypertarget{method-get_adres_details}{}}}
-\subsection{Method \code{get_adres_details()}}{
+\if{html}{\out{<a id="method-get_adress_details"></a>}}
+\if{latex}{\out{\hypertarget{method-get_adress_details}{}}}
+\subsection{Method \code{get_adress_details()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_adres_details(addreseerbaarobject)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_adress_details(addreseerbaarobject)}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_bedrijf_details"></a>}}
-\if{latex}{\out{\hypertarget{method-get_bedrijf_details}{}}}
-\subsection{Method \code{get_bedrijf_details()}}{
+\if{html}{\out{<a id="method-get_business_details"></a>}}
+\if{latex}{\out{\hypertarget{method-get_business_details}{}}}
+\subsection{Method \code{get_business_details()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_bedrijf_details(kvknummer)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_business_details(kvknummer)}\if{html}{\out{</div>}}
 }
 
 }

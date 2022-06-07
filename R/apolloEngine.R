@@ -3,8 +3,8 @@
 #' @importFrom shintobag shinto_db_connection
 #' @importFrom pool dbPool poolClose
 #' @importFrom R6 R6Class
-#' @importFrom dbplyr in_schema collect
-#' @importFrom dplyr tbl left_join 
+#' @importFrom dbplyr in_schema  
+#' @importFrom dplyr tbl left_join collect
 #' @importFrom plyr join_all 
 #' @importFrom safer encrypt_string decrypt_string
 #' @importFrom jsonlite toJSON fromJSON
@@ -41,8 +41,8 @@ ApolloEngine <- R6::R6Class(
       }
       
       self$person <- self$read_table("person")
-      # self$bedrijf <- self$read_table("bedrijf")
-      # self$adres <- self$read_table("adres")
+      # self$business <- self$read_table("business")
+      # self$adress <- self$read_table("adress")
       
       
     }, 
@@ -116,7 +116,7 @@ ApolloEngine <- R6::R6Class(
     #' @param columns 
     #' @param 
     add_indicator = function(indicator_name, 
-                             type = c("adres","person"), 
+                             type = c("adress","person"), 
                              label,
                              description, 
                              creator, 
@@ -171,26 +171,26 @@ ApolloEngine <- R6::R6Class(
       if(is.null(self$signals)  || update){ 
         self$read_signals()
       }  
-       dplyr::left_join( self$actions, self$signals, by=c('registratie_id' ), suffix = c(".actie", ".signaal"),)
+       dplyr::left_join( self$actions, self$signals, by=c('registration_id' ), suffix = c(".actie", ".signaal"),)
     },
     
-    list_favourites = function(user=NULL, update=FALSE){
-      if(is.null(self$bedrijf)  || update){
-        self$read_bedrijf() 
+    list_favorites = function(user=NULL, update=FALSE){
+      if(is.null(self$business)  || update){
+        self$read_business() 
       } 
-      if(is.null(self$persoon)  || update){ 
-        self$read_persoon()
+      if(is.null(self$person)  || update){ 
+        self$read_person()
       } 
-      if(is.null(self$adres)  || update){ 
-        self$read_adres()
+      if(is.null(self$adress)  || update){ 
+        self$read_adress()
       } 
-      self$read_favourites()
-      A <- dplyr::left_join( dplyr::filter( self$favourites, object_type == 'registratie')  , self$signals, by=c('oid' ='registratie_id'), suffix = c("fav", ".signaal"))
-      B <- dplyr::left_join( dplyr::filter( self$favourites, object_type == 'persoon')  , self$persoon, by=c('oid'='persoon_id'), suffix = c("fav", ".persoon"))
-      C <- dplyr::left_join( dplyr::filter( self$favourites, object_type == 'bedrijf')  , self$bedrijf, by=c('oid'='bedrijf_id'), suffix = c("fav", ".bedrijf"))
-      D <- dplyr::left_join( dplyr::filter( self$favourites, object_type == 'adres')  , self$adres, by=c('oid'='adres_id'), suffix = c("fav", ".adres"))
+      self$read_favorites()
+      A <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'registration')  , self$signals, by=c('object_id' ='registration_id'), suffix = c("fav", ".signaal"))
+      B <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'person')  , self$person, by=c('object_id'='person_id'), suffix = c("fav", ".person"))
+      C <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'business')  , self$business, by=c('object_id'='business_id'), suffix = c("fav", ".business"))
+      D <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'adress')  , self$adress, by=c('object_id'='adress_id'), suffix = c("fav", ".adress"))
        
-      plyr::join_all(list(A,B,C,D), by='favo_id', type='left') 
+      plyr::join_all(list(A,B,C,D), by='favorite_id', type='left') 
     
     },
     ################################################
@@ -207,31 +207,31 @@ ApolloEngine <- R6::R6Class(
     log_user_event = function(username, action){
       
       self$append_data('user_event_log', 
-                       data.frame (user  =  username,
+                       data.frame (username  =  username,
                                    action =  action,
                                    timestamp = Sys.time()))
     },
     ###################################################
-    # -------------- FAVOURITES --------------------- #
+    # -------------- FAVORITES --------------------- #
     ###################################################
-    # add to favourites
-    add_favourite = function(username, oid, object_type){
-      self$log_user_event(username, action=glue("Heeft {object_type} {oid} aan favorieten toegevoegd"))
+    # add to favorites
+    add_favorite = function(username, object_id, object_type){
+      self$log_user_event(username, action=glue("Heeft {object_type} {object_id} aan favorieten toegevoegd"))
       
       try( 
-        self$append_data('favorieten', 
+        self$append_data('favorites', 
                          data.frame (username =  username,
-                                     oid = oid,
+                                     object_id = object_id,
                                      object_type = object_type, 
                                      timestamp = Sys.time()))
       ) 
     },
-    # remove from favourites
-    remove_favourite = function(username, favo_id){
-      self$log_user_event(username, action=glue("Heeft {favo_id} uit favorieten verwijderd"))
+    # remove from favorites
+    remove_favorite = function(username, favorite_id){
+      self$log_user_event(username, action=glue("Heeft {favorite_id} uit favorieten verwijderd"))
       
       try( 
-        self$execute_query(glue("DELETE from {self$schema}.favorieten WHERE favo_id = {favo_id}"))
+        self$execute_query(glue("DELETE from {self$schema}.favorites WHERE favorite_id = {favorite_id}"))
         
       ) 
     },
@@ -242,61 +242,61 @@ ApolloEngine <- R6::R6Class(
     #######################################################
     
     # add actie to actielijst
-    create_action = function(registratie_id, username, actie_naam, datum_actie, omschrijving, status){
-      self$log_user_event(username, action=glue("Heeft actie {actie_naam} aangemaakt"))
+    create_action = function(registration_id, username, action_name, action_date, description, status){
+      self$log_user_event(username, action=glue("Heeft actie {action_name} aangemaakt"))
       
       try( 
-        self$append_data('actielijst', 
-                         data.frame (actie_naam = actie_naam,
-                                     registratie_id  =  registratie_id,
+        self$append_data('actionlist', 
+                         data.frame (action_name = action_name,
+                                     registration_id  =  registration_id,
                                      creator =  username,
-                                     datum_actie = datum_actie,
-                                     omschrijving = omschrijving,
+                                     action_date = action_date,
+                                     description = description,
                                      status = status,
                                      timestamp = Sys.time()))
       ) 
     },
     # update actie in actielijst
-    update_action = function(action_id,actie_naam,  registratie_id, username, datum_actie, omschrijving, status){  
-      self$log_user_event(username, action=glue("Heeft actie {actie_naam} gewijzigd"))
+    update_action = function(action_id,action_name,  registration_id, username, action_date, description, status){  
+      self$log_user_event(username, action=glue("Heeft actie {action_name} gewijzigd"))
       
       try( 
-        self$execute_query(glue("UPDATE {self$schema}.actielijst SET actie_naam = '{actie_naam}', registratie_id = {registratie_id}, creator = '{username}', datum_actie = '{datum_actie}', omschrijving = '{omschrijving}', status = '{status}', timestamp = '{Sys.time()}' WHERE actie_id = {action_id}"))
+        self$execute_query(glue("UPDATE {self$schema}.actionlist SET action_name = '{action_name}', registration_id = '{registration_id}', creator = '{username}', action_date = '{action_date}', description = '{description}', status = '{status}', timestamp = '{Sys.time()}' WHERE action_id = {action_id}"))
       ) 
     },
     # archiveer actie in actielijst
-    archive_action = function(action_id, username, actie_naam=NULL){
+    archive_action = function(action_id, username, action_name=NULL){
       
-      self$log_user_event(username, action=glue("Heeft actie {ifelse(!is.null(actie_naam), actie_naam, action_id)} gearchiveerd"))
+      self$log_user_event(username, action=glue("Heeft actie {ifelse(!is.null(action_name), action_name, action_id)} gearchiveerd"))
       
       try( 
-        self$execute_query(glue("UPDATE {self$schema}.actielijst SET archief = TRUE, timestamp = '{Sys.time()}' WHERE actie_id = {action_id}"))
+        self$execute_query(glue("UPDATE {self$schema}.actionlist SET expired = TRUE, timestamp = '{Sys.time()}' WHERE action_id = {action_id}"))
       ) 
     },
       
     #######################################################
     # ---------------  DETAILPAGINA --------------------- #
     #######################################################
-    # Voor persoon detail pagina
-    get_person_from_bsn = function(bsn){
-      dplyr::filter(self$persoon, bsn==bsn) 
+    # Voor person detail pagina
+    get_person_from_id = function(person_id){
+      dplyr::filter(self$person, (person_id)==(person_id)) 
     },
     get_tags_for_person = function(person_id){
       c('Ondernemerschap', 'Duurzaamheid')
     },
-    get_adress_from_id = function(adres_id){
-      dplyr::filter(self$persoon, adres_id==adres_id) 
+    get_adress_from_id = function(adress_id){
+      dplyr::filter(self$adress, adress_id==adress_id) 
     },
     
     
     
-    # voor adres detail pagina
-    get_adres_details = function(addreseerbaarobject){
+    # voor adress detail pagina
+    get_adress_details = function(addreseerbaarobject){
       
       
     },
-    # voor bedrijf detailpagina
-    get_bedrijf_details = function(kvknummer){
+    # voor business detailpagina
+    get_business_details = function(kvknummer){
       
       
     } 

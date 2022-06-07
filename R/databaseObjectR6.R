@@ -1,7 +1,7 @@
 #' @importFrom R6 R6Class
 #' @importFrom pool dbPool poolClose
-#' @importFrom dbplyr in_schema collect
-#' @importFrom dplyr tbl left_join 
+#' @importFrom dbplyr in_schema  
+#' @importFrom dplyr tbl left_join collect
 databaseObject <- R6::R6Class(
   
   public = list(
