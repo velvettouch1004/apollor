@@ -13,6 +13,9 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{ApolloEngine$new()}}
+\item \href{#method-assert_geo}{\code{ApolloEngine$assert_geo()}}
+\item \href{#method-geo_name_from_code}{\code{ApolloEngine$geo_name_from_code()}}
+\item \href{#method-add_geo_columns}{\code{ApolloEngine$add_geo_columns()}}
 \item \href{#method-to_json}{\code{ApolloEngine$to_json()}}
 \item \href{#method-from_json}{\code{ApolloEngine$from_json()}}
 \item \href{#method-read_signals}{\code{ApolloEngine$read_signals()}}
@@ -28,6 +31,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-remove_indicator}{\code{ApolloEngine$remove_indicator()}}
 \item \href{#method-get_indicators_theme}{\code{ApolloEngine$get_indicators_theme()}}
 \item \href{#method-make_boolean_indicator}{\code{ApolloEngine$make_boolean_indicator()}}
+\item \href{#method-make_indicator_table}{\code{ApolloEngine$make_indicator_table()}}
 \item \href{#method-list_actions}{\code{ApolloEngine$list_actions()}}
 \item \href{#method-list_favorites}{\code{ApolloEngine$list_favorites()}}
 \item \href{#method-get_log_ping}{\code{ApolloEngine$get_log_ping()}}
@@ -76,8 +80,49 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
   gemeente,
   schema,
   pool,
-  config_file = getOption("config_file", "conf/config.yml")
+  config_file = getOption("config_file", "conf/config.yml"),
+  geo_file = NULL
 )}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-assert_geo"></a>}}
+\if{latex}{\out{\hypertarget{method-assert_geo}{}}}
+\subsection{Method \code{assert_geo()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$assert_geo()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-geo_name_from_code"></a>}}
+\if{latex}{\out{\hypertarget{method-geo_name_from_code}{}}}
+\subsection{Method \code{geo_name_from_code()}}{
+Translate buurt or wijk codes into names
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$geo_name_from_code(code)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{code}}{E.g. "WK022801" or "BU02280105"}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-add_geo_columns"></a>}}
+\if{latex}{\out{\hypertarget{method-add_geo_columns}{}}}
+\subsection{Method \code{add_geo_columns()}}{
+Add wijk, gemeente columns to a dataframe with buurt_code_cbs column
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$add_geo_columns(data)}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+Existing geo columns will be overwritten
 }
 
 }
@@ -238,6 +283,10 @@ Get rows of indicators table for a theme
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_indicators_theme(theme)}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+Use this function to find definitions for indicators in a theme.
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-make_boolean_indicator"></a>}}
@@ -254,6 +303,31 @@ Convert raw indicator data to TRUE/FALSE
 \item{\code{data}}{Dataframe subset from \code{indicator} table, read with \verb{$get_indicators_theme}}
 
 \item{\code{indicator}}{Name of the indicator to convert}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-make_indicator_table"></a>}}
+\if{latex}{\out{\hypertarget{method-make_indicator_table}{}}}
+\subsection{Method \code{make_indicator_table()}}{
+Make a table with indicator (boolean) values
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$make_indicator_table(
+  theme,
+  type = c("address", "person", "business"),
+  id_columns = c("address_id", "buurt_code_cbs")
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{theme}}{One of the themes in the \code{indicator} table}
+
+\item{\code{type}}{One of the \link{object_type}'s in the \code{indicator} table}
+
+\item{\code{id_columns}}{Columns from the base table (e.g. person) that are copied to the indicator table}
 }
 \if{html}{\out{</div>}}
 }

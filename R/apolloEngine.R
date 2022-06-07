@@ -311,7 +311,7 @@ ApolloEngine <- R6::R6Class(
         self$read_signals()
       }  
 
-       dplyr::left_join( self$actions, self$signals, by=c('registratie_id' ), suffix = c(".actie", ".signaal"))
+       dplyr::left_join( self$actions, self$signals, by=c('registration_id' ), suffix = c(".actie", ".signaal"))
 
     },
     
