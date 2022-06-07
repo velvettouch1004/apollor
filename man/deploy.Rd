@@ -9,7 +9,7 @@
 \alias{deploy_test}
 \title{Set tenant}
 \usage{
-set_tenant(tenant)
+set_tenant(tenant, path = getwd())
 
 get_tenant()
 

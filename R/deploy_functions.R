@@ -38,8 +38,10 @@ get_current_db_name = function(){
 #' @description Set current tenant ('gemeente') in this_version.yml. Overwrites current this_version.yml!
 #' @export
 #' @rdname deploy
-set_tenant <- function(tenant){
-  yaml::write_yaml(list(gemeente = tenant), "this_version.yml")
+#' @importFrom cli cli_alert_success
+set_tenant <- function(tenant, path = getwd()){
+  cli::cli_alert_success(paste("Apollo - nieuwe tenant:", tenant))
+  yaml::write_yaml(list(gemeente = tenant), file.path(path, "this_version.yml"))
 }
 
 
