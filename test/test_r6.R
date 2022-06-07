@@ -40,12 +40,16 @@ options(config_file = glue("conf/config.yml"))
 #library(apollor)
 devtools::load_all()
 
-.sys <- ApolloEngine$new(gemeente = "Ede", config_file = "test/conf/config.yml",
+.sys <- ApolloEngine$new(tenant = "Ede", 
+                         gemeente = "Ede",
+                         config_file = "test/conf/config.yml",
                          schema = "ede_ondermijning",  
-                         geo_file = "test/geo_Ede.rds", # !!
                          pool = TRUE)
 
 
+
+#
+d <- .sys$get_kvk_vestigingen_branche_jaar(sbi_code = 81221)
 
 
 

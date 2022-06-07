@@ -110,7 +110,8 @@ ApolloEngine <- R6::R6Class(
       self$cbs_con <- shintodb::connect("data_cbs", file = config_file)
       
       # Geo data
-      self$geo <- shintobag::get_geo_from_cache(gemeente, kws=TRUE,kws_jaar=2022)
+      self$geo <- shintobag::get_geo_from_cache(gemeente, kws=TRUE,
+                                                kws_jaar = 2022, file = config_file)
       self$have_geo <- TRUE
       
       # CBS kerncijfers
@@ -279,6 +280,23 @@ ApolloEngine <- R6::R6Class(
         collect
       
     },
+    
+    
+    get_kvk_vestigingen_branche_jaar = function(sbi_code = NULL, gemeente = NULL){
+    
+      if(is.null(sbi_code))return(NULL)
+      
+      qu <- tbl(self$cbs_con, "kvk_n_vestiging_jaar_gemeente") %>%
+        filter(hoofdactiviteit == !!sbi_code)
+      
+      if(!is.null(gemeente)){
+        qu <- filter(qu, gemeentenaam == !!gemeente)
+      }
+      
+      collect(qu)
+      
+    },
+    
     
     street_from_bagid = function(id){
       
