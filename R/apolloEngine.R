@@ -1,12 +1,14 @@
 #' Business logic of the Apollo application
 #' @description An R6 object with methods for use in the Shiny application `apollo`. 
-#' @importsFrom shintobag shinto_db_connection
-#' @importsFrom pool dbPool poolClose
-#' @importsFrom R6 R6Class
-#' @importsFrom dbplyr in_schema collect
-#' @importsFrom dplyr tbl left_join 
-#' @importsFrom plyr join_all 
-#' @importsFrom safer encrypt_string decrypt_string
+#' @importFrom shintobag shinto_db_connection
+#' @importFrom pool dbPool poolClose
+#' @importFrom R6 R6Class
+#' @importFrom dbplyr in_schema collect
+#' @importFrom dplyr tbl left_join 
+#' @importFrom plyr join_all 
+#' @importFrom safer encrypt_string decrypt_string
+#' @importFrom jsonlite toJSON fromJSON
+#' @importFrom tibble tibble
 #' @export
 
 ApolloEngine <- R6::R6Class(
@@ -15,7 +17,7 @@ ApolloEngine <- R6::R6Class(
   lock_objects = FALSE,
   public = list(
     
-    initialize = function(gemeente, schema, pool, config_file = "conf/config.yml"){
+    initialize = function(gemeente, schema, pool, config_file = getOption("config_file","conf/config.yml")){
       
       flog.info("DB Connection", name = "DBR6")
       
@@ -38,12 +40,26 @@ ApolloEngine <- R6::R6Class(
         self$con <- response
       }
       
-      self$persoon <- self$read_table("persoon")
-      self$bedrijf <- self$read_table("bedrijf")
-      self$adres <- self$read_table("adres")
+      self$person <- self$read_table("person")
+      # self$bedrijf <- self$read_table("bedrijf")
+      # self$adres <- self$read_table("adres")
       
       
     }, 
+    
+    ######################################################################
+    # ---------------  UTILITIES --------------------------------------- #
+    ######################################################################
+    
+    to_json = function(x){
+      jsonlite::toJSON(x, auto_unbox = TRUE)
+    },
+    
+    from_json = function(x){
+      jsonlite::fromJSON(x)
+    },
+    
+    
     ######################################################################
     # ---------------  APOLLO SPECIFIC FUNCTIONS ----------------------- #
     ######################################################################
@@ -85,6 +101,65 @@ ApolloEngine <- R6::R6Class(
       self$data_actualiteit
     },
  
+    
+    ######################################################
+    # -------------- INDICATOR FUNCTIONS ----------------#
+    ######################################################
+    
+    #' @description Adds an indicator's metadata to the 'indicator' table
+    #' @param column_name Name of the column (indicator)
+    #' @param type Indicator type - refers to the table that has this column_name
+    #' @param label Short label for the indicator
+    #' @param description Long-form text explaining the indicator
+    #' @param creator Who are you?
+    #' @param theme Which theme(s) is the indicator used in? e.g. c("mensenhandel","drugs")
+    #' @param columns 
+    #' @param 
+    add_indicator = function(indicator_name, 
+                             type = c("adres","person"), 
+                             label,
+                             description, 
+                             creator, 
+                             theme, 
+                             columns, 
+                             weight, 
+                             threshold){
+      
+      type <- match.arg(type)
+      stopifnot(is.numeric(weight))
+      stopifnot(is.numeric(threshold))
+      
+      data <- tibble::tibble(
+        indicator_name = indicator_name,
+        object_type = "type",
+        label = label,
+        description = description,
+        creator = creator,
+        theme = self$to_json(theme),
+        columns = self$to_json(columns),
+        weight = weight,
+        threshold = threshold,
+        timestamp = format(Sys.time())
+      )
+      
+      self$append_data("indicator", data)
+      
+      
+    },
+    
+    #' @description Remove an indicator's metadata from the 'indicator' table0
+    remove_indicator = function(indicator_name){
+      
+      self$delete_rows_where("indicator", "indicator_name", indicator_name)
+      
+    },
+    
+    
+    
+    
+    
+    
+    
     ######################################################
     # -------------- LIST FUNCTIONS -------------------- #
     ######################################################

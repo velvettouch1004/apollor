@@ -9,12 +9,13 @@ library(DBI)
 library(glue)
 library(futile.logger)
 
-options(config_file = glue("../conf/config.yml")) 
+options(config_file = glue("c:/repos/apollo-ondermijning/conf/config.yml")) 
 #source(file.path(here(), "preload/load_packages.R")) 
 
-library(apollor)
+#library(apollor)
+devtools::load_all()
 
-.sys <- ApolloEngine$new(gemeente = "ede", 
+.sys <- ApolloEngine$new(gemeente = "Ede", 
                          schema = "ede_ondermijning",  
                          pool = TRUE)
 
@@ -53,6 +54,28 @@ pi <- .sys$get_persoon_from_bsn(bsn)
 print(pi)
 aa<-  .sys$get_adress_from_id(pi$adres_id)
 print(aa)
- 
+
+
+
+
+print("-- testing calculating indicatoren --")
+
+
+.sys$add_indicator(indicator_name = "test_indicator", 
+                   type = "person", 
+                   label = "Test 1",
+                   description = "Dit is een test indicator, negeer", 
+                   creator = "apollo_test", 
+                   theme = c("mensenhandel","milieu"), 
+                   columns = "", 
+                   weight = 1, 
+                   threshold = 2)
+
+.sys$remove_indicator("test_indicator")
+
 print('done')
+
+
+
+
 
