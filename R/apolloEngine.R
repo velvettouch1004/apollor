@@ -41,8 +41,9 @@ ApolloEngine <- R6::R6Class(
       }
       
       self$person <- self$read_table("person")
-      # self$business <- self$read_table("business")
-      # self$adress <- self$read_table("adress")
+      self$business <- self$read_table("business")
+      self$adress <- self$read_table("adress")
+      self$indicator <- self$read_table("indicator")
       
       
     }, 
@@ -131,7 +132,7 @@ ApolloEngine <- R6::R6Class(
       
       data <- tibble::tibble(
         indicator_name = indicator_name,
-        object_type = "type",
+        object_type = type,
         label = label,
         description = description,
         creator = creator,
@@ -148,16 +149,43 @@ ApolloEngine <- R6::R6Class(
     },
     
     #' @description Remove an indicator's metadata from the 'indicator' table0
-    remove_indicator = function(indicator_name){
+    remove_indicator = function(indicator_name){ 
       
       self$delete_rows_where("indicator", "indicator_name", indicator_name)
       
     },
     
     
+    #' @description Get rows of indicators table for a theme
+    get_indicators_theme = function(theme){
     
+      self$indicator %>% 
+        filter(grepl(!!theme, theme))  
+      
+    },
+
     
-    
+    #' @description Convert raw indicator data to TRUE/FALSE
+    #' @param data Dataframe subset from `indicator` table, read with `$get_indicators_theme`
+    #' @param indicator Name of the indicator to convert
+    make_boolean_indicator = function(data, indicator){
+      
+      def <- filter(data, indicator_name == !!indicator)
+      
+      tab <- .sys[[def$object_type]]
+      if(is.null(tab)){
+        stop("object_type must refer to a dataset loaded in the R6 (adress, person, business)")
+      }
+      
+      values <- tab[[indicator]]
+      if(is.null(values)){
+        stop(paste(indicator, "not found in data - problem with config!"))
+      }
+      
+      # for now, only a simple threshold calculation
+      values >= def$threshold
+      
+    },
     
     
     ######################################################

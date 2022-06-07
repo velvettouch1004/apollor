@@ -8,6 +8,7 @@ library(here)
 library(DBI)
 library(glue)
 library(futile.logger)
+library(dplyr)
 
 options(config_file = glue("conf/config.yml"))
 
@@ -74,14 +75,11 @@ print("-- testing calculating indicatoren --")
 
 
 
+# Convert a raw indicator data column to a vector of TRUE/FALSE
+indic <- .sys$get_indicators_theme("drugs")
 
-
-adres <- .sys$read_adress()
-
-
-
-
-
+make_boolean_indicator(indic, "actief_wmo") %>%
+  table
 
 
 
