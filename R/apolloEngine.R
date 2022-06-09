@@ -295,8 +295,40 @@ ApolloEngine <- R6::R6Class(
         stop("Fatal error 1 in `make_address_indicator_table`")
       }
       
-      cbind(tab, out)
+      out <- cbind(tab, out)
       
+      attr(out, "id_columns") <- id_columns
+      
+      out
+    },
+    
+    
+    #' @description Combine address level and person level indicators
+    #' @details Make an address-level dataset with indicators. The person indicator table
+    #' is summarized so that if at least one person at the address is TRUE for some indicator,
+    #' then the address is TRUE.
+    combine_indicator_tables = function(indi_address, indi_person){
+      
+      # drop extra columns except address_id
+      drop_cols <- setdiff(attr(indi_person, "id_columns"), "address_id")
+      if(length(drop_cols)){
+        indi_person <- select(indi_person, -all_of(drop_cols))
+      }
+      
+      # summarize person indicators to end up with address level indicators
+      # If "any" of the persons on the address is TRUE, the address is TRUE
+      indi_person_dt <- data.table::as.data.table(indi_person)
+      indi_person <- tibble::as_tibble(indi_person_dt[, lapply(.SD, any), by = address_id])
+      # dplyr equivalent: (5x slower!)
+      # indi_person <- group_by(indi_person, address_id) %>%
+      #   summarize_all(any)
+      
+      out <- left_join(indi_address, indi_person, by = "address_id")
+      
+      # Missing address from RHS (person) : should always be FALSE
+      out[is.na(out)] <- FALSE
+      
+      out
     },
     
     ######################################################
