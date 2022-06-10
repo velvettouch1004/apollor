@@ -11,10 +11,8 @@ library(futile.logger)
 
 library(dplyr)
 
-library(data.table)
-
-#options(config_file = glue("conf/config.yml"))
-options(config_file = glue("c:/repos/apollo-ondermijning/conf/config.yml"))
+#options(config_file = glue("c:/repos/apollo-ondermijning/conf/config.yml"))
+options(config_file = glue("conf/config.yml"))
 
 #library(apollor)
 devtools::load_all()
@@ -37,15 +35,15 @@ print('-- testing log functionality --')
 print(.sys$get_log_ping())
 
 print('-- testing favorieten functionality --') 
-.sys$add_favorite(username='apollo_test', object_id='1', object_type='person')
-.sys$remove_favorite(username='apollo_test', favorite_id='3')
+.sys$add_favorite(user_id='apollo_test', object_id='1', object_type='person')
+.sys$remove_favorite(user_id='apollo_test', favorite_id='3')
 
 print('-- testing actielijst functionality --') 
-.sys$create_action(username='apollo_test', action_name= 'Olielek A', registration_id='test_1', description='Surveillance zonder resultaat', action_date='2022-05-31', status='In behandeling')
+.sys$create_action(user_id='apollo_test', action_name= 'Olielek A', registration_id='test_1', description='Surveillance zonder resultaat', action_date='2022-05-31', status='In behandeling')
 
-.sys$update_action(action_id = 3, username='apollo_test', action_name= 'Olielek A', registration_id='test_1', description='Surveillance met resultaat', action_date='2022-06-01', status='Afgehandeld')
+.sys$update_action(action_id = 3, user_id='apollo_test', action_name= 'Olielek A', registration_id='test_1', description='Surveillance met resultaat', action_date='2022-06-01', status='Afgehandeld')
 
-.sys$archive_action(action_id = 3, username='apollo_test')
+.sys$archive_action(action_id = 3, user_id='apollo_test')
  
 print('-- testing list functionality --') 
 d <- .sys$list_actions() 
@@ -57,7 +55,7 @@ print('-- testing detail functionality --')
 bsn <- 'dTyI6jJgE'
 pi <- .sys$get_person_from_id(bsn)
 print(pi)
-aa<-  .sys$get_adress_from_id(pi$adres_id)
+aa<-  .sys$get_address_from_id(pi$address_id)
 print(aa)
 
 
@@ -70,7 +68,7 @@ print("-- testing calculating indicatoren --")
                    type = "person", 
                    label = "Test 1",
                    description = "Dit is een test indicator, negeer", 
-                   creator = "apollo_test", 
+                   user_id = "apollo_test", 
                    theme = c("mensenhandel","milieu"), 
                    columns = "", 
                    weight = 1, 
@@ -83,8 +81,13 @@ print("-- testing calculating indicatoren --")
 # Convert a raw indicator data column to a vector of TRUE/FALSE
 indic <- .sys$get_indicators_theme("drugs")
 
+<<<<<<< HEAD
 .sys$make_boolean_indicator(indic, "actief_wmo") %>%
   table
+=======
+#make_boolean_indicator(indic, "actief_wmo") %>%
+#  table
+>>>>>>> 0208bf75beeb4a54b60257e8ce2b561f3e68d4e9
 
 # Make a table of TRUE/FALSE indicator values for a theme of a type
 dat_ad <- .sys$make_indicator_table("mensenhandel", type = "address")
