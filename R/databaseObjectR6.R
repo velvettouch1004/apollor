@@ -114,12 +114,14 @@ databaseObject <- R6::R6Class(
         flog.info("Not closing an invalid or null connection", name = "DBR6")
       }
     },
+    
     list_tables = function(){
       
       DBI::dbGetQuery(self$con,
                       glue("SELECT table_name FROM information_schema.tables
                    WHERE table_schema='{self$schema}'"))
     },
+    
     have_column = function(table, column){
       
       qu <- glue::glue(
@@ -139,8 +141,6 @@ databaseObject <- R6::R6Class(
       dbExecute(self$con, qu)
       
     },
-    
-    
     
     read_table = function(table, lazy = FALSE){
       
@@ -163,18 +163,18 @@ databaseObject <- R6::R6Class(
       
     },
     
-    read_spatial_table = function(table, extra_sql = ""){
-      
-      flog.info(glue("st_read({table})"), name = "DBR6")
-      
-      try(
-        sf::st_read(self$con, 
-                    query = glue("select * from {self$schema}.{table} {extra_sql}")) %>%
-          sf::st_transform(4326)  
-      )
-      
-    },
-    
+    # read_spatial_table = function(table, extra_sql = ""){
+    #   
+    #   flog.info(glue("st_read({table})"), name = "DBR6")
+    #   
+    #   try(
+    #     sf::st_read(self$con, 
+    #                 query = glue("select * from {self$schema}.{table} {extra_sql}")) %>%
+    #       sf::st_transform(4326)  
+    #   )
+    #   
+    # },
+    # 
     append_data = function(table, data){
       
       
@@ -201,8 +201,6 @@ databaseObject <- R6::R6Class(
       
     },
     
-    
-    
     query = function(txt, glue = TRUE, quiet = FALSE){
       
       if(glue)txt <- glue::glue(txt)
@@ -216,6 +214,7 @@ databaseObject <- R6::R6Class(
       )
       
     },
+    
     execute_query = function(txt, glue = TRUE){
       
       if(glue)txt <- glue::glue(txt)
@@ -227,6 +226,7 @@ databaseObject <- R6::R6Class(
       )
       
     },
+    
     has_value = function(table, column, value){
       
       if(!is.null(self$schema)){

@@ -2,13 +2,16 @@
 
 # Test het system warehouse object.
 testconf <- list(
-  "apollo specific" = F,
-  "logging" = F,
-  "favorites" = F,
-  "actionlist" = F,
-  "list functions" = F,
+  "apollo specific" = T,
+  "logging" = T,
+  "favorites" = T,
+  "actionlist" = T,
+  "list functions" = T,
   "details" = T,
-  "indicators" = F
+  "indicators" = T,
+  "geo"=T,
+  "riskmodel" = T
+  
 )
 
 
@@ -20,10 +23,11 @@ library(here)
 library(DBI)
 library(glue)
 library(futile.logger)
+
 library(dplyr)
 
-options(config_file = glue("conf/config.yml"))
 #options(config_file = glue("c:/repos/apollo-ondermijning/conf/config.yml"))
+options(config_file = glue("conf/config.yml"))
 
 #library(apollor)
 devtools::load_all()
@@ -33,12 +37,12 @@ devtools::load_all()
                          geo_file = "test/geo_Ede.rds", # !!
                          pool = TRUE)
 
-cat("######################################################################\
-# ---------------  APOLLO SPECIFIC FUNCTIONS ----------------------- #\
-######################################################################")
+######################################################################
+# ---------------  APOLLO SPECIFIC FUNCTIONS ----------------------- #
+######################################################################
 if(testconf[["apollo specific"]]){
   a <- .sys$read_signals() 
-  b <- .sys$read_indicators() 
+  b <- .sys$read_indicator() 
   c <- .sys$read_actions()  
 }
 ################################################
@@ -89,54 +93,74 @@ if(testconf[["details"]]){
   aa<-  .sys$get_address_from_id(pi$address_id)
   print(aa)
 }
-
-
-
+ 
 ######################################################
 # -------------- INDICATOR FUNCTIONS ----------------#
 ######################################################
 if(testconf[["indicators"]]){
-  print("-- testing calculating indicatoren --")
-
+  
   # Add indicator to metadata table
   .sys$add_indicator(indicator_name = "test_indicator", 
-                   type = "person", 
-                   label = "Test 1",
-                   description = "Dit is een test indicator, negeer", 
-                   user_id = "apollo_test", 
-                   theme = c("mensenhandel","milieu"), 
-                   columns = "", 
-                   weight = 1, 
-                   threshold = 2)
-
+                     type = "person", 
+                     label = "Test 1",
+                     description = "Dit is een test indicator, negeer", 
+                     user_id = "apollo_test", 
+                     theme = c("mensenhandel","milieu"), 
+                     columns = "", 
+                     weight = 1, 
+                     threshold = 2)
+  
   .sys$remove_indicator("test_indicator")
-
-
-
+  
+  
+  
   # Convert a raw indicator data column to a vector of TRUE/FALSE
   indic <- .sys$get_indicators_theme("drugs")
-
-  #make_boolean_indicator(indic, "actief_wmo") %>%
-  #  table
-
-
+  
+  
+  .sys$make_boolean_indicator(indic, "actief_wmo") %>%
+    table
+  
   # Make a table of TRUE/FALSE indicator values for a theme of a type
-  dat1 <- .sys$make_indicator_table("mensenhandel", type = "address")
-  dat2 <- .sys$make_indicator_table("mensenhandel", type = "person")
+  dat_ad <- .sys$make_indicator_table("mensenhandel", type = "address")
+  dat_pers <- .sys$make_indicator_table("mensenhandel", type = "person", id_columns = "address_id")
+  
+  # Combine indicator tables
+  system.time(
+    dat_all <- .sys$combine_indicator_tables(dat_ad, dat_pers)  
+  )
 
+}
+
+#######################################################
+# ---------------  GEO FUNCTIONALITY ---------------- #
+#######################################################
+
+if(testconf[["geo"]]){
   # buurt codes omzetten
-  .sys$geo_name_from_code(dat1$buurt_code_cbs[1:10])
-
+  .sys$geo_name_from_code(dat_ad$buurt_code_cbs[1:10])
+  
   # alle geo kolommen toevoegen aan een dataframe met buurt_code_cbs
   microbenchmark(
-    dat1_2 = dat1 %>% .sys$add_geo_columns(.)
+    dat_ad_2 = dat_ad %>% .sys$add_geo_columns(.)
   )
 }
 
 
-
-
-print('-- Done --')
+############################################# 
+# -------------- risk model ----------------#
+#############################################   
+if(testconf[["riskmodel"]]){
+  # set a weight
+  .sys$set_indicator_weight("vroegtijdig_schoolverlater", theme = "mensenhandel", weight = 2.1)
+  .sys$read_indicators()
+  
+  
+  # Add 'risk_model' column to the indicator table
+  dat_all <- .sys$calculate_riskmodel(dat_all, "mensenhandel")
+  
+}
+print('done')
 
 
 
