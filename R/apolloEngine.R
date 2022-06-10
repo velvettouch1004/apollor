@@ -372,6 +372,11 @@ ApolloEngine <- R6::R6Class(
     # -------------- LIST FUNCTIONS -------------------- #
     ######################################################
     
+    #' @description Get the active actions ordered by date
+    #' @param
+    get_active_actions= function(){
+      self$actions %>% filter(expired==FALSE) %>% arrange(desc(action_date))
+    },
     list_actions = function(update=FALSE){
       if(is.null(self$actions)  || update){
         self$read_actions() 
@@ -430,7 +435,9 @@ ApolloEngine <- R6::R6Class(
       ) 
     },
     
-    
+    #' @description Log an user action
+    #' @param user_id User that performed action
+    #' @param description The action perfomed
     log_user_event = function(user_id, description){
       
       self$append_data('user_event_log', 
@@ -440,9 +447,14 @@ ApolloEngine <- R6::R6Class(
     },
     
     ###################################################
-    # -------------- FAVORITES --------------------- #
+    # -------------- FAVORITES ---------------------- #
     ###################################################
-    # add to favorites
+    
+    #' @description Add favorite to list
+    #' @details Favorites can be addresses, persons, businesses and registrations
+    #' @param user_id User to add to
+    #' @param object_id Identifier of the object
+    #' @param object_type Type of object (address, person, business or registration)
     add_favorite = function(user_id, object_id, object_type){
       self$log_user_event(user_id, description=glue("Heeft {object_type} {object_id} aan favorieten toegevoegd"))
       
@@ -454,13 +466,15 @@ ApolloEngine <- R6::R6Class(
                                      timestamp = Sys.time()))
       ) 
     },
-    # remove from favorites
+    
+    #' @description Remove from favorites 
+    #' @param user_id User to remove from
+    #' @param favorite_id Identifier of the removable
     remove_favorite = function(user_id, favorite_id){
       self$log_user_event(user_id, description=glue("Heeft {favorite_id} uit favorieten verwijderd"))
       
       try( 
-        self$execute_query(glue("DELETE from {self$schema}.favorites WHERE favorite_id = {favorite_id}"))
-        
+        self$execute_query(glue("DELETE from {self$schema}.favorites WHERE favorite_id = {favorite_id}")) 
       ) 
     },
     
@@ -469,7 +483,14 @@ ApolloEngine <- R6::R6Class(
     # ---------------  ACTIELIJST ----------------------- #
     #######################################################
     
-    # add actie to actielijst
+    
+    #' @description Add action to actionlist
+    #' @param registration_id Signal where the action relates to
+    #' @param user_id User that creates the action
+    #' @param action_name Short title
+    #' @param action_date Date (yyyy-mm-dd) action occurs 
+    #' @param description Content of action 
+    #' @param status Current action status 
     create_action = function(registration_id, user_id, action_name, action_date, description, status){
       self$log_user_event(user_id, description=glue("Heeft actie {action_name} aangemaakt"))
       
@@ -483,16 +504,26 @@ ApolloEngine <- R6::R6Class(
                                      status = status,
                                      timestamp = Sys.time()))
       ) 
-    },
-    # update actie in actielijst
-    update_action = function(action_id,action_name,  registration_id, user_id, action_date, description, status){  
+    }, 
+    #' @description Update action in actionlist
+    #' @param action_name Short title
+    #' @param registration_id Signal where the action relates to
+    #' @param user_id User that updates the action 
+    #' @param action_date Date (yyyy-mm-dd) action occurs 
+    #' @param description Content of action 
+    #' @param status Current action status 
+    update_action = function(action_id, action_name,  registration_id, user_id, action_date, description, status){  
       self$log_user_event(user_id, description=glue("Heeft actie {action_name} gewijzigd"))
       
       try( 
         self$execute_query(glue("UPDATE {self$schema}.actionlist SET action_name = '{action_name}', registration_id = '{registration_id}', user_id = '{user_id}', action_date = '{action_date}', description = '{description}', status = '{status}', timestamp = '{Sys.time()}' WHERE action_id = {action_id}"))
       ) 
     },
-    # archiveer actie in actielijst
+    
+    #' @description Archive action in actionlist
+    #' @param action_id Action to archive
+    #' @param user_id User that archives the action
+    #' @param action_name [optional] Short title 
     archive_action = function(action_id, user_id, action_name=NULL){
       
       self$log_user_event(user_id, description=glue("Heeft actie {ifelse(!is.null(action_name), action_name, action_id)} gearchiveerd"))
@@ -505,29 +536,28 @@ ApolloEngine <- R6::R6Class(
     #######################################################
     # ---------------  DETAILPAGINA --------------------- #
     #######################################################
-    # Voor person detail pagina
-    get_person_from_id = function(person_id){
-      dplyr::filter(self$person, (person_id)==(person_id)) 
+    
+    #' @description Get person details from the identifier
+    #' @param person_id Person's identifier FI: (pseudo)bsn 
+    get_person_from_id = function(person_id){ 
+      self$person[self$person$person_id == person_id, ]
     },
+    
+    #' @description Hardcoded method to simulate tags
+    #' @param person_id Person's identifier FI: (pseudo)bsn 
     get_tags_for_person = function(person_id){
       c('Ondernemerschap', 'Duurzaamheid')
     },
+    
+    #' @description Get address details from the identifier
+    #' @param address_id Address's identifier FI: (pseudo)adresseerbaarobject 
     get_address_from_id = function(address_id){
-      dplyr::filter(self$address, address_id==address_id) 
-    },
+      self$address[self$address$address_id == address_id, ]
+    }, 
+    get_residents = function(address_id){
+      self$person[self$person$address_id == address_id, ]
+    }
     
-    
-    
-    # voor address detail pagina
-    get_address_details = function(addreseerbaarobject){
-      
-      
-    },
-    # voor business detailpagina
-    get_business_details = function(kvknummer){
-      
-      
-    } 
     
   )
 )

@@ -20,7 +20,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-from_json}{\code{ApolloEngine$from_json()}}
 \item \href{#method-read_signals}{\code{ApolloEngine$read_signals()}}
 \item \href{#method-read_actions}{\code{ApolloEngine$read_actions()}}
-\item \href{#method-read_indicators}{\code{ApolloEngine$read_indicators()}}
+\item \href{#method-read_indicator}{\code{ApolloEngine$read_indicator()}}
 \item \href{#method-read_person}{\code{ApolloEngine$read_person()}}
 \item \href{#method-read_business}{\code{ApolloEngine$read_business()}}
 \item \href{#method-read_address}{\code{ApolloEngine$read_address()}}
@@ -30,8 +30,12 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-add_indicator}{\code{ApolloEngine$add_indicator()}}
 \item \href{#method-remove_indicator}{\code{ApolloEngine$remove_indicator()}}
 \item \href{#method-get_indicators_theme}{\code{ApolloEngine$get_indicators_theme()}}
+\item \href{#method-set_indicator_weight}{\code{ApolloEngine$set_indicator_weight()}}
 \item \href{#method-make_boolean_indicator}{\code{ApolloEngine$make_boolean_indicator()}}
 \item \href{#method-make_indicator_table}{\code{ApolloEngine$make_indicator_table()}}
+\item \href{#method-combine_indicator_tables}{\code{ApolloEngine$combine_indicator_tables()}}
+\item \href{#method-calculate_riskmodel}{\code{ApolloEngine$calculate_riskmodel()}}
+\item \href{#method-get_active_actions}{\code{ApolloEngine$get_active_actions()}}
 \item \href{#method-list_actions}{\code{ApolloEngine$list_actions()}}
 \item \href{#method-list_favorites}{\code{ApolloEngine$list_favorites()}}
 \item \href{#method-get_log_ping}{\code{ApolloEngine$get_log_ping()}}
@@ -44,8 +48,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-get_person_from_id}{\code{ApolloEngine$get_person_from_id()}}
 \item \href{#method-get_tags_for_person}{\code{ApolloEngine$get_tags_for_person()}}
 \item \href{#method-get_address_from_id}{\code{ApolloEngine$get_address_from_id()}}
-\item \href{#method-get_address_details}{\code{ApolloEngine$get_address_details()}}
-\item \href{#method-get_business_details}{\code{ApolloEngine$get_business_details()}}
+\item \href{#method-get_residents}{\code{ApolloEngine$get_residents()}}
 \item \href{#method-clone}{\code{ApolloEngine$clone()}}
 }
 }
@@ -62,7 +65,6 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="list_tables">}\href{../../apollor/html/NA.html#method-list_tables}{\code{apollor::NA$list_tables()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="make_column">}\href{../../apollor/html/NA.html#method-make_column}{\code{apollor::NA$make_column()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="query">}\href{../../apollor/html/NA.html#method-query}{\code{apollor::NA$query()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="read_spatial_table">}\href{../../apollor/html/NA.html#method-read_spatial_table}{\code{apollor::NA$read_spatial_table()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="read_table">}\href{../../apollor/html/NA.html#method-read_table}{\code{apollor::NA$read_table()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="replace_value_where">}\href{../../apollor/html/NA.html#method-replace_value_where}{\code{apollor::NA$replace_value_where()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="replace_value_where2">}\href{../../apollor/html/NA.html#method-replace_value_where2}{\code{apollor::NA$replace_value_where2()}}\out{</span>}
@@ -163,11 +165,11 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_indicators"></a>}}
-\if{latex}{\out{\hypertarget{method-read_indicators}{}}}
-\subsection{Method \code{read_indicators()}}{
+\if{html}{\out{<a id="method-read_indicator"></a>}}
+\if{latex}{\out{\hypertarget{method-read_indicator}{}}}
+\subsection{Method \code{read_indicator()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_indicators()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_indicator()}\if{html}{\out{</div>}}
 }
 
 }
@@ -289,6 +291,16 @@ Use this function to find definitions for indicators in a theme.
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_indicator_weight"></a>}}
+\if{latex}{\out{\hypertarget{method-set_indicator_weight}{}}}
+\subsection{Method \code{set_indicator_weight()}}{
+Set the weight (riskmodel) for an indicator in a theme
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$set_indicator_weight(indicator_name, theme, weight)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-make_boolean_indicator"></a>}}
 \if{latex}{\out{\hypertarget{method-make_boolean_indicator}{}}}
 \subsection{Method \code{make_boolean_indicator()}}{
@@ -333,6 +345,60 @@ Make a table with indicator (boolean) values
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-combine_indicator_tables"></a>}}
+\if{latex}{\out{\hypertarget{method-combine_indicator_tables}{}}}
+\subsection{Method \code{combine_indicator_tables()}}{
+Combine address level and person level indicators
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$combine_indicator_tables(indi_address, indi_person)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{indi_address}}{Indicators at address level}
+
+\item{\code{indi_person}}{Indicators at person level}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+Make an address-level dataset with indicators. The person indicator table
+is summarized so that if at least one person at the address is TRUE for some indicator,
+then the address is TRUE. TODO business level indicators
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-calculate_riskmodel"></a>}}
+\if{latex}{\out{\hypertarget{method-calculate_riskmodel}{}}}
+\subsection{Method \code{calculate_riskmodel()}}{
+Calculate riskmodel at address level
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$calculate_riskmodel(data, theme)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data}}{Combined indicator table at address level (made with \code{combine_indicator_tables})}
+
+\item{\code{theme}}{Theme for the indicators; used to get weights from definition table}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_active_actions"></a>}}
+\if{latex}{\out{\hypertarget{method-get_active_actions}{}}}
+\subsection{Method \code{get_active_actions()}}{
+Get the active actions ordered by date
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_active_actions()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-list_actions"></a>}}
 \if{latex}{\out{\hypertarget{method-list_actions}{}}}
 \subsection{Method \code{list_actions()}}{
@@ -363,17 +429,43 @@ Make a table with indicator (boolean) values
 \if{html}{\out{<a id="method-log_user_event"></a>}}
 \if{latex}{\out{\hypertarget{method-log_user_event}{}}}
 \subsection{Method \code{log_user_event()}}{
+Log an user action
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$log_user_event(user_id, description)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{user_id}}{User that performed action}
+
+\item{\code{description}}{The action perfomed}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-add_favorite"></a>}}
 \if{latex}{\out{\hypertarget{method-add_favorite}{}}}
 \subsection{Method \code{add_favorite()}}{
+Add favorite to list
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$add_favorite(user_id, object_id, object_type)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{user_id}}{User to add to}
+
+\item{\code{object_id}}{Identifier of the object}
+
+\item{\code{object_type}}{Type of object (address, person, business or registration)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+Favorites can be addresses, persons, businesses and registrations
 }
 
 }
@@ -381,15 +473,26 @@ Make a table with indicator (boolean) values
 \if{html}{\out{<a id="method-remove_favorite"></a>}}
 \if{latex}{\out{\hypertarget{method-remove_favorite}{}}}
 \subsection{Method \code{remove_favorite()}}{
+Remove from favorites
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$remove_favorite(user_id, favorite_id)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{user_id}}{User to remove from}
+
+\item{\code{favorite_id}}{Identifier of the removable}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-create_action"></a>}}
 \if{latex}{\out{\hypertarget{method-create_action}{}}}
 \subsection{Method \code{create_action()}}{
+Add action to actionlist
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_action(
   registration_id,
@@ -401,11 +504,29 @@ Make a table with indicator (boolean) values
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{registration_id}}{Signal where the action relates to}
+
+\item{\code{user_id}}{User that creates the action}
+
+\item{\code{action_name}}{Short title}
+
+\item{\code{action_date}}{Date (yyyy-mm-dd) action occurs}
+
+\item{\code{description}}{Content of action}
+
+\item{\code{status}}{Current action status}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-update_action"></a>}}
 \if{latex}{\out{\hypertarget{method-update_action}{}}}
 \subsection{Method \code{update_action()}}{
+Update action in actionlist
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$update_action(
   action_id,
@@ -418,58 +539,102 @@ Make a table with indicator (boolean) values
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{action_name}}{Short title}
+
+\item{\code{registration_id}}{Signal where the action relates to}
+
+\item{\code{user_id}}{User that updates the action}
+
+\item{\code{action_date}}{Date (yyyy-mm-dd) action occurs}
+
+\item{\code{description}}{Content of action}
+
+\item{\code{status}}{Current action status}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-archive_action"></a>}}
 \if{latex}{\out{\hypertarget{method-archive_action}{}}}
 \subsection{Method \code{archive_action()}}{
+Archive action in actionlist
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_action(action_id, user_id, action_name = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{action_id}}{Action to archive}
+
+\item{\code{user_id}}{User that archives the action}
+
+\item{\code{action_name}}{\link{optional} Short title}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_person_from_id"></a>}}
 \if{latex}{\out{\hypertarget{method-get_person_from_id}{}}}
 \subsection{Method \code{get_person_from_id()}}{
+Get person details from the identifier
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_person_from_id(person_id)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{person_id}}{Person's identifier FI: (pseudo)bsn}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_tags_for_person"></a>}}
 \if{latex}{\out{\hypertarget{method-get_tags_for_person}{}}}
 \subsection{Method \code{get_tags_for_person()}}{
+Hardcoded method to simulate tags
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_tags_for_person(person_id)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{person_id}}{Person's identifier FI: (pseudo)bsn}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_address_from_id"></a>}}
 \if{latex}{\out{\hypertarget{method-get_address_from_id}{}}}
 \subsection{Method \code{get_address_from_id()}}{
+Get address details from the identifier
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_address_from_id(address_id)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{address_id}}{Address's identifier FI: (pseudo)adresseerbaarobject}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_address_details"></a>}}
-\if{latex}{\out{\hypertarget{method-get_address_details}{}}}
-\subsection{Method \code{get_address_details()}}{
+\if{html}{\out{<a id="method-get_residents"></a>}}
+\if{latex}{\out{\hypertarget{method-get_residents}{}}}
+\subsection{Method \code{get_residents()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_address_details(addreseerbaarobject)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_business_details"></a>}}
-\if{latex}{\out{\hypertarget{method-get_business_details}{}}}
-\subsection{Method \code{get_business_details()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_business_details(kvknummer)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_residents(address_id)}\if{html}{\out{</div>}}
 }
 
 }
