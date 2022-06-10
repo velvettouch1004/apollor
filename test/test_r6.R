@@ -81,13 +81,9 @@ print("-- testing calculating indicatoren --")
 # Convert a raw indicator data column to a vector of TRUE/FALSE
 indic <- .sys$get_indicators_theme("drugs")
 
-<<<<<<< HEAD
+
 .sys$make_boolean_indicator(indic, "actief_wmo") %>%
   table
-=======
-#make_boolean_indicator(indic, "actief_wmo") %>%
-#  table
->>>>>>> 0208bf75beeb4a54b60257e8ce2b561f3e68d4e9
 
 # Make a table of TRUE/FALSE indicator values for a theme of a type
 dat_ad <- .sys$make_indicator_table("mensenhandel", type = "address")
