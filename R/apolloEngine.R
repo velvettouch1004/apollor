@@ -536,5 +536,10 @@ ApolloEngine <- R6::R6Class(
     get_address_from_id = function(address_id){
       self$address[self$address$address_id == address_id, ]
     }, 
+    get_residents = function(address_id){
+      self$person[self$person$adress_id == address_id, ]
+    }
+    
+    
   )
 )

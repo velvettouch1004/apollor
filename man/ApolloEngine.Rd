@@ -48,8 +48,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-get_person_from_id}{\code{ApolloEngine$get_person_from_id()}}
 \item \href{#method-get_tags_for_person}{\code{ApolloEngine$get_tags_for_person()}}
 \item \href{#method-get_address_from_id}{\code{ApolloEngine$get_address_from_id()}}
-\item \href{#method-get_address_details}{\code{ApolloEngine$get_address_details()}}
-\item \href{#method-get_business_details}{\code{ApolloEngine$get_business_details()}}
+\item \href{#method-get_residents}{\code{ApolloEngine$get_residents()}}
 \item \href{#method-clone}{\code{ApolloEngine$clone()}}
 }
 }
@@ -393,6 +392,7 @@ Calculate riskmodel at address level
 \if{html}{\out{<a id="method-get_active_actions"></a>}}
 \if{latex}{\out{\hypertarget{method-get_active_actions}{}}}
 \subsection{Method \code{get_active_actions()}}{
+Get the active actions ordered by date
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_active_actions()}\if{html}{\out{</div>}}
 }
@@ -429,17 +429,43 @@ Calculate riskmodel at address level
 \if{html}{\out{<a id="method-log_user_event"></a>}}
 \if{latex}{\out{\hypertarget{method-log_user_event}{}}}
 \subsection{Method \code{log_user_event()}}{
+Log an user action
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$log_user_event(user_id, description)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{user_id}}{User that performed action}
+
+\item{\code{description}}{The action perfomed}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-add_favorite"></a>}}
 \if{latex}{\out{\hypertarget{method-add_favorite}{}}}
 \subsection{Method \code{add_favorite()}}{
+Add favorite to list
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$add_favorite(user_id, object_id, object_type)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{user_id}}{User to add to}
+
+\item{\code{object_id}}{Identifier of the object}
+
+\item{\code{object_type}}{Type of object (address, person, business or registration)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+Favorites can be addresses, persons, businesses and registrations
 }
 
 }
@@ -447,15 +473,26 @@ Calculate riskmodel at address level
 \if{html}{\out{<a id="method-remove_favorite"></a>}}
 \if{latex}{\out{\hypertarget{method-remove_favorite}{}}}
 \subsection{Method \code{remove_favorite()}}{
+Remove from favorites
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$remove_favorite(user_id, favorite_id)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{user_id}}{User to remove from}
+
+\item{\code{favorite_id}}{Identifier of the removable}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-create_action"></a>}}
 \if{latex}{\out{\hypertarget{method-create_action}{}}}
 \subsection{Method \code{create_action()}}{
+Add action to actionlist
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_action(
   registration_id,
@@ -467,11 +504,29 @@ Calculate riskmodel at address level
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{registration_id}}{Signal where the action relates to}
+
+\item{\code{user_id}}{User that creates the action}
+
+\item{\code{action_name}}{Short title}
+
+\item{\code{action_date}}{Date (yyyy-mm-dd) action occurs}
+
+\item{\code{description}}{Content of action}
+
+\item{\code{status}}{Current action status}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-update_action"></a>}}
 \if{latex}{\out{\hypertarget{method-update_action}{}}}
 \subsection{Method \code{update_action()}}{
+Update action in actionlist
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$update_action(
   action_id,
@@ -484,58 +539,102 @@ Calculate riskmodel at address level
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{action_name}}{Short title}
+
+\item{\code{registration_id}}{Signal where the action relates to}
+
+\item{\code{user_id}}{User that updates the action}
+
+\item{\code{action_date}}{Date (yyyy-mm-dd) action occurs}
+
+\item{\code{description}}{Content of action}
+
+\item{\code{status}}{Current action status}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-archive_action"></a>}}
 \if{latex}{\out{\hypertarget{method-archive_action}{}}}
 \subsection{Method \code{archive_action()}}{
+Archive action in actionlist
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_action(action_id, user_id, action_name = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{action_id}}{Action to archive}
+
+\item{\code{user_id}}{User that archives the action}
+
+\item{\code{action_name}}{\link{optional} Short title}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_person_from_id"></a>}}
 \if{latex}{\out{\hypertarget{method-get_person_from_id}{}}}
 \subsection{Method \code{get_person_from_id()}}{
+Get person details from the identifier
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_person_from_id(person_id)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{person_id}}{Person's identifier FI: (pseudo)bsn}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_tags_for_person"></a>}}
 \if{latex}{\out{\hypertarget{method-get_tags_for_person}{}}}
 \subsection{Method \code{get_tags_for_person()}}{
+Hardcoded method to simulate tags
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_tags_for_person(person_id)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{person_id}}{Person's identifier FI: (pseudo)bsn}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_address_from_id"></a>}}
 \if{latex}{\out{\hypertarget{method-get_address_from_id}{}}}
 \subsection{Method \code{get_address_from_id()}}{
+Get address details from the identifier
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_address_from_id(address_id)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{address_id}}{Address's identifier FI: (pseudo)adresseerbaarobject}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_address_details"></a>}}
-\if{latex}{\out{\hypertarget{method-get_address_details}{}}}
-\subsection{Method \code{get_address_details()}}{
+\if{html}{\out{<a id="method-get_residents"></a>}}
+\if{latex}{\out{\hypertarget{method-get_residents}{}}}
+\subsection{Method \code{get_residents()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_address_details(addreseerbaarobject)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_business_details"></a>}}
-\if{latex}{\out{\hypertarget{method-get_business_details}{}}}
-\subsection{Method \code{get_business_details()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_business_details(kvknummer)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_residents(address_id)}\if{html}{\out{</div>}}
 }
 
 }
