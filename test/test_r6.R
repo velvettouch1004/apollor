@@ -61,6 +61,20 @@ print(aa)
 
 
 
+
+print('-- geo methods --') 
+
+# buurt codes omzetten
+.sys$geo_name_from_code(dat_ad$buurt_code_cbs[1:10])
+
+# alle geo kolommen toevoegen aan een dataframe met buurt_code_cbs
+microbenchmark(
+  dat_ad_2 = dat_ad %>% .sys$add_geo_columns(.)
+)
+
+
+
+
 print("-- testing calculating indicatoren --")
 
 # Add indicator to metadata table
@@ -95,18 +109,15 @@ system.time(
 )
 
 
+#---- risk model
 
-# buurt codes omzetten
-.sys$geo_name_from_code(dat_ad$buurt_code_cbs[1:10])
-
-# alle geo kolommen toevoegen aan een dataframe met buurt_code_cbs
-microbenchmark(
-  dat_ad_2 = dat_ad %>% .sys$add_geo_columns(.)
-)
+# set a weight
+.sys$set_indicator_weight("vroegtijdig_schoolverlater", theme = "mensenhandel", weight = 2.1)
+.sys$read_indicators()
 
 
-# risk model
-head(dat1)
+# Add 'risk_model' column to the indicator table
+dat_all <- .sys$calculate_riskmodel(dat_all, "mensenhandel")
 
 
 print('done')

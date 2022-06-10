@@ -139,39 +139,39 @@ ApolloEngine <- R6::R6Class(
   
     read_signals = function(){
       self$signals <- self$read_table('registrations') 
-      self$signals 
+      invisible(self$signals)
     },
     read_actions = function(){ 
       self$actions <- self$read_table('actionlist') 
-      self$actions
+      invisible(self$actions)
     },
-    read_indicators = function(){ 
-      self$indicators <- self$read_table('indicator') 
-      self$indicators
+    read_indicator = function(){ 
+      self$indicator <- self$read_table('indicator') 
+      invisible(self$indicator)
     },
     read_person = function(){ 
       self$person <- self$read_table('person') 
-      self$person
+      invisible(self$person)
     },
     read_business = function(){ 
       self$business <- self$read_table('business') 
-      self$business
+      invisible(self$business)
     }, 
     read_address = function(){ 
       self$address <- self$read_table('address') 
-      self$address
+      invisible(self$address)
     },
     read_favorites = function(){ 
       self$favorites <- self$read_table('favorites') 
-      self$favorites
+      invisible(self$favorites)
     },
     read_log = function(){ 
       self$user_event_log <- self$read_table('user_event_log') 
-      self$user_event_log
+      invisible(self$user_event_log)
     },
     read_metadata = function(){ 
       self$metadata <- self$read_table('metadata') 
-      self$metadata
+      invisible(self$metadata)
     },
  
     
@@ -242,8 +242,22 @@ ApolloEngine <- R6::R6Class(
       out
       
     },
-
     
+    #' @description Set the weight (riskmodel) for an indicator in a theme
+    set_indicator_weight = function(indicator_name, theme, weight){
+      
+      def <- self$get_indicators_theme(theme)
+      indi_id <- dplyr::filter(def, indicator_name == !!indicator_name) %>% 
+        dplyr::pull(indicator_id)
+      
+      self$replace_value_where(table = "indicator", 
+                               col_replace = "weight", 
+                               val_replace = weight, 
+                               col_compare = "indicator_id", 
+                               val_compare = indi_id)
+      
+    },
+
     #' @description Convert raw indicator data to TRUE/FALSE
     #' @param data Dataframe subset from `indicator` table, read with `$get_indicators_theme`
     #' @param indicator Name of the indicator to convert
@@ -331,6 +345,25 @@ ApolloEngine <- R6::R6Class(
       out[is.na(out)] <- FALSE
       
       out
+    },
+    
+    #' @description Calculate riskmodel at address level
+    #' @param data Combined indicator table at address level (made with `combine_indicator_tables`)
+    #' @param theme Theme for the indicators; used to get weights from definition table
+    calculate_riskmodel = function(data, theme){
+      
+      # Definition for this theme
+      def <- .sys$get_indicators_theme(theme)
+      
+      if(!all(def$indicator_name %in% names(data))){
+        stop("Some indicator definitions not found in data!")
+      }
+      
+      # Matrix multiply ftw
+      m <- as.matrix(data[, def$indicator_name])
+      data$riskmodel <- as.vector(m %*% def$weight)
+      
+      data
     },
     
     
