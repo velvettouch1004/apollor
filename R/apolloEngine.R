@@ -175,6 +175,7 @@ ApolloEngine <- R6::R6Class(
     },
  
     
+    
     ######################################################
     # -------------- INDICATOR FUNCTIONS ----------------#
     ######################################################
@@ -402,6 +403,23 @@ ApolloEngine <- R6::R6Class(
       plyr::join_all(list(A,B,C,D), by='favorite_id', type='left') 
     
     },
+    
+    #' @description Get persons based on person or address_id
+    #' @param address_id Vector of address IDs
+    #' @param person_id Vector of person Ids. Provide either address or person ID, not both!
+    list_persons_by_id = function(address_id = NULL, person_id = NULL){
+      
+      if(!is.null(person_id)){
+        dplyr::filter(self$person, 
+                      person_id %in% !!person_id) 
+      } else {
+        dplyr::filter(self$person, 
+                      address_id %in% !!address_id)
+      }
+      
+      
+    },
+    
     ################################################
     # -------------- LOGGING --------------------- #
     ################################################  
