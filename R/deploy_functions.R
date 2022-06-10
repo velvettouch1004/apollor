@@ -81,7 +81,7 @@ open_config_site <- function(){
 #' @export
 #' @rdname deploy
 #' @importFrom shintoshiny make_deploy_project
-deploy <- function(tenant = NULL){
+deploy <- function(tenant = NULL, test = FALSE){
   
   # If 'gemeente' specified, ignore this_version,
   # and set tenant correctly in the deploy project
@@ -101,6 +101,8 @@ deploy <- function(tenant = NULL){
   
   appname <- make_app_name(tenant)
   
+  if(test)appname <- paste0(appname, "_test")
+  
   dirs <- c("conf","modules","R","www","preload",
             file.path("data_public",tenant),
             file.path("data",tenant),
@@ -108,7 +110,17 @@ deploy <- function(tenant = NULL){
   
   shintoshiny::make_deploy_project(appname, 
                                    directories = dirs,
-                                   extra_files = "config_site/help.yml")
+                                   extra_files = c("config_site/help.yml",
+                                                   "config_site/kvk_risico_branches.csv"))
   
 }
+
+
+#' @rdname deploy
+#' @export
+deploy_test <- function(...){
+  deploy(..., test = TRUE)
+}
+
+
 

@@ -6,6 +6,7 @@
 \alias{get_tenant_choices}
 \alias{open_config_site}
 \alias{deploy}
+\alias{deploy_test}
 \title{Set tenant}
 \usage{
 set_tenant(tenant)
@@ -16,7 +17,9 @@ get_tenant_choices(path = getwd())
 
 open_config_site()
 
-deploy(tenant = NULL)
+deploy(tenant = NULL, test = FALSE)
+
+deploy_test(...)
 }
 \arguments{
 \item{tenant}{If not provided, reads 'gemeente' from this_version}
