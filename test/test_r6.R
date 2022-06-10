@@ -8,7 +8,10 @@ library(here)
 library(DBI)
 library(glue)
 library(futile.logger)
+
 library(dplyr)
+
+library(data.table)
 
 #options(config_file = glue("conf/config.yml"))
 options(config_file = glue("c:/repos/apollo-ondermijning/conf/config.yml"))
@@ -80,27 +83,31 @@ print("-- testing calculating indicatoren --")
 # Convert a raw indicator data column to a vector of TRUE/FALSE
 indic <- .sys$get_indicators_theme("drugs")
 
-make_boolean_indicator(indic, "actief_wmo") %>%
+.sys$make_boolean_indicator(indic, "actief_wmo") %>%
   table
 
-
-
 # Make a table of TRUE/FALSE indicator values for a theme of a type
-dat1 <- .sys$make_indicator_table("mensenhandel", type = "address")
-dat2 <- .sys$make_indicator_table("mensenhandel", type = "person")
+dat_ad <- .sys$make_indicator_table("mensenhandel", type = "address")
+dat_pers <- .sys$make_indicator_table("mensenhandel", type = "person", id_columns = "address_id")
 
-
-
-# buurt codes omzetten
-.sys$geo_name_from_code(dat1$buurt_code_cbs[1:10])
-
-# alle geo kolommen toevoegen aan een dataframe met buurt_code_cbs
-microbenchmark(
-  dat1_2 = dat1 %>% .sys$add_geo_columns(.)
+# Combine indicator tables
+system.time(
+  dat_all <- .sys$combine_indicator_tables(dat_ad, dat_pers)  
 )
 
 
 
+# buurt codes omzetten
+.sys$geo_name_from_code(dat_ad$buurt_code_cbs[1:10])
+
+# alle geo kolommen toevoegen aan een dataframe met buurt_code_cbs
+microbenchmark(
+  dat_ad_2 = dat_ad %>% .sys$add_geo_columns(.)
+)
+
+
+# risk model
+head(dat1)
 
 
 print('done')

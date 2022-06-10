@@ -306,8 +306,13 @@ ApolloEngine <- R6::R6Class(
     #' @description Combine address level and person level indicators
     #' @details Make an address-level dataset with indicators. The person indicator table
     #' is summarized so that if at least one person at the address is TRUE for some indicator,
-    #' then the address is TRUE.
+    #' then the address is TRUE. TODO business level indicators
+    #' @param indi_address Indicators at address level
+    #' @param indi_person Indicators at person level
     combine_indicator_tables = function(indi_address, indi_person){
+      
+      # Make person indicators into address-based indicators.
+      # If one or more person = TRUE, address = TRUE.
       
       # drop extra columns except address_id
       drop_cols <- setdiff(attr(indi_person, "id_columns"), "address_id")
@@ -317,11 +322,8 @@ ApolloEngine <- R6::R6Class(
       
       # summarize person indicators to end up with address level indicators
       # If "any" of the persons on the address is TRUE, the address is TRUE
-      indi_person_dt <- data.table::as.data.table(indi_person)
-      indi_person <- tibble::as_tibble(indi_person_dt[, lapply(.SD, any), by = address_id])
-      # dplyr equivalent: (5x slower!)
-      # indi_person <- group_by(indi_person, address_id) %>%
-      #   summarize_all(any)
+      indi_person <- group_by(indi_person, address_id) %>%
+        summarize(across(everything(), any))
       
       out <- left_join(indi_address, indi_person, by = "address_id")
       
@@ -330,6 +332,7 @@ ApolloEngine <- R6::R6Class(
       
       out
     },
+    
     
     ######################################################
     # -------------- LIST FUNCTIONS -------------------- #
@@ -384,6 +387,7 @@ ApolloEngine <- R6::R6Class(
                                    description =  description,
                                    timestamp = Sys.time()))
     },
+    
     ###################################################
     # -------------- FAVORITES --------------------- #
     ###################################################
