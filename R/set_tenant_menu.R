@@ -33,8 +33,14 @@ set_tenant_menu <- function(){
     })
 
     observe({
+      
+      tens <- get_tenant_choices()
+      labs <- label_tenant(tens)
+      chc <- setNames(tens, glue::glue("{tens} ({labs})"))
+      chc <- chc[order(tens)]
+      
       updateSelectInput(session, "sel_klant",
-                         choices = sort(get_tenant_choices()),
+                         choices = chc,
                          selected = get_tenant())
     })
 

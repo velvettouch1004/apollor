@@ -6,13 +6,15 @@
 \usage{
 deploy_now(
   tenant,
-  appname,
-  where = c("devapp.shintolabs.net", "app.shintolabs.net"),
+  appname = NULL,
+  where = "development",
   appid = NULL,
+  appid_from_tenant_list = TRUE,
+  test = FALSE,
   db_config_file = "conf/config.yml",
   log_deployment = TRUE,
-  launch_browser = TRUE,
-  deploy_location = tempdir(),
+  launch_browser = FALSE,
+  deploy_location = NULL,
   delete_after_deploy = TRUE,
   ...
 )
@@ -20,12 +22,17 @@ deploy_now(
 \arguments{
 \item{tenant}{Tenant name (e.g. 'DEMO')}
 
-\item{appname}{Name of app on posit connect (e.g. ')}
+\item{appname}{Name of app on posit connect - if NULL (the default), read from tenant_list.yml}
 
 \item{where}{The server to deploy to (devapp or app)}
 
 \item{appid}{Optional: the app ID (looks like a uuid in the url at posit connect). Needed if you
 are a collaborator on an app and want to update it (the original uploader does not need the ID)}
+
+\item{appid_from_tenant_list}{If TRUE (the default) and appid is NULL (also default), reads appid from the tenant
+list if the deployment is to the production environment}
+
+\item{test}{If TRUE, deploys to appname with suffix "_test", ignores appid}
 
 \item{db_config_file}{Standard location of the DB config file}
 
