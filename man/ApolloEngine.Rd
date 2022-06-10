@@ -32,6 +32,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-get_indicators_theme}{\code{ApolloEngine$get_indicators_theme()}}
 \item \href{#method-make_boolean_indicator}{\code{ApolloEngine$make_boolean_indicator()}}
 \item \href{#method-make_indicator_table}{\code{ApolloEngine$make_indicator_table()}}
+\item \href{#method-get_active_actions}{\code{ApolloEngine$get_active_actions()}}
 \item \href{#method-list_actions}{\code{ApolloEngine$list_actions()}}
 \item \href{#method-list_favorites}{\code{ApolloEngine$list_favorites()}}
 \item \href{#method-get_log_ping}{\code{ApolloEngine$get_log_ping()}}
@@ -331,6 +332,15 @@ Make a table with indicator (boolean) values
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_active_actions"></a>}}
+\if{latex}{\out{\hypertarget{method-get_active_actions}{}}}
+\subsection{Method \code{get_active_actions()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_active_actions()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-list_actions"></a>}}

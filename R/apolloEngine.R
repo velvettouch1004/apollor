@@ -302,7 +302,9 @@ ApolloEngine <- R6::R6Class(
     ######################################################
     # -------------- LIST FUNCTIONS -------------------- #
     ######################################################
-    
+    get_active_actions= function(){
+      self$actions %>% filter(expired==FALSE) %>% arrange(desc(action_date))
+    },
     list_actions = function(update=FALSE){
       if(is.null(self$actions)  || update){
         self$read_actions() 
@@ -353,7 +355,7 @@ ApolloEngine <- R6::R6Class(
                                    timestamp = Sys.time()))
     },
     ###################################################
-    # -------------- FAVORITES --------------------- #
+    # -------------- FAVORITES ---------------------- #
     ###################################################
     # add to favorites
     add_favorite = function(user_id, object_id, object_type){
@@ -419,14 +421,14 @@ ApolloEngine <- R6::R6Class(
     # ---------------  DETAILPAGINA --------------------- #
     #######################################################
     # Voor person detail pagina
-    get_person_from_id = function(person_id){
-      dplyr::filter(self$person, (person_id)==(person_id)) 
+    get_person_from_id = function(person_id){ 
+      self$person[self$person$person_id == person_id, ]
     },
     get_tags_for_person = function(person_id){
       c('Ondernemerschap', 'Duurzaamheid')
     },
     get_address_from_id = function(address_id){
-      dplyr::filter(self$address, address_id==address_id) 
+      self$address[self$address$address_id == address_id, ]
     },
     
     
