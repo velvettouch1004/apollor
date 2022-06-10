@@ -265,7 +265,7 @@ ApolloEngine <- R6::R6Class(
       
       def <- filter(data, indicator_name == !!indicator)
       
-      tab <- .sys[[def$object_type]]
+      tab <- self[[def$object_type]]
       if(is.null(tab)){
         stop("object_type must refer to a dataset loaded in the R6 (address, person, business)")
       }
@@ -295,7 +295,7 @@ ApolloEngine <- R6::R6Class(
       
       # Selecteer alleen de adres id en buurt code,
       tab <- self[[type]] %>% select(all_of(!!id_columns))
-      
+
       # voeg alle boolean indicators toe
       i_data <- lapply(def$indicator_name, function(x){
         self$make_boolean_indicator(data = def, indicator = x)
@@ -353,7 +353,7 @@ ApolloEngine <- R6::R6Class(
     calculate_riskmodel = function(data, theme){
       
       # Definition for this theme
-      def <- .sys$get_indicators_theme(theme)
+      def <- self$get_indicators_theme(theme)
       
       if(!all(def$indicator_name %in% names(data))){
         stop("Some indicator definitions not found in data!")
