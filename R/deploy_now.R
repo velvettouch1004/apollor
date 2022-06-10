@@ -122,6 +122,9 @@ deploy_now <- function(tenant,
   
   file.copy(root_files, deploy_location)
   
+  # extra files not in directories or in root
+  file.copy("config_site/kvk_risico_branches.csv", file.path(deploy_location, "config_site/kvk_risico_branches.csv"))
+  
   cli::cli_alert_success("Copying files to deployment directory - done")
 
   # manifest
