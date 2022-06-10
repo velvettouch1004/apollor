@@ -20,7 +20,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-from_json}{\code{ApolloEngine$from_json()}}
 \item \href{#method-read_signals}{\code{ApolloEngine$read_signals()}}
 \item \href{#method-read_actions}{\code{ApolloEngine$read_actions()}}
-\item \href{#method-read_indicators}{\code{ApolloEngine$read_indicators()}}
+\item \href{#method-read_indicator}{\code{ApolloEngine$read_indicator()}}
 \item \href{#method-read_person}{\code{ApolloEngine$read_person()}}
 \item \href{#method-read_business}{\code{ApolloEngine$read_business()}}
 \item \href{#method-read_address}{\code{ApolloEngine$read_address()}}
@@ -30,8 +30,11 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-add_indicator}{\code{ApolloEngine$add_indicator()}}
 \item \href{#method-remove_indicator}{\code{ApolloEngine$remove_indicator()}}
 \item \href{#method-get_indicators_theme}{\code{ApolloEngine$get_indicators_theme()}}
+\item \href{#method-set_indicator_weight}{\code{ApolloEngine$set_indicator_weight()}}
 \item \href{#method-make_boolean_indicator}{\code{ApolloEngine$make_boolean_indicator()}}
 \item \href{#method-make_indicator_table}{\code{ApolloEngine$make_indicator_table()}}
+\item \href{#method-combine_indicator_tables}{\code{ApolloEngine$combine_indicator_tables()}}
+\item \href{#method-calculate_riskmodel}{\code{ApolloEngine$calculate_riskmodel()}}
 \item \href{#method-get_active_actions}{\code{ApolloEngine$get_active_actions()}}
 \item \href{#method-list_actions}{\code{ApolloEngine$list_actions()}}
 \item \href{#method-list_favorites}{\code{ApolloEngine$list_favorites()}}
@@ -63,7 +66,6 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="list_tables">}\href{../../apollor/html/NA.html#method-list_tables}{\code{apollor::NA$list_tables()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="make_column">}\href{../../apollor/html/NA.html#method-make_column}{\code{apollor::NA$make_column()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="query">}\href{../../apollor/html/NA.html#method-query}{\code{apollor::NA$query()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="read_spatial_table">}\href{../../apollor/html/NA.html#method-read_spatial_table}{\code{apollor::NA$read_spatial_table()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="read_table">}\href{../../apollor/html/NA.html#method-read_table}{\code{apollor::NA$read_table()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="replace_value_where">}\href{../../apollor/html/NA.html#method-replace_value_where}{\code{apollor::NA$replace_value_where()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="replace_value_where2">}\href{../../apollor/html/NA.html#method-replace_value_where2}{\code{apollor::NA$replace_value_where2()}}\out{</span>}
@@ -164,11 +166,11 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_indicators"></a>}}
-\if{latex}{\out{\hypertarget{method-read_indicators}{}}}
-\subsection{Method \code{read_indicators()}}{
+\if{html}{\out{<a id="method-read_indicator"></a>}}
+\if{latex}{\out{\hypertarget{method-read_indicator}{}}}
+\subsection{Method \code{read_indicator()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_indicators()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_indicator()}\if{html}{\out{</div>}}
 }
 
 }
@@ -290,6 +292,16 @@ Use this function to find definitions for indicators in a theme.
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_indicator_weight"></a>}}
+\if{latex}{\out{\hypertarget{method-set_indicator_weight}{}}}
+\subsection{Method \code{set_indicator_weight()}}{
+Set the weight (riskmodel) for an indicator in a theme
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$set_indicator_weight(indicator_name, theme, weight)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-make_boolean_indicator"></a>}}
 \if{latex}{\out{\hypertarget{method-make_boolean_indicator}{}}}
 \subsection{Method \code{make_boolean_indicator()}}{
@@ -329,6 +341,50 @@ Make a table with indicator (boolean) values
 \item{\code{type}}{One of the \link{object_type}'s in the \code{indicator} table}
 
 \item{\code{id_columns}}{Columns from the base table (e.g. person) that are copied to the indicator table}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-combine_indicator_tables"></a>}}
+\if{latex}{\out{\hypertarget{method-combine_indicator_tables}{}}}
+\subsection{Method \code{combine_indicator_tables()}}{
+Combine address level and person level indicators
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$combine_indicator_tables(indi_address, indi_person)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{indi_address}}{Indicators at address level}
+
+\item{\code{indi_person}}{Indicators at person level}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+Make an address-level dataset with indicators. The person indicator table
+is summarized so that if at least one person at the address is TRUE for some indicator,
+then the address is TRUE. TODO business level indicators
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-calculate_riskmodel"></a>}}
+\if{latex}{\out{\hypertarget{method-calculate_riskmodel}{}}}
+\subsection{Method \code{calculate_riskmodel()}}{
+Calculate riskmodel at address level
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$calculate_riskmodel(data, theme)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data}}{Combined indicator table at address level (made with \code{combine_indicator_tables})}
+
+\item{\code{theme}}{Theme for the indicators; used to get weights from definition table}
 }
 \if{html}{\out{</div>}}
 }

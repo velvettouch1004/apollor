@@ -1,22 +1,5 @@
 
 
-# Test het system warehouse object.
-testconf <- list(
-  "apollo specific" = T,
-  "logging" = T,
-  "favorites" = T,
-  "actionlist" = T,
-  "list functions" = T,
-  "details" = T,
-  "indicators" = T,
-  "geo"=T,
-  "riskmodel" = T
-  
-)
-
-
-
-
 library(microbenchmark)
 library(tinytest)
 library(here)
@@ -25,6 +8,30 @@ library(glue)
 library(futile.logger)
 
 library(dplyr)
+library(yaml)
+
+
+
+
+# Test het system warehouse object. 
+if(TRUE){
+  print('-- using custom --') 
+  testconf <- read_yaml('conf/testconf.yml') 
+} else { 
+  print('-- using default --') 
+  testconf <- list(
+    "apollo specific" = T,
+    "logging" = T,
+    "favorites" = T,
+    "actionlist" = T,
+    "list functions" = T,
+    "details" = T,
+    "indicators" = T,
+    "geo"=T,
+    "riskmodel" = T 
+  )
+}
+ 
 
 #options(config_file = glue("c:/repos/apollo-ondermijning/conf/config.yml"))
 options(config_file = glue("conf/config.yml"))
