@@ -180,6 +180,16 @@ ApolloEngine <- R6::R6Class(
     # -------------- INDICATOR FUNCTIONS ----------------#
     ######################################################
     
+    
+    #' @description Get labels for indicators
+    #' @param indicator_name Vector of indicator names
+    label_indicator = function(indicator_name){
+      
+      self$indicator$label[match(indicator_name, self$indicator$indicator_name)]
+      
+    },
+    
+    
     #' @description Adds an indicator's metadata to the 'indicator' table
     #' @param column_name Name of the column (indicator)
     #' @param type Indicator type - refers to the table that has this column_name
@@ -188,7 +198,6 @@ ApolloEngine <- R6::R6Class(
     #' @param user_id Who are you?
     #' @param theme Which theme(s) is the indicator used in? e.g. c("mensenhandel","drugs")
     #' @param columns 
-    #' @param 
     add_indicator = function(indicator_name, 
                              type = c("address","person"), 
                              label,
