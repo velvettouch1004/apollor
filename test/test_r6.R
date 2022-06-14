@@ -107,7 +107,7 @@ if(testconf[["details"]]){
 ################################################### 
 if(testconf[["timeline"]]){
   print('-- testing timeline --') 
-  person_id <- "JUGSZ1nWK"#'U8Cx3IcEd'
+  person_id <- "6fmWQbsVF"#"JUGSZ1nWK"#'U8Cx3IcEd'
   pi <- .sys$get_relocations_timeline(person_id) 
   print(pi) 
 }

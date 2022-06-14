@@ -637,7 +637,7 @@ ApolloEngine <- R6::R6Class(
  
         timelineData <- bind_rows(timelineData, death_row)
       } 
-      timelineData
+      timelineData %>% distinct(timestamp,title,text, .keep_all = TRUE)
     }
   )  
 )
