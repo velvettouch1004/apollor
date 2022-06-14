@@ -93,7 +93,7 @@ ApolloEngine <- R6::R6Class(
     
     #' @description Add wijk, gemeente columns to a dataframe with buurt_code_cbs column
     #' @details Existing geo columns will be overwritten
-    add_geo_columns = function(data){
+    add_geo_columns = function(data, spatial = TRUE){
       
       self$assert_geo()
       
@@ -107,7 +107,12 @@ ApolloEngine <- R6::R6Class(
         data <- select(data, -all_of(have_geo_cols))
       }
       
-      key <- select(self$geo$buurten,
+      geo <- self$geo$buurten
+      if(!spatial){
+        geo <- sf::st_drop_geometry(geo)
+      }
+      
+      key <- select(geo,
                     buurt_code_cbs = bu_code,
                     buurt_naam = bu_naam,
                     wijk_code_cbs = wk_code,
@@ -434,6 +439,17 @@ ApolloEngine <- R6::R6Class(
       
       
     },
+    
+    #' @description Get addresses based on address_id
+    #' @param address_id Vector of address IDs
+    list_addresses_by_id = function(address_id = NULL){
+      
+      dplyr::filter(self$address, 
+                    address_id %in% !!address_id)
+    
+    },
+    
+    
     
     ################################################
     # -------------- LOGGING --------------------- #
