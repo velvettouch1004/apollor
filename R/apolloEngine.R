@@ -588,7 +588,15 @@ ApolloEngine <- R6::R6Class(
     },
     get_relocations_for_person = function(person_id){
       self$relocations[self$relocations$person_id == person_id, ]
-    }
-    
-  )
+    },
+    get_relocations_timeline = function(person_id){
+      self$get_relocations_for_person(person_id) %>% mutate(
+        timestamp = event_datum,
+        title=event,
+        text=event,
+        icon_name="person-plus-fill",
+        icon_status="success"
+      )
+    } 
+  )  
 )

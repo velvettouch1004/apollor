@@ -54,6 +54,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-get_residents}{\code{ApolloEngine$get_residents()}}
 \item \href{#method-get_businesses_at_address}{\code{ApolloEngine$get_businesses_at_address()}}
 \item \href{#method-get_relocations_for_person}{\code{ApolloEngine$get_relocations_for_person()}}
+\item \href{#method-get_relocations_timeline}{\code{ApolloEngine$get_relocations_timeline()}}
 \item \href{#method-clone}{\code{ApolloEngine$clone()}}
 }
 }
@@ -711,6 +712,15 @@ Get address details from the identifier
 \subsection{Method \code{get_relocations_for_person()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_relocations_for_person(person_id)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_relocations_timeline"></a>}}
+\if{latex}{\out{\hypertarget{method-get_relocations_timeline}{}}}
+\subsection{Method \code{get_relocations_timeline()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_relocations_timeline(person_id)}\if{html}{\out{</div>}}
 }
 
 }
