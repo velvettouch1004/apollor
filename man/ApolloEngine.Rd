@@ -40,6 +40,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-list_actions}{\code{ApolloEngine$list_actions()}}
 \item \href{#method-list_favorites}{\code{ApolloEngine$list_favorites()}}
 \item \href{#method-list_persons_by_id}{\code{ApolloEngine$list_persons_by_id()}}
+\item \href{#method-list_addresses_by_id}{\code{ApolloEngine$list_addresses_by_id()}}
 \item \href{#method-get_log_ping}{\code{ApolloEngine$get_log_ping()}}
 \item \href{#method-log_user_event}{\code{ApolloEngine$log_user_event()}}
 \item \href{#method-add_favorite}{\code{ApolloEngine$add_favorite()}}
@@ -52,6 +53,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-get_address_from_id}{\code{ApolloEngine$get_address_from_id()}}
 \item \href{#method-get_residents}{\code{ApolloEngine$get_residents()}}
 \item \href{#method-get_businesses_at_address}{\code{ApolloEngine$get_businesses_at_address()}}
+\item \href{#method-get_relocations_for_person}{\code{ApolloEngine$get_relocations_for_person()}}
 \item \href{#method-clone}{\code{ApolloEngine$clone()}}
 }
 }
@@ -123,7 +125,7 @@ Translate buurt or wijk codes into names
 \subsection{Method \code{add_geo_columns()}}{
 Add wijk, gemeente columns to a dataframe with buurt_code_cbs column
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$add_geo_columns(data)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$add_geo_columns(data, spatial = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Details}{
@@ -456,6 +458,23 @@ Get persons based on person or address_id
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-list_addresses_by_id"></a>}}
+\if{latex}{\out{\hypertarget{method-list_addresses_by_id}{}}}
+\subsection{Method \code{list_addresses_by_id()}}{
+Get addresses based on address_id
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$list_addresses_by_id(address_id = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{address_id}}{Vector of address IDs}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_log_ping"></a>}}
 \if{latex}{\out{\hypertarget{method-get_log_ping}{}}}
 \subsection{Method \code{get_log_ping()}}{
@@ -683,6 +702,15 @@ Get address details from the identifier
 \subsection{Method \code{get_businesses_at_address()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_businesses_at_address(address_id)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_relocations_for_person"></a>}}
+\if{latex}{\out{\hypertarget{method-get_relocations_for_person}{}}}
+\subsection{Method \code{get_relocations_for_person()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_relocations_for_person(person_id)}\if{html}{\out{</div>}}
 }
 
 }

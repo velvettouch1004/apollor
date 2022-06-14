@@ -585,7 +585,7 @@ ApolloEngine <- R6::R6Class(
     },
     get_businesses_at_address = function(address_id){
       self$business[self$business$address_id == address_id, ]
-    }
+    },
     get_relocations_for_person = function(person_id){
       self$relocations[self$relocations$person_id == person_id, ]
     }
