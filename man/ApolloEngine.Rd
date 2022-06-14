@@ -27,6 +27,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-read_favorites}{\code{ApolloEngine$read_favorites()}}
 \item \href{#method-read_log}{\code{ApolloEngine$read_log()}}
 \item \href{#method-read_metadata}{\code{ApolloEngine$read_metadata()}}
+\item \href{#method-label_indicator}{\code{ApolloEngine$label_indicator()}}
 \item \href{#method-add_indicator}{\code{ApolloEngine$add_indicator()}}
 \item \href{#method-remove_indicator}{\code{ApolloEngine$remove_indicator()}}
 \item \href{#method-get_indicators_theme}{\code{ApolloEngine$get_indicators_theme()}}
@@ -38,6 +39,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-get_active_actions}{\code{ApolloEngine$get_active_actions()}}
 \item \href{#method-list_actions}{\code{ApolloEngine$list_actions()}}
 \item \href{#method-list_favorites}{\code{ApolloEngine$list_favorites()}}
+\item \href{#method-list_persons_by_id}{\code{ApolloEngine$list_persons_by_id()}}
 \item \href{#method-get_log_ping}{\code{ApolloEngine$get_log_ping()}}
 \item \href{#method-log_user_event}{\code{ApolloEngine$log_user_event()}}
 \item \href{#method-add_favorite}{\code{ApolloEngine$add_favorite()}}
@@ -49,6 +51,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-get_tags_for_person}{\code{ApolloEngine$get_tags_for_person()}}
 \item \href{#method-get_address_from_id}{\code{ApolloEngine$get_address_from_id()}}
 \item \href{#method-get_residents}{\code{ApolloEngine$get_residents()}}
+\item \href{#method-get_businesses_at_address}{\code{ApolloEngine$get_businesses_at_address()}}
 \item \href{#method-clone}{\code{ApolloEngine$clone()}}
 }
 }
@@ -226,6 +229,23 @@ Existing geo columns will be overwritten
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_metadata()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-label_indicator"></a>}}
+\if{latex}{\out{\hypertarget{method-label_indicator}{}}}
+\subsection{Method \code{label_indicator()}}{
+Get labels for indicators
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$label_indicator(indicator_name)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{indicator_name}}{Vector of indicator names}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-add_indicator"></a>}}
@@ -415,6 +435,25 @@ Get the active actions ordered by date
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$list_favorites(user = NULL, update = FALSE)}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-list_persons_by_id"></a>}}
+\if{latex}{\out{\hypertarget{method-list_persons_by_id}{}}}
+\subsection{Method \code{list_persons_by_id()}}{
+Get persons based on person or address_id
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$list_persons_by_id(address_id = NULL, person_id = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{address_id}}{Vector of address IDs}
+
+\item{\code{person_id}}{Vector of person Ids. Provide either address or person ID, not both!}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_log_ping"></a>}}
@@ -635,6 +674,15 @@ Get address details from the identifier
 \subsection{Method \code{get_residents()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_residents(address_id)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_businesses_at_address"></a>}}
+\if{latex}{\out{\hypertarget{method-get_businesses_at_address}{}}}
+\subsection{Method \code{get_businesses_at_address()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_businesses_at_address(address_id)}\if{html}{\out{</div>}}
 }
 
 }
