@@ -4,7 +4,7 @@
 #' @importFrom pool dbPool poolClose
 #' @importFrom R6 R6Class
 #' @importFrom dbplyr in_schema  
-#' @importFrom dplyr tbl left_join collect
+#' @importFrom dplyr tbl left_join collect bind_rows
 #' @importFrom plyr join_all 
 #' @importFrom safer encrypt_string decrypt_string
 #' @importFrom jsonlite toJSON fromJSON
@@ -15,7 +15,22 @@ ApolloEngine <- R6::R6Class(
   inherit = databaseObject,
   
   lock_objects = FALSE,
+  
   public = list(
+    
+    # variables for recoding events
+    recode_icon = c(verhuisd_uit = "person-dash-fill", 
+                    verhuisd_naar = "person-plus-fill", 
+                    verhuisd_binnen = "arrows-move", 
+                    geboorte = "balloon-fill"), 
+    recode_title = c(verhuisd_uit = "Verhuisd buiten de gemeente", 
+                     verhuisd_naar = "Verhuisd naar de gemeente", 
+                     verhuisd_binnen = "Verhuisd binnen gemeente", 
+                     geboorte = "Geboren"), 
+    recode_icon_status = c(verhuisd_uit = "danger", 
+                           verhuisd_naar = "success", 
+                           verhuisd_binnen = "info", 
+                           geboorte = "success"),
     
     initialize = function(gemeente, schema, pool, 
                           config_file = getOption("config_file","conf/config.yml"),
@@ -589,14 +604,40 @@ ApolloEngine <- R6::R6Class(
     get_relocations_for_person = function(person_id){
       self$relocations[self$relocations$person_id == person_id, ]
     },
-    get_relocations_timeline = function(person_id){
-      self$get_relocations_for_person(person_id) %>% mutate(
-        timestamp = event_datum,
-        title=event,
-        text=event,
-        icon_name="person-plus-fill",
-        icon_status="success"
-      )
-    } 
+    
+    format_event = function(event, buurt,  gemeente){ 
+      case_when(event %in% c("verhuisd_naar", "verhuisd_binnen") & !is.na(buurt) ~ glue("Verhuisd naar {buurt}"),
+                event %in% c("verhuisd_naar", "verhuisd_binnen", "verhuisd_uit") & !is.na(gemeente)~ glue("Verhuisd naar gemeente {gemeente}"),  
+                event %in% c("verhuisd_naar", "verhuisd_binnen", "verhuisd_uit")  ~ "Verhuisd",
+                !is.na(event) ~ event, 
+                !is.na(gemeente) ~ glue("In de gemeente {gemeente}"), 
+                TRUE ~ 'Onbekend' ) 
+    
+    },
+    
+    #' @description Create data suitable for timeline plot
+    #' @param person_id Person's identifier FI: (pseudo)bsn 
+    #' @param add_overlijden Boolean indicating if overlijden should be added as event 
+    get_relocations_timeline = function(person_id, add_overlijden=TRUE){ 
+      
+      timelineData <- self$get_relocations_for_person(person_id) %>% 
+        mutate(
+          timestamp = event_datum,
+          title=recode(event, !!!self$recode_title, .default = 'Onbekende gebeurtenis', .missing = 'Onbekende gebeurtenis'), 
+          text=self$format_event(event,buurt_naam,gemeente_inschrijving),
+          icon_name=recode(event, !!!self$recode_icon, .default = "bookmark", .missing = 'bookmark'), 
+          icon_status=recode(event, !!!self$recode_icon_status, .default = 'warning', .missing = 'warning') 
+        )
+      if(add_overlijden & nrow(timelineData) > 0 & !is.na(timelineData$datum_overlijden[1])){
+        death_row = data.frame(timestamp=timelineData$datum_overlijden[1],
+                               title="Overleden",
+                               text="Is overleden",
+                               icon_name = "person-dash-fill",
+                               icon_status="danger")
+ 
+        timelineData <- bind_rows(timelineData, death_row)
+      } 
+      timelineData
+    }
   )  
 )

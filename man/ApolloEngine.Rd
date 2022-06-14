@@ -54,6 +54,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-get_residents}{\code{ApolloEngine$get_residents()}}
 \item \href{#method-get_businesses_at_address}{\code{ApolloEngine$get_businesses_at_address()}}
 \item \href{#method-get_relocations_for_person}{\code{ApolloEngine$get_relocations_for_person()}}
+\item \href{#method-format_event}{\code{ApolloEngine$format_event()}}
 \item \href{#method-get_relocations_timeline}{\code{ApolloEngine$get_relocations_timeline()}}
 \item \href{#method-clone}{\code{ApolloEngine$clone()}}
 }
@@ -716,13 +717,32 @@ Get address details from the identifier
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-format_event"></a>}}
+\if{latex}{\out{\hypertarget{method-format_event}{}}}
+\subsection{Method \code{format_event()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$format_event(event, buurt, gemeente)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_relocations_timeline"></a>}}
 \if{latex}{\out{\hypertarget{method-get_relocations_timeline}{}}}
 \subsection{Method \code{get_relocations_timeline()}}{
+Create data suitable for timeline plot
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_relocations_timeline(person_id)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_relocations_timeline(person_id, add_overlijden = TRUE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{person_id}}{Person's identifier FI: (pseudo)bsn}
+
+\item{\code{add_overlijden}}{Boolean indicating if overlijden should be added as event}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

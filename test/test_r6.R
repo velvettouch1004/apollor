@@ -26,6 +26,7 @@ if(TRUE){
     "actionlist" = T,
     "list functions" = T,
     "details" = T,
+    "timeline" = T,
     "indicators" = T,
     "geo"=T,
     "riskmodel" = T 
@@ -100,7 +101,19 @@ if(testconf[["details"]]){
   aa<-  .sys$get_address_from_id(pi$address_id)
   print(aa)
 }
+
+################################################### 
+# ---------------  TIMELINE --------------------- #
+################################################### 
+if(testconf[["timeline"]]){
+  print('-- testing timeline --') 
+  person_id <- "JUGSZ1nWK"#'U8Cx3IcEd'
+  pi <- .sys$get_relocations_timeline(person_id) 
+  print(pi) 
+}
+
  
+
 ######################################################
 # -------------- INDICATOR FUNCTIONS ----------------#
 ######################################################
@@ -141,7 +154,8 @@ if(testconf[["indicators"]]){
 
 #######################################################
 # ---------------  GEO FUNCTIONALITY ---------------- #
-#######################################################
+######################¿
+#################################
 
 if(testconf[["geo"]]){
   # buurt codes omzetten

@@ -3,6 +3,7 @@
 export(ApolloEngine)
 importFrom(R6,R6Class)
 importFrom(dbplyr,in_schema)
+importFrom(dplyr,bind_rows)
 importFrom(dplyr,collect)
 importFrom(dplyr,left_join)
 importFrom(dplyr,tbl)
