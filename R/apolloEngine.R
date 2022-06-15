@@ -603,17 +603,7 @@ ApolloEngine <- R6::R6Class(
     },
     get_relocations_for_person = function(person_id){
       self$relocations[self$relocations$person_id == person_id, ]
-    },
-    
-    format_event = function(event, buurt,  gemeente){ 
-      case_when(event %in% c("verhuisd_naar", "verhuisd_binnen") & !is.na(buurt) ~ glue("Verhuisd naar {buurt}"),
-                event %in% c("verhuisd_naar", "verhuisd_binnen", "verhuisd_uit") & !is.na(gemeente)~ glue("Verhuisd naar gemeente {gemeente}"),  
-                event %in% c("verhuisd_naar", "verhuisd_binnen", "verhuisd_uit")  ~ "Verhuisd",
-                !is.na(event) ~ event, 
-                !is.na(gemeente) ~ glue("In de gemeente {gemeente}"), 
-                TRUE ~ 'Onbekend' ) 
-    
-    },
+    }, 
     
     #' @description Create data suitable for timeline plot
     #' @param person_id Person's identifier FI: (pseudo)bsn 
@@ -624,7 +614,7 @@ ApolloEngine <- R6::R6Class(
         mutate(
           timestamp = event_datum,
           title=recode(event, !!!self$recode_title, .default = 'Onbekende gebeurtenis', .missing = 'Onbekende gebeurtenis'), 
-          text=self$format_event(event,buurt_naam,gemeente_inschrijving),
+          text=format_event_func(event, buurt_naam, gemeente_inschrijving),
           icon_name=recode(event, !!!self$recode_icon, .default = "bookmark", .missing = 'bookmark'), 
           icon_status=recode(event, !!!self$recode_icon_status, .default = 'warning', .missing = 'warning') 
         )
@@ -638,6 +628,54 @@ ApolloEngine <- R6::R6Class(
         timelineData <- bind_rows(timelineData, death_row)
       } 
       timelineData %>% distinct(timestamp,title,text, .keep_all = TRUE)
+    },
+    
+    #' @description Create suitable node format for network(Viz)
+    create_network_nodes = function(person_data, 
+                                     address_data=NULL, 
+                                     resident_data=NULL, 
+                                     business_data=NULL, 
+                                     registration_data=NULL){
+      
+      # intitialise node object with person data       
+      network_nodes <- data.frame(label = person_data$person_id,   
+                                  group = c("person"),          
+                                  title = person_data$person_id)   
+      # add subsequent nodes
+      network_nodes %>% 
+        add_net_nodes(address_data, 'address_id', 'address_id', 'address') %>%
+        add_net_nodes(resident_data %>% filter(person_id != person_data$person_id), 'person_id', 'person_id', 'resident') %>%
+        add_net_nodes(business_data, 'business_id', 'business_id', 'business') %>%
+        add_net_nodes(registration_data, 'registration_id', 'registration_id', 'registration') %>% 
+        mutate(id=row_number())
+      
+    },
+      
+    
+    #' @description Create suitable edge format for network(Viz)
+    create_network_edges = function(person_data, 
+                                      address_data=NULL, 
+                                      resident_data=NULL, 
+                                      business_data=NULL, 
+                                      registration_data=NULL){
+        
+      # intitialise edge object empty
+      network_edges <- data.frame(label = c(), title = c())
+      
+      # naive -> only add edges if address is available
+      if(!is.null(address_data) && nrow(address_data) > 0){
+        
+        network_edges <- network_edges %>% 
+          add_net_edges(person_data, 'Woont op', 'Woont op') %>%
+          add_net_edges(address_data, 'is', 'is') %>%
+          add_net_edges(resident_data %>% filter(person_id != person_data$person_id), 'Woont op', 'Woont op') %>%
+          add_net_edges(business_data, 'Gevestigd op', 'Gevestigd op') %>%
+          add_net_edges(registration_data, 'Signaal op', 'Signaal op') %>%
+          mutate(from = row_number(), to=2) %>% # naive -> connect everything to address 
+          filter(from != 2) # remove address identitiy
+       }
+       network_edges 
+       
     }
   )  
 )

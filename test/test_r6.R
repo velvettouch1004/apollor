@@ -27,6 +27,7 @@ if(TRUE){
     "list functions" = T,
     "details" = T,
     "timeline" = T,
+    "network" =T,
     "indicators" = T,
     "geo"=T,
     "riskmodel" = T 
@@ -112,8 +113,24 @@ if(testconf[["timeline"]]){
   print(pi) 
 }
 
- 
 
+################################################### 
+# ---------------  NETWORK ---------------------  #
+################################################### 
+if(testconf[["network"]]){
+  print('-- testing network --') 
+  #person_id <- "6fmWQbsVF" 
+  person_id <- "U8Cx3IcEd" 
+  
+  person_data <- .sys$get_person_from_id(person_id)
+  address_data <- .sys$get_address_from_id(person_data$address_id)
+  resident_data <- .sys$get_residents(address_data$address_id)
+  business_data <- .sys$get_businesses_at_address(address_data$address_id)
+  
+  
+  print(.sys$create_network_nodes(person_data,address_data,resident_data,business_data))
+  print(.sys$create_network_edges(person_data,address_data,resident_data,business_data))
+}
 ######################################################
 # -------------- INDICATOR FUNCTIONS ----------------#
 ######################################################
@@ -154,8 +171,7 @@ if(testconf[["indicators"]]){
 
 #######################################################
 # ---------------  GEO FUNCTIONALITY ---------------- #
-######################¿
-#################################
+#######################################################
 
 if(testconf[["geo"]]){
   # buurt codes omzetten

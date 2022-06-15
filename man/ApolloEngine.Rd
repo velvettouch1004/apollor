@@ -54,8 +54,9 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-get_residents}{\code{ApolloEngine$get_residents()}}
 \item \href{#method-get_businesses_at_address}{\code{ApolloEngine$get_businesses_at_address()}}
 \item \href{#method-get_relocations_for_person}{\code{ApolloEngine$get_relocations_for_person()}}
-\item \href{#method-format_event}{\code{ApolloEngine$format_event()}}
 \item \href{#method-get_relocations_timeline}{\code{ApolloEngine$get_relocations_timeline()}}
+\item \href{#method-create_network_nodes}{\code{ApolloEngine$create_network_nodes()}}
+\item \href{#method-create_network_edges}{\code{ApolloEngine$create_network_edges()}}
 \item \href{#method-clone}{\code{ApolloEngine$clone()}}
 }
 }
@@ -717,15 +718,6 @@ Get address details from the identifier
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format_event"></a>}}
-\if{latex}{\out{\hypertarget{method-format_event}{}}}
-\subsection{Method \code{format_event()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$format_event(event, buurt, gemeente)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_relocations_timeline"></a>}}
 \if{latex}{\out{\hypertarget{method-get_relocations_timeline}{}}}
 \subsection{Method \code{get_relocations_timeline()}}{
@@ -743,6 +735,38 @@ Create data suitable for timeline plot
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-create_network_nodes"></a>}}
+\if{latex}{\out{\hypertarget{method-create_network_nodes}{}}}
+\subsection{Method \code{create_network_nodes()}}{
+Create suitable node format for network(Viz)
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_network_nodes(
+  person_data,
+  address_data = NULL,
+  resident_data = NULL,
+  business_data = NULL,
+  registration_data = NULL
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-create_network_edges"></a>}}
+\if{latex}{\out{\hypertarget{method-create_network_edges}{}}}
+\subsection{Method \code{create_network_edges()}}{
+Create suitable edge format for network(Viz)
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_network_edges(
+  person_data,
+  address_data = NULL,
+  resident_data = NULL,
+  business_data = NULL,
+  registration_data = NULL
+)}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
