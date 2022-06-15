@@ -640,13 +640,14 @@ ApolloEngine <- R6::R6Class(
       # intitialise node object with person data       
       network_nodes <- data.frame(label = person_data$person_id,   
                                   group = c("person"),          
-                                  title = person_data$person_id)   
+                                  title = person_data$person_id,
+                                  level = 0)   
       # add subsequent nodes
       network_nodes %>% 
-        add_net_nodes(address_data, 'address_id', 'address_id', 'address') %>%
-        add_net_nodes(resident_data %>% filter(person_id != person_data$person_id), 'person_id', 'person_id', 'resident') %>%
-        add_net_nodes(business_data, 'business_id', 'business_id', 'business') %>%
-        add_net_nodes(registration_data, 'registration_id', 'registration_id', 'registration') %>% 
+        add_net_nodes(address_data, 'address_id', 'address_id', 'address', level= 2 ) %>%
+        add_net_nodes(resident_data %>% filter(person_id != person_data$person_id), 'person_id', 'person_id', 'resident', level=0) %>%
+        add_net_nodes(business_data, 'business_id', 'business_id', 'business',level=2) %>%
+        add_net_nodes(registration_data, 'registration_id', 'registration_id', 'registration',level=5) %>% 
         mutate(id=row_number())
       
     },
