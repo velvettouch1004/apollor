@@ -43,6 +43,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-list_addresses_by_id}{\code{ApolloEngine$list_addresses_by_id()}}
 \item \href{#method-get_log_ping}{\code{ApolloEngine$get_log_ping()}}
 \item \href{#method-log_user_event}{\code{ApolloEngine$log_user_event()}}
+\item \href{#method-get_favorite}{\code{ApolloEngine$get_favorite()}}
 \item \href{#method-add_favorite}{\code{ApolloEngine$add_favorite()}}
 \item \href{#method-remove_favorite}{\code{ApolloEngine$remove_favorite()}}
 \item \href{#method-create_action}{\code{ApolloEngine$create_action()}}
@@ -501,6 +502,27 @@ Log an user action
 \item{\code{user_id}}{User that performed action}
 
 \item{\code{description}}{The action perfomed}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_favorite"></a>}}
+\if{latex}{\out{\hypertarget{method-get_favorite}{}}}
+\subsection{Method \code{get_favorite()}}{
+check if object is currently in favorites of user_id
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_favorite(user_id, object_id, object_type = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{user_id}}{User to check for}
+
+\item{\code{object_id}}{Identifier of the object}
+
+\item{\code{object_type}}{Type of object (address, person, business or registration)}
 }
 \if{html}{\out{</div>}}
 }

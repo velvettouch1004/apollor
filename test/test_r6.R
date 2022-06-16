@@ -67,7 +67,10 @@ if(testconf[["logging"]]){
 if(testconf[["favorites"]]){
   print('-- testing favorieten functionality --') 
   .sys$add_favorite(user_id='apollo_test', object_id='1', object_type='person')
-  .sys$remove_favorite(user_id='apollo_test', favorite_id='3')
+  
+  print( .sys$get_favorite('apollo_test', '1'))
+  
+  .sys$remove_favorite(user_id='apollo_test', favorite_id='3') 
 }
 
 #######################################################

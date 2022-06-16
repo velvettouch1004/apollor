@@ -491,6 +491,15 @@ ApolloEngine <- R6::R6Class(
     # -------------- FAVORITES ---------------------- #
     ###################################################
     
+    
+    #' @description check if object is currently in favorites of user_id 
+    #' @param user_id User to check for
+    #' @param object_id Identifier of the object
+    #' @param object_type Type of object (address, person, business or registration)
+    get_favorite = function(user_id, object_id, object_type=NULL) { 
+      self$query(glue("select favorite_id from {self$schema}.favorites where user_id='{user_id}' and object_id='{object_id}';")) 
+    },
+    
     #' @description Add favorite to list
     #' @details Favorites can be addresses, persons, businesses and registrations
     #' @param user_id User to add to
@@ -515,7 +524,7 @@ ApolloEngine <- R6::R6Class(
       self$log_user_event(user_id, description=glue("Heeft {favorite_id} uit favorieten verwijderd"))
       
       try( 
-        self$execute_query(glue("DELETE from {self$schema}.favorites WHERE favorite_id = {favorite_id}")) 
+        self$execute_query(glue("DELETE from {self$schema}.favorites WHERE favorite_id = {favorite_id} and user_id = '{user_id}'")) 
       ) 
     },
     
