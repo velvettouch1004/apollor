@@ -214,7 +214,7 @@ Existing geo columns will be overwritten
 \if{latex}{\out{\hypertarget{method-read_favorites}{}}}
 \subsection{Method \code{read_favorites()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_favorites()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_favorites(user_id = NULL)}\if{html}{\out{</div>}}
 }
 
 }
@@ -438,7 +438,7 @@ Get the active actions ordered by date
 \if{latex}{\out{\hypertarget{method-list_favorites}{}}}
 \subsection{Method \code{list_favorites()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$list_favorites(user = NULL, update = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$list_favorites(user_id = NULL, update = FALSE)}\if{html}{\out{</div>}}
 }
 
 }

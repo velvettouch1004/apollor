@@ -91,7 +91,7 @@ if(testconf[["actionlist"]]){
 if(testconf[["list functions"]]){
   print('-- testing list functionality --') 
   d <- .sys$list_actions() 
-  e <- .sys$list_favorites()
+  e <- .sys$list_favorites(user_id='apollo_test')
 }
 
 #######################################################

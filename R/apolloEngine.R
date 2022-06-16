@@ -182,8 +182,13 @@ ApolloEngine <- R6::R6Class(
       self$address <- self$read_table('address') 
       invisible(self$address)
     },
-    read_favorites = function(){ 
-      self$favorites <- self$read_table('favorites') 
+    read_favorites = function(user_id=NULL){ 
+      if(is.null(user_id)){
+        self$favorites <- self$read_table('favorites') 
+      } else {
+        self$favorites <- self$query(glue("select * from {self$schema}.favorites where user_id = '{user_id}';")) 
+        
+      }    
       invisible(self$favorites)
     },
     read_log = function(){ 
@@ -419,7 +424,7 @@ ApolloEngine <- R6::R6Class(
 
     },
     
-    list_favorites = function(user=NULL, update=FALSE){
+    list_favorites = function(user_id=NULL, update=FALSE){
       if(is.null(self$business)  || update){
         self$read_business() 
       } 
@@ -429,13 +434,13 @@ ApolloEngine <- R6::R6Class(
       if(is.null(self$address)  || update){ 
         self$read_address()
       } 
-      self$read_favorites()
-      A <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'registration')  , self$signals, by=c('object_id' ='registration_id'), suffix = c("fav", ".signaal"))
-      B <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'person')  , self$person, by=c('object_id'='person_id'), suffix = c("fav", ".person"))
-      C <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'business')  , self$business, by=c('object_id'='business_id'), suffix = c("fav", ".business"))
-      D <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'address')  , self$address, by=c('object_id'='address_id'), suffix = c("fav", ".address"))
-       
-      plyr::join_all(list(A,B,C,D), by='favorite_id', type='left') 
+      self$read_favorites(user_id)
+      #A <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'registration')  , self$signals, by=c('object_id' = 'registration_id'), suffix = c(".fav", ".signaal"))
+      B <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'person')  , self$person, by=c('object_id'='person_id'), suffix = c(".fav", ".person"))
+      #C <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'business')  , self$business, by=c('object_id'='business_id'), suffix = c(".fav", ".business"))
+      #D <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'address')  , self$address, by=c('object_id'='address_id'), suffix = c(".fav", ".address"))
+       B
+      #plyr::join_all(list(A,B,C,D), by='favorite_id', type='left') 
     
     },
     
