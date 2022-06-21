@@ -30,7 +30,8 @@ if(TRUE){
     "network" =T,
     "indicators" = T,
     "geo"=T,
-    "riskmodel" = T 
+    "riskmodel" = T,
+    "MPP" = T 
   )
 }
  
@@ -104,6 +105,28 @@ if(testconf[["details"]]){
   print(pi)
   aa<-  .sys$get_address_from_id(pi$address_id)
   print(aa)
+}
+
+###################################################
+# -------------- PRIVACY PROTOCOL  -------------- #
+###################################################
+if(testconf[["MPP"]]){
+  print('-- testing privacy functionality --')  
+  
+  registration_id <- "1"
+  user_id <- "apollo_test"
+  x <- .sys$read_mpp(registration_id)
+  print(x)
+  
+  MPP_example <-  data.frame (mpp_name = c("weging1", "weging2a", "weging2b", "tab1conclusie"), 
+                user_id =   rep("apollo_test", 4),
+                bool_val = c(TRUE, FALSE, TRUE, FALSE),
+                text_val = c("Hier volgt een toelichting", "text", "", "Er is voldoende reden"))
+  
+  .sys$create_MPP_for_registration(registration_id, user_id, data=MPP_example)
+  #.sys$archive_MPP_for_registration(registration_id, user_id ) 
+  x <- .sys$read_mpp(registration_id)
+  print(x)
 }
 
 ################################################### 

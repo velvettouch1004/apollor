@@ -27,6 +27,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-read_favorites}{\code{ApolloEngine$read_favorites()}}
 \item \href{#method-read_log}{\code{ApolloEngine$read_log()}}
 \item \href{#method-read_metadata}{\code{ApolloEngine$read_metadata()}}
+\item \href{#method-read_mpp}{\code{ApolloEngine$read_mpp()}}
 \item \href{#method-label_indicator}{\code{ApolloEngine$label_indicator()}}
 \item \href{#method-add_indicator}{\code{ApolloEngine$add_indicator()}}
 \item \href{#method-remove_indicator}{\code{ApolloEngine$remove_indicator()}}
@@ -46,6 +47,9 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-get_favorite}{\code{ApolloEngine$get_favorite()}}
 \item \href{#method-add_favorite}{\code{ApolloEngine$add_favorite()}}
 \item \href{#method-remove_favorite}{\code{ApolloEngine$remove_favorite()}}
+\item \href{#method-create_MPP_for_registration}{\code{ApolloEngine$create_MPP_for_registration()}}
+\item \href{#method-archive_MPP_for_registration}{\code{ApolloEngine$archive_MPP_for_registration()}}
+\item \href{#method-updateMPP}{\code{ApolloEngine$updateMPP()}}
 \item \href{#method-create_action}{\code{ApolloEngine$create_action()}}
 \item \href{#method-update_action}{\code{ApolloEngine$update_action()}}
 \item \href{#method-archive_action}{\code{ApolloEngine$archive_action()}}
@@ -233,6 +237,15 @@ Existing geo columns will be overwritten
 \subsection{Method \code{read_metadata()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_metadata()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-read_mpp"></a>}}
+\if{latex}{\out{\hypertarget{method-read_mpp}{}}}
+\subsection{Method \code{read_mpp()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_mpp(registration_id = NULL, archived = FALSE)}\if{html}{\out{</div>}}
 }
 
 }
@@ -570,6 +583,42 @@ Remove from favorites
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-create_MPP_for_registration"></a>}}
+\if{latex}{\out{\hypertarget{method-create_MPP_for_registration}{}}}
+\subsection{Method \code{create_MPP_for_registration()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_MPP_for_registration(
+  registration_id,
+  user_id,
+  data,
+  createLog = TRUE
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-archive_MPP_for_registration"></a>}}
+\if{latex}{\out{\hypertarget{method-archive_MPP_for_registration}{}}}
+\subsection{Method \code{archive_MPP_for_registration()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_MPP_for_registration(
+  registration_id,
+  user_id,
+  createLog = TRUE
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-updateMPP"></a>}}
+\if{latex}{\out{\hypertarget{method-updateMPP}{}}}
+\subsection{Method \code{updateMPP()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$updateMPP(registration_id, data, user_id)}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-create_action"></a>}}

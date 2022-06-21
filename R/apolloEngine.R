@@ -64,7 +64,7 @@ ApolloEngine <- R6::R6Class(
       self$read_signals()
       
       self$relocations <- self$read_table("brp_verhuis_historie")
-      
+      self$model_privacy_protocol <- self$read_table("model_privacy_protocol") 
       
       # BAG connectie
       self$bag_con <- shintobag::shinto_db_connection("data_bag")
@@ -204,7 +204,15 @@ ApolloEngine <- R6::R6Class(
       self$metadata <- self$read_table('metadata') 
       invisible(self$metadata)
     },
- 
+    read_mpp = function(registration_id=NULL, archived=FALSE){ 
+      if(is.null(registration_id)){
+        self$model_privacy_protocol <- self$read_table('model_privacy_protocol') 
+      } else {
+        self$model_privacy_protocol <- self$query(glue("select * from {self$schema}.model_privacy_protocol where registration_id = '{registration_id}' and archived = {archived};")) 
+        
+      }    
+      invisible(self$model_privacy_protocol)
+    },
     
     
     ######################################################
@@ -536,6 +544,41 @@ ApolloEngine <- R6::R6Class(
       try( 
         self$execute_query(glue("DELETE from {self$schema}.favorites WHERE favorite_id = {favorite_id} and user_id = '{user_id}'")) 
       ) 
+    },
+    
+    ###################################################
+    # -------------- PRIVACY PROTOCOL  -------------- #
+    ###################################################
+    #' @description Create MPP for registration
+    create_MPP_for_registration = function(registration_id, user_id, data, createLog=TRUE){
+      if(createLog) {self$log_user_event(user_id, description=glue("Heeft het privacy protocol van registratie {registration_id} aangemaakt"))}
+      
+      data$registration_id <- rep(registration_id, nrow(data))
+      data$user_id <- rep(user_id, nrow(data))
+      data$timestamp <- rep(Sys.time(), nrow(data))
+       
+      try( 
+        self$append_data('model_privacy_protocol', 
+                         data)
+      )  
+    },
+    #' @description Archive mpp for registration
+    archive_MPP_for_registration = function(registration_id, user_id, createLog=TRUE){
+      if(createLog){ self$log_user_event(user_id, description=glue("Heeft het privacy protocol van registratie {registration_id} gerachiveerd"))}
+      
+      try( 
+        self$execute_query(glue("UPDATE {self$schema}.model_privacy_protocol SET archived = TRUE, timestamp = '{Sys.time()}' WHERE registration_id = '{registration_id}'"))
+      ) 
+      
+    },
+    #' @description Update mpp for registration
+    updateMPP = function(registration_id, data, user_id){
+      self$log_user_event(user_id, description=glue("Heeft het privacy protocol van registratie {registration_id} gewijzigd"))  
+      
+      self$archive_MPP_for_registration(registration_id, user_id, creatLog=FALSE)
+      self$create_MPP_for_registration(registration_id, user_id, data, creatLog=FALSE)
+      
+        
     },
     
     
