@@ -57,12 +57,17 @@ ApolloEngine <- R6::R6Class(
         self$con <- response
       }
       
-      self$person <- self$read_table("person")
-      self$business <- self$read_table("business")
-      self$address <- self$read_table("address")
-      self$indicator <- self$read_table("indicator")
+      self$read_person()
+      self$read_business()
+      self$read_address()
+      self$read_indicator()
+      self$read_signals()
+      
       self$relocations <- self$read_table("brp_verhuis_historie")
       
+      
+      # BAG connectie
+      self$bag_con <- shintobag::shinto_db_connection("data_bag")
       
       # Geo data
       if(is.null(geo_file)){
