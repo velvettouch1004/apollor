@@ -113,7 +113,7 @@ if(testconf[["details"]]){
 if(testconf[["MPP"]]){
   print('-- testing privacy functionality --')  
   
-  registration_id <- "1"
+  registration_id <- '98c28e39-4419-41f0-8b64-477dbfc2e68f'
   user_id <- "apollo_test"
   x <- .sys$read_mpp(registration_id)
   print(x)
@@ -127,6 +127,7 @@ if(testconf[["MPP"]]){
   #.sys$archive_MPP_for_registration(registration_id, user_id ) 
   x <- .sys$read_mpp(registration_id)
   print(x)
+  .sys$updateMPP(registration_id, user_id, data=MPP_example)
 }
 
 ################################################### 

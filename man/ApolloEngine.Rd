@@ -588,6 +588,7 @@ Remove from favorites
 \if{html}{\out{<a id="method-create_MPP_for_registration"></a>}}
 \if{latex}{\out{\hypertarget{method-create_MPP_for_registration}{}}}
 \subsection{Method \code{create_MPP_for_registration()}}{
+Create MPP for registration
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_MPP_for_registration(
   registration_id,
@@ -602,6 +603,7 @@ Remove from favorites
 \if{html}{\out{<a id="method-archive_MPP_for_registration"></a>}}
 \if{latex}{\out{\hypertarget{method-archive_MPP_for_registration}{}}}
 \subsection{Method \code{archive_MPP_for_registration()}}{
+Archive mpp for registration
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_MPP_for_registration(
   registration_id,
@@ -615,6 +617,7 @@ Remove from favorites
 \if{html}{\out{<a id="method-updateMPP"></a>}}
 \if{latex}{\out{\hypertarget{method-updateMPP}{}}}
 \subsection{Method \code{updateMPP()}}{
+Update mpp for registration
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$updateMPP(registration_id, data, user_id)}\if{html}{\out{</div>}}
 }
