@@ -680,10 +680,11 @@ ApolloEngine <- R6::R6Class(
     },
     #' @description Update mpp for registration
     updateMPP = function(registration_id, data, user_id){
+    
       self$log_user_event(user_id, description=glue("Heeft het privacy protocol van registratie {registration_id} gewijzigd"))  
-      
-      self$archive_MPP_for_registration(registration_id, user_id, creatLog=FALSE)
-      self$create_MPP_for_registration(registration_id, user_id, data, creatLog=FALSE)
+      data_formatted <- data %>% select(mpp_name, bool_val, text_val)
+      self$archive_MPP_for_registration(registration_id, user_id, createLog=FALSE)
+      self$create_MPP_for_registration(registration_id, user_id, data_formatted, createLog=FALSE)
       
         
     },
