@@ -57,12 +57,20 @@ ApolloEngine <- R6::R6Class(
         self$con <- response
       }
       
-      self$person <- self$read_table("person")
-      self$business <- self$read_table("business")
-      self$address <- self$read_table("address")
-      self$indicator <- self$read_table("indicator")
+      self$read_person()
+      self$read_business()
+      self$read_address()
+      self$read_indicator()
+      self$read_signals()
+      
       self$relocations <- self$read_table("brp_verhuis_historie")
       self$model_privacy_protocol <- self$read_table("model_privacy_protocol") 
+      
+      # BAG connectie
+      self$bag_con <- shintobag::shinto_db_connection("data_bag")
+      
+      # CBS connectie
+      self$cbs_con <- shintobag::shinto_db_connection("data_cbs")
       
       # Geo data
       if(is.null(geo_file)){
@@ -140,6 +148,21 @@ ApolloEngine <- R6::R6Class(
     },
     
     
+    get_cbs_buurt_data = function(buurt_code_cbs){
+      
+      tbl(self$cbs_con, "cbs_kerncijfers_2013_2021") %>%
+        filter(regio_type == "Buurt",
+               gwb_code == !!buurt_code_cbs) %>%
+        collect
+      
+    },
+    
+    get_cbs_buurt_metadata = function(){
+      
+      tbl(self$cbs_con, "cbs_kerncijfers_2013_2021_metadata") %>%
+        collect
+      
+    },
     
     ######################################################################
     # ---------------  UTILITIES --------------------------------------- #
