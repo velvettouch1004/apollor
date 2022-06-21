@@ -309,20 +309,26 @@ ApolloEngine <- R6::R6Class(
       
     },
     
-    #' @description Set the weight (riskmodel) for an indicator in a theme
-    set_indicator_weight = function(indicator_name, theme, weight){
+    
+    get_indicators_riskmodel = function(user_id, theme, gemeente){
       
-      def <- self$get_indicators_theme(theme)
-      indi_id <- dplyr::filter(def, indicator_name == !!indicator_name) %>% 
-        dplyr::pull(indicator_id)
+        # Get user settings
+        data <- self$read_table("indicator_riskmodel", lazy = TRUE) %>%
+          filter(user_id == !!user_id, theme == !!theme) %>%
+          collect
+        
+        # Don't have those? Get gemeente settings.
+        if(nrow(data) == 0){
+          data <- self$read_table("indicator_riskmodel", lazy = TRUE) %>%
+            filter(user_id == !!gemeente, theme == !!theme) %>%
+            collect
+        }
       
-      self$replace_value_where(table = "indicator", 
-                               col_replace = "weight", 
-                               val_replace = weight, 
-                               col_compare = "indicator_id", 
-                               val_compare = indi_id)
-      
+      data
     },
+
+
+
 
     #' @description Convert raw indicator data to TRUE/FALSE
     #' @param data Dataframe subset from `indicator` table, read with `$get_indicators_theme`
@@ -430,6 +436,81 @@ ApolloEngine <- R6::R6Class(
       data$riskmodel <- as.vector(m %*% def$weight)
       
       data
+    },
+
+
+#---- RISKMODEL ADMIN -----
+
+
+    #' @description Set the weight (riskmodel) for an indicator in a theme
+    set_indicator_weight = function(indicator_name, theme, weight){
+      
+      def <- self$get_indicators_theme(theme)
+      indi_id <- dplyr::filter(def, indicator_name == !!indicator_name) %>% 
+        dplyr::pull(indicator_id)
+      
+      self$replace_value_where(table = "indicator", 
+                               col_replace = "weight", 
+                               val_replace = weight, 
+                               col_compare = "indicator_id", 
+                               val_compare = indi_id)
+      
+    },
+
+
+    #' @description Write weight/threshold for an indicator in a theme for a user
+    #' @details Written to table indicator_riskmodel. If the entry does not exist for the user,
+    #' add a new row for this user. If it does exist, use an UPDATE statement to replace the value.
+    write_indicator_riskmodel = function(user_id, indicator_name, theme, weight, threshold){
+      
+      data_old <- self$read_table("indicator_riskmodel", lazy = TRUE) %>%
+        filter(theme == !!theme, user_id == !!user_id, indicator_name == !!indicator_name) %>%
+        collect
+      
+      if(nrow(data_old) == 0){
+      # append  
+        
+        data_new <- data.frame(user_id = user_id,
+                               indicator_name = indicator_name,
+                               theme = theme,
+                               weight = weight,
+                               threshold = threshold,
+                               timestamp = format(Sys.time()))
+        
+        self$append_data("indicator_riskmodel", data_new)
+        
+      } else {
+      # update
+        
+        self$replace_value_where(
+          table = "indicator_riskmodel", 
+          col_replace = "threshold", 
+          val_replace = threshold, 
+          col_compare = "risk_id", 
+          val_compare = data_old$risk_id
+        )
+        
+        self$replace_value_where(
+          table = "indicator_riskmodel", 
+          col_replace = "weight", 
+          val_replace = weight, 
+          col_compare = "risk_id", 
+          val_compare = data_old$risk_id
+        )
+        
+        self$replace_value_where(
+          table = "indicator_riskmodel", 
+          col_replace = "timestamp", 
+          val_replace = format(Sys.time()), 
+          col_compare = "risk_id", 
+          val_compare = data_old$risk_id
+        )
+        
+      }
+      
+      
+      
+      
     },
     
     

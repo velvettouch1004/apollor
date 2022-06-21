@@ -46,6 +46,10 @@ devtools::load_all()
                          geo_file = "test/geo_Ede.rds", # !!
                          pool = TRUE)
 
+
+
+
+
 ######################################################################
 # ---------------  APOLLO SPECIFIC FUNCTIONS ----------------------- #
 ######################################################################
@@ -211,7 +215,8 @@ if(testconf[["geo"]]){
 
 ############################################# 
 # -------------- risk model ----------------#
-#############################################   
+#############################################
+
 if(testconf[["riskmodel"]]){
   # set a weight
   .sys$set_indicator_weight("vroegtijdig_schoolverlater", theme = "mensenhandel", weight = 2.1)
@@ -221,8 +226,26 @@ if(testconf[["riskmodel"]]){
   # Add 'risk_model' column to the indicator table
   dat_all <- .sys$calculate_riskmodel(dat_all, "mensenhandel")
   
+  
+  
+  risk <- .sys$get_indicators_riskmodel("remko", "mensenhandel", "Ede")
+  
+  # .sys$write_indicator_riskmodel("Remko", "vroegtijdig_schoolverlater", "drugs", 1,1)
+  # .sys$write_indicator_riskmodel("Remko", "vroegtijdig_schoolverlater", "drugs", 2,1)
+  # .sys$execute_query("delete from indicator_riskmodel where risk_id = 17")
+  
+  
+  
+  
 }
+
+
+
+
+
 print('done')
+
+
 
 
 
