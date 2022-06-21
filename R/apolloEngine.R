@@ -69,6 +69,9 @@ ApolloEngine <- R6::R6Class(
       # BAG connectie
       self$bag_con <- shintobag::shinto_db_connection("data_bag")
       
+      # CBS connectie
+      self$cbs_con <- shintobag::shinto_db_connection("data_cbs")
+      
       # Geo data
       if(is.null(geo_file)){
         geo_file <- glue("data_public/{gemeente}/geo_{gemeente}.rds")  
@@ -145,6 +148,14 @@ ApolloEngine <- R6::R6Class(
     },
     
     
+    get_cbs_buurt_data = function(buurt_code_cbs){
+      
+      tbl(self$cbs_con, "cbs_kerncijfers_2013_2021") %>%
+        filter(regio_type == "Buurt",
+               gwb_code == !!buurt_code_cbs) %>%
+        collect
+      
+    },
     
     ######################################################################
     # ---------------  UTILITIES --------------------------------------- #
