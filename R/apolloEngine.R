@@ -67,10 +67,10 @@ ApolloEngine <- R6::R6Class(
       self$model_privacy_protocol <- self$read_table("model_privacy_protocol") 
       
       # BAG connectie
-      self$bag_con <- shintobag::shinto_db_connection("data_bag")
+      self$bag_con <- shintobag::shinto_db_connection("data_bag", file = config_file)
       
       # CBS connectie
-      self$cbs_con <- shintobag::shinto_db_connection("data_cbs")
+      self$cbs_con <- shintobag::shinto_db_connection("data_cbs", file = config_file)
       
       # Geo data
       if(is.null(geo_file)){
@@ -87,9 +87,9 @@ ApolloEngine <- R6::R6Class(
     },
     
     
-    ######################################################################
-    # ---------------  GEO UTILITIES ----------------------------------- #
-    ######################################################################
+
+#----- GEO UTILITIES ----
+
     
     assert_geo = function(){
       if(!self$have_geo){
@@ -164,9 +164,9 @@ ApolloEngine <- R6::R6Class(
       
     },
     
-    ######################################################################
-    # ---------------  UTILITIES --------------------------------------- #
-    ######################################################################
+
+#--------  UTILITIES -----
+
     
     to_json = function(x){
       jsonlite::toJSON(x, auto_unbox = TRUE)
@@ -177,9 +177,8 @@ ApolloEngine <- R6::R6Class(
     },
     
     
-    ######################################################################
-    # ---------------  APOLLO SPECIFIC FUNCTIONS ----------------------- #
-    ######################################################################
+
+#----  APOLLO SPECIFIC FUNCTIONS ----
   
     read_signals = function(){
       self$signals <- self$read_table('registrations') 
@@ -233,9 +232,9 @@ ApolloEngine <- R6::R6Class(
     },
     
     
-    ######################################################
-    # -------------- INDICATOR FUNCTIONS ----------------#
-    ######################################################
+
+#--------- INDICATOR FUNCTIONS ----------
+
     
     
     #' @description Get labels for indicators
@@ -434,9 +433,8 @@ ApolloEngine <- R6::R6Class(
     },
     
     
-    ######################################################
-    # -------------- LIST FUNCTIONS -------------------- #
-    ######################################################
+
+#--------- LIST FUNCTIONS -----------
     
     #' @description Get the active actions ordered by date
     #' @param
@@ -502,9 +500,9 @@ ApolloEngine <- R6::R6Class(
     
     
     
-    ################################################
-    # -------------- LOGGING --------------------- #
-    ################################################  
+
+#--------- LOGGING -------------
+
     get_log_ping = function(){
       try( 
         self$execute_query(glue("select max(timestamp) from {self$schema}.user_event_log;"))
@@ -523,9 +521,9 @@ ApolloEngine <- R6::R6Class(
                                    timestamp = Sys.time()))
     },
     
-    ###################################################
-    # -------------- FAVORITES ---------------------- #
-    ###################################################
+
+#-------------- FAVORITES -----------
+
     
     
     #' @description check if object is currently in favorites of user_id 
@@ -564,9 +562,9 @@ ApolloEngine <- R6::R6Class(
       ) 
     },
     
-    ###################################################
-    # -------------- PRIVACY PROTOCOL  -------------- #
-    ###################################################
+
+#--------- PRIVACY PROTOCOL  -------
+
     #' @description Create MPP for registration
     create_MPP_for_registration = function(registration_id, user_id, data, createLog=TRUE){
       if(createLog) {self$log_user_event(user_id, description=glue("Heeft het privacy protocol van registratie {registration_id} aangemaakt"))}
@@ -600,9 +598,9 @@ ApolloEngine <- R6::R6Class(
     },
     
     
-    #######################################################
-    # ---------------  ACTIELIJST ----------------------- #
-    #######################################################
+
+#---------  ACTIELIJST -----------
+
     
     
     #' @description Add action to actionlist
@@ -654,9 +652,9 @@ ApolloEngine <- R6::R6Class(
       ) 
     },
       
-    #######################################################
-    # ---------------  DETAILPAGINA --------------------- #
-    #######################################################
+
+#--------  DETAILPAGINA ---------
+
     
     #' @description Get person details from the identifier
     #' @param person_id Person's identifier FI: (pseudo)bsn 

@@ -14,7 +14,7 @@ library(yaml)
 
 
 # Test het system warehouse object. 
-if(TRUE){
+if(FALSE){
   print('-- using custom --') 
   testconf <- read_yaml('conf/testconf.yml') 
 } else { 
@@ -36,8 +36,7 @@ if(TRUE){
 }
  
 
-#options(config_file = glue("c:/repos/apollo-ondermijning/conf/config.yml"))
-options(config_file = glue("conf/config.yml"))
+options(config_file = glue("test/conf/config.yml"))
 
 #library(apollor)
 devtools::load_all()
