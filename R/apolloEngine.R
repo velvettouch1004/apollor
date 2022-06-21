@@ -358,19 +358,29 @@ ApolloEngine <- R6::R6Class(
     #' @param id_columns Columns from the base table (e.g. person) that are copied to the indicator table
     make_indicator_table = function(theme, 
                                     type = c("address","person","business"),
-                                    id_columns = c("address_id","buurt_code_cbs")){
+                                    id_columns = c("address_id","buurt_code_cbs"),
+                                    user_id, gemeente
+                                    ){
       
       type <- match.arg(type)
       
+      # Get indicators for this theme / type
       def <- self$get_indicators_theme(theme) %>%
         filter(object_type == !!type)
+      
+      # Get risk parameters for these indicators / this user / this gemeente
+      risk <- self$get_indicators_riskmodel(user_id = user_id,
+                                            theme = theme, 
+                                            gemeente = gemeente) %>%
+        filter(indicator_name %in% !!def$indicator_name) %>%
+        mutate(object_type = type)  # needed in $make_boolean_indicator
       
       # Selecteer alleen de adres id en buurt code,
       tab <- self[[type]] %>% select(all_of(!!id_columns))
 
       # voeg alle boolean indicators toe
       i_data <- lapply(def$indicator_name, function(x){
-        self$make_boolean_indicator(data = def, indicator = x)
+        self$make_boolean_indicator(data = risk, indicator = x)
       })
       
       out <- do.call(cbind, i_data) %>%
@@ -422,10 +432,10 @@ ApolloEngine <- R6::R6Class(
     #' @description Calculate riskmodel at address level
     #' @param data Combined indicator table at address level (made with `combine_indicator_tables`)
     #' @param theme Theme for the indicators; used to get weights from definition table
-    calculate_riskmodel = function(data, theme){
+    calculate_riskmodel = function(data, theme, user_id, gemeente){
       
       # Definition for this theme
-      def <- self$get_indicators_theme(theme)
+      def <- self$get_indicators_riskmodel(user_id, theme, gemeente)
       
       if(!all(def$indicator_name %in% names(data))){
         stop("Some indicator definitions not found in data!")
