@@ -36,7 +36,7 @@ if(FALSE){
 }
  
 
-options(config_file = glue("test/conf/config.yml"))
+options(config_file = glue("../conf/config.yml"))
 
 #library(apollor)
 devtools::load_all()
@@ -157,9 +157,15 @@ if(testconf[["network"]]){
   resident_data <- .sys$get_residents(address_data$address_id)
   business_data <- .sys$get_businesses_at_address(address_data$address_id)
   
-  
+  print('person netw')
   print(.sys$create_network_nodes(person_data,address_data,resident_data,business_data))
   print(.sys$create_network_edges(person_data,address_data,resident_data,business_data))
+  
+  print('address netw')
+  print(.sys$create_network_nodes(NULL,address_data,resident_data,business_data))
+  print(.sys$create_network_edges(NULL,address_data,resident_data,business_data))
+ 
+  
 }
 ######################################################
 # -------------- INDICATOR FUNCTIONS ----------------#

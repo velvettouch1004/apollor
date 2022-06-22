@@ -16,6 +16,8 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-assert_geo}{\code{ApolloEngine$assert_geo()}}
 \item \href{#method-geo_name_from_code}{\code{ApolloEngine$geo_name_from_code()}}
 \item \href{#method-add_geo_columns}{\code{ApolloEngine$add_geo_columns()}}
+\item \href{#method-get_cbs_buurt_data}{\code{ApolloEngine$get_cbs_buurt_data()}}
+\item \href{#method-get_cbs_buurt_metadata}{\code{ApolloEngine$get_cbs_buurt_metadata()}}
 \item \href{#method-to_json}{\code{ApolloEngine$to_json()}}
 \item \href{#method-from_json}{\code{ApolloEngine$from_json()}}
 \item \href{#method-read_signals}{\code{ApolloEngine$read_signals()}}
@@ -32,11 +34,13 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-add_indicator}{\code{ApolloEngine$add_indicator()}}
 \item \href{#method-remove_indicator}{\code{ApolloEngine$remove_indicator()}}
 \item \href{#method-get_indicators_theme}{\code{ApolloEngine$get_indicators_theme()}}
-\item \href{#method-set_indicator_weight}{\code{ApolloEngine$set_indicator_weight()}}
+\item \href{#method-get_indicators_riskmodel}{\code{ApolloEngine$get_indicators_riskmodel()}}
 \item \href{#method-make_boolean_indicator}{\code{ApolloEngine$make_boolean_indicator()}}
 \item \href{#method-make_indicator_table}{\code{ApolloEngine$make_indicator_table()}}
 \item \href{#method-combine_indicator_tables}{\code{ApolloEngine$combine_indicator_tables()}}
 \item \href{#method-calculate_riskmodel}{\code{ApolloEngine$calculate_riskmodel()}}
+\item \href{#method-set_indicator_weight}{\code{ApolloEngine$set_indicator_weight()}}
+\item \href{#method-write_indicator_riskmodel}{\code{ApolloEngine$write_indicator_riskmodel()}}
 \item \href{#method-get_active_actions}{\code{ApolloEngine$get_active_actions()}}
 \item \href{#method-list_actions}{\code{ApolloEngine$list_actions()}}
 \item \href{#method-list_favorites}{\code{ApolloEngine$list_favorites()}}
@@ -138,6 +142,24 @@ Add wijk, gemeente columns to a dataframe with buurt_code_cbs column
 
 \subsection{Details}{
 Existing geo columns will be overwritten
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_cbs_buurt_data"></a>}}
+\if{latex}{\out{\hypertarget{method-get_cbs_buurt_data}{}}}
+\subsection{Method \code{get_cbs_buurt_data()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_cbs_buurt_data(buurt_code_cbs)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_cbs_buurt_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-get_cbs_buurt_metadata}{}}}
+\subsection{Method \code{get_cbs_buurt_metadata()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_cbs_buurt_metadata()}\if{html}{\out{</div>}}
 }
 
 }
@@ -330,12 +352,11 @@ Use this function to find definitions for indicators in a theme.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_indicator_weight"></a>}}
-\if{latex}{\out{\hypertarget{method-set_indicator_weight}{}}}
-\subsection{Method \code{set_indicator_weight()}}{
-Set the weight (riskmodel) for an indicator in a theme
+\if{html}{\out{<a id="method-get_indicators_riskmodel"></a>}}
+\if{latex}{\out{\hypertarget{method-get_indicators_riskmodel}{}}}
+\subsection{Method \code{get_indicators_riskmodel()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$set_indicator_weight(indicator_name, theme, weight)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_indicators_riskmodel(user_id, theme, gemeente)}\if{html}{\out{</div>}}
 }
 
 }
@@ -367,7 +388,9 @@ Make a table with indicator (boolean) values
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$make_indicator_table(
   theme,
   type = c("address", "person", "business"),
-  id_columns = c("address_id", "buurt_code_cbs")
+  id_columns = c("address_id", "buurt_code_cbs"),
+  user_id,
+  gemeente
 )}\if{html}{\out{</div>}}
 }
 
@@ -414,7 +437,7 @@ then the address is TRUE. TODO business level indicators
 \subsection{Method \code{calculate_riskmodel()}}{
 Calculate riskmodel at address level
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$calculate_riskmodel(data, theme)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$calculate_riskmodel(data, theme, user_id, gemeente)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -426,6 +449,37 @@ Calculate riskmodel at address level
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_indicator_weight"></a>}}
+\if{latex}{\out{\hypertarget{method-set_indicator_weight}{}}}
+\subsection{Method \code{set_indicator_weight()}}{
+Set the weight (riskmodel) for an indicator in a theme
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$set_indicator_weight(indicator_name, theme, weight)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-write_indicator_riskmodel"></a>}}
+\if{latex}{\out{\hypertarget{method-write_indicator_riskmodel}{}}}
+\subsection{Method \code{write_indicator_riskmodel()}}{
+Write weight/threshold for an indicator in a theme for a user
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$write_indicator_riskmodel(
+  user_id,
+  indicator_name,
+  theme,
+  weight,
+  threshold
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+Written to table indicator_riskmodel. If the entry does not exist for the user,
+add a new row for this user. If it does exist, use an UPDATE statement to replace the value.
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_active_actions"></a>}}
@@ -817,7 +871,7 @@ Create data suitable for timeline plot
 Create suitable node format for network(Viz)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_network_nodes(
-  person_data,
+  person_data = NULL,
   address_data = NULL,
   resident_data = NULL,
   business_data = NULL,
@@ -833,7 +887,7 @@ Create suitable node format for network(Viz)
 Create suitable edge format for network(Viz)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_network_edges(
-  person_data,
+  person_data = NULL,
   address_data = NULL,
   resident_data = NULL,
   business_data = NULL,

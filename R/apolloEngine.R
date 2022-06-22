@@ -801,21 +801,33 @@ ApolloEngine <- R6::R6Class(
     },
     
     #' @description Create suitable node format for network(Viz)
-    create_network_nodes = function(person_data, 
+    create_network_nodes = function(person_data=NULL, 
                                      address_data=NULL, 
                                      resident_data=NULL, 
                                      business_data=NULL, 
                                      registration_data=NULL){
       
-      # intitialise node object with person data       
-      network_nodes <- data.frame(label = person_data$person_id,   
+      # intitialise node object with person data    
+      if(!is.null(person_data)){
+        network_nodes <- data.frame(label = person_data$person_id,   
                                   group = c("person"),          
                                   title = person_data$person_id,
-                                  level = 0)   
+                                  level = 0)   %>% 
+          add_net_nodes(address_data, 'address_id', 'address_id', 'address', level= 2 )   %>%
+          add_net_nodes(resident_data %>% filter(person_id != person_data$person_id), 'person_id', 'person_id', 'resident', level=0)
+      }
+      # intitialise node object with address data    
+      else {
+        network_nodes <- data.frame(label = address_data$address_id,   
+                                    group = c("address"),          
+                                    title = address_data$address_id,
+                                    level = 2)   %>%  
+          add_net_nodes(resident_data ,  'person_id', 'person_id', 'resident', level=0)
+        
+      }
+        
       # add subsequent nodes
-      network_nodes %>% 
-        add_net_nodes(address_data, 'address_id', 'address_id', 'address', level= 2 ) %>%
-        add_net_nodes(resident_data %>% filter(person_id != person_data$person_id), 'person_id', 'person_id', 'resident', level=0) %>%
+      network_nodes  %>%
         add_net_nodes(business_data, 'business_id', 'business_id', 'business',level=2) %>%
         add_net_nodes(registration_data, 'registration_id', 'registration_id', 'registration',level=5) %>% 
         mutate(id=row_number())
@@ -824,7 +836,7 @@ ApolloEngine <- R6::R6Class(
       
     
     #' @description Create suitable edge format for network(Viz)
-    create_network_edges = function(person_data, 
+    create_network_edges = function(person_data=NULL, 
                                       address_data=NULL, 
                                       resident_data=NULL, 
                                       business_data=NULL, 
@@ -834,7 +846,7 @@ ApolloEngine <- R6::R6Class(
       network_edges <- data.frame(label = c(), title = c())
       
       # naive -> only add edges if address is available
-      if(!is.null(address_data) && nrow(address_data) > 0){
+      if(!is.null(address_data) && nrow(address_data) > 0 && !is.null(person_data) && nrow(person_data) > 0){
         
         network_edges <- network_edges %>% 
           add_net_edges(person_data, 'Woont op', 'Woont op') %>%
@@ -844,7 +856,19 @@ ApolloEngine <- R6::R6Class(
           add_net_edges(registration_data, 'Signaal op', 'Signaal op') %>%
           mutate(from = row_number(), to=2) %>% # naive -> connect everything to address 
           filter(from != 2) # remove address identitiy
-       }
+      }
+      
+      else if(!is.null(address_data) && nrow(address_data) > 0){
+        
+        network_edges <- network_edges %>%  
+          add_net_edges(address_data, 'is', 'is') %>%
+          add_net_edges(resident_data, 'Woont op', 'Woont op') %>%
+          add_net_edges(business_data, 'Gevestigd op', 'Gevestigd op') %>%
+          add_net_edges(registration_data, 'Signaal op', 'Signaal op') %>%
+          mutate(from = row_number(), to=1) %>% # naive -> connect everything to address 
+          filter(from != 1) # remove address identitiy
+      }
+      
        network_edges 
        
     }
