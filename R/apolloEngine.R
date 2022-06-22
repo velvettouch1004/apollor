@@ -817,13 +817,18 @@ ApolloEngine <- R6::R6Class(
           add_net_nodes(resident_data %>% filter(person_id != person_data$person_id), 'person_id', 'person_id', 'resident', level=0)
       }
       # intitialise node object with address data    
-      else {
+      else if(!is.null(address_data)){ 
         network_nodes <- data.frame(label = address_data$address_id,   
                                     group = c("address"),          
                                     title = address_data$address_id,
                                     level = 2)   %>%  
           add_net_nodes(resident_data ,  'person_id', 'person_id', 'resident', level=0)
         
+      } else {
+        network_nodes <-  data.frame(label = c(),   
+                                     group =  c(),          
+                                     title =  c(),
+                                     level =  c())  
       }
         
       # add subsequent nodes
@@ -867,7 +872,7 @@ ApolloEngine <- R6::R6Class(
           add_net_edges(registration_data, 'Signaal op', 'Signaal op') %>%
           mutate(from = row_number(), to=1) %>% # naive -> connect everything to address 
           filter(from != 1) # remove address identitiy
-      }
+      }  
       
        network_edges 
        
