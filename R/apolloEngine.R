@@ -685,11 +685,20 @@ ApolloEngine <- R6::R6Class(
       )  
     },
     #' @description Archive mpp for registration
-    archive_MPP_for_registration = function(registration_id, user_id, createLog=TRUE){
+    archive_MPP_for_registration_old = function(registration_id, user_id, createLog=TRUE){
       if(createLog){ self$log_user_event(user_id, description=glue("Heeft het privacy protocol van registratie {registration_id} gerachiveerd"))}
       
       try( 
         self$execute_query(glue("UPDATE {self$schema}.model_privacy_protocol SET archived = TRUE, timestamp = '{Sys.time()}' WHERE registration_id = '{registration_id}'"))
+      ) 
+      
+    },
+
+    archive_MPP_for_registration = function(registration_id, user_id, mpp_names, createLog=TRUE){
+      if(createLog){ self$log_user_event(user_id, description=glue("Heeft het privacy protocol van registratie {registration_id} gerachiveerd"))}
+      
+      try( 
+        self$execute_query(glue("UPDATE {self$schema}.model_privacy_protocol SET archived = TRUE, timestamp = '{Sys.time()}' WHERE mpp_name IN ('{glue_collapse(mpp_names, sep = \"','\" )}') and registration_id = '{registration_id}'"))
       ) 
       
     },
@@ -698,13 +707,22 @@ ApolloEngine <- R6::R6Class(
     
       self$log_user_event(user_id, description=glue("Heeft het privacy protocol van registratie {registration_id} gewijzigd"))  
       data_formatted <- data %>% select(mpp_name, bool_val, text_val)
-      self$archive_MPP_for_registration(registration_id, user_id, createLog=FALSE)
+      self$archive_MPP_for_registration_old(registration_id, user_id, createLog=FALSE)
       self$create_MPP_for_registration(registration_id, user_id, data_formatted, createLog=FALSE)
-      
-        
+       
     },
     
+  update_MPP_for_registration = function(registration_id, data, user_id, registration_name=NULL){
+    if(!is.null(registration_name)){
+      self$log_user_event(user_id, description=glue("Heeft het privacy protocol velden {paste(data$mpp_name)} van registratie {registration_name} gewijzigd"))  
+    } else {
+      self$log_user_event(user_id, description=glue("Heeft het privacy protocol velden {paste(data$mpp_name)} van registratie {registration_id} gewijzigd")) 
+    }
+     
+    self$archive_MPP_for_registration(registration_id, user_id, data$mpp_name, createLog=FALSE) 
+    self$create_MPP_for_registration(registration_id, user_id, data, createLog=FALSE)
     
+  },
 
 #---------  ACTIELIJST -----------
 

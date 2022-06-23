@@ -14,7 +14,7 @@ library(yaml)
 
 
 # Test het system warehouse object. 
-if(FALSE){
+if(TRUE){
   print('-- using custom --') 
   testconf <- read_yaml('conf/testconf.yml') 
 } else { 
@@ -36,7 +36,7 @@ if(FALSE){
 }
  
 
-options(config_file = glue("../conf/config.yml"))
+options(config_file = glue("conf/config.yml"))
 
 #library(apollor)
 devtools::load_all()
@@ -130,7 +130,11 @@ if(testconf[["MPP"]]){
   #.sys$archive_MPP_for_registration(registration_id, user_id ) 
   x <- .sys$read_mpp(registration_id)
   print(x)
-  .sys$updateMPP(registration_id, user_id, data=MPP_example)
+  #.sys$updateMPP(registration_id, user_id, data=MPP_example)
+  
+  .sys$update_MPP_for_registration(registration_id, MPP_example, user_id)
+  #.sys$archive_MPP_for_registration(registration_id='1', user_id='1', mpp_names=c("A", "B", "C"), createLog=FALSE)
+  
 }
 
 ################################################### 
