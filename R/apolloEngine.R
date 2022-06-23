@@ -34,7 +34,8 @@ ApolloEngine <- R6::R6Class(
     
     initialize = function(gemeente, schema, pool, 
                           config_file = getOption("config_file","conf/config.yml"),
-                          geo_file = NULL){
+                          geo_file = NULL,
+                          load_data = TRUE){
       
       flog.info("DB Connection", name = "DBR6")
       
@@ -57,14 +58,17 @@ ApolloEngine <- R6::R6Class(
         self$con <- response
       }
       
-      self$read_person()
-      self$read_business()
-      self$read_address()
-      self$read_indicator()
-      self$read_signals()
-      
-      self$relocations <- self$read_table("brp_verhuis_historie")
-      self$model_privacy_protocol <- self$read_table("model_privacy_protocol") 
+      if(load_data){
+        self$read_person()
+        self$read_business()
+        self$read_address()
+        self$read_indicator()
+        self$read_signals()
+        
+        self$relocations <- self$read_table("brp_verhuis_historie")
+        self$model_privacy_protocol <- self$read_table("model_privacy_protocol") 
+      }
+
       
       # BAG connectie
       self$bag_con <- shintobag::shinto_db_connection("data_bag", file = config_file)
