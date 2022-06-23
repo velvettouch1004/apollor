@@ -18,6 +18,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-add_geo_columns}{\code{ApolloEngine$add_geo_columns()}}
 \item \href{#method-get_cbs_buurt_data}{\code{ApolloEngine$get_cbs_buurt_data()}}
 \item \href{#method-get_cbs_buurt_metadata}{\code{ApolloEngine$get_cbs_buurt_metadata()}}
+\item \href{#method-street_from_bagid}{\code{ApolloEngine$street_from_bagid()}}
 \item \href{#method-to_json}{\code{ApolloEngine$to_json()}}
 \item \href{#method-from_json}{\code{ApolloEngine$from_json()}}
 \item \href{#method-read_signals}{\code{ApolloEngine$read_signals()}}
@@ -52,8 +53,10 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-add_favorite}{\code{ApolloEngine$add_favorite()}}
 \item \href{#method-remove_favorite}{\code{ApolloEngine$remove_favorite()}}
 \item \href{#method-create_MPP_for_registration}{\code{ApolloEngine$create_MPP_for_registration()}}
+\item \href{#method-archive_MPP_for_registration_old}{\code{ApolloEngine$archive_MPP_for_registration_old()}}
 \item \href{#method-archive_MPP_for_registration}{\code{ApolloEngine$archive_MPP_for_registration()}}
 \item \href{#method-updateMPP}{\code{ApolloEngine$updateMPP()}}
+\item \href{#method-update_MPP_for_registration}{\code{ApolloEngine$update_MPP_for_registration()}}
 \item \href{#method-create_action}{\code{ApolloEngine$create_action()}}
 \item \href{#method-update_action}{\code{ApolloEngine$update_action()}}
 \item \href{#method-archive_action}{\code{ApolloEngine$archive_action()}}
@@ -126,7 +129,8 @@ Translate buurt or wijk codes into names
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{code}}{E.g. "WK022801" or "BU02280105"}
+\item{\code{code}}{E.g. "WK022801" or "BU02280105"
+TODO this is not vectorized!}
 }
 \if{html}{\out{</div>}}
 }
@@ -160,6 +164,15 @@ Existing geo columns will be overwritten
 \subsection{Method \code{get_cbs_buurt_metadata()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_cbs_buurt_metadata()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-street_from_bagid"></a>}}
+\if{latex}{\out{\hypertarget{method-street_from_bagid}{}}}
+\subsection{Method \code{street_from_bagid()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$street_from_bagid(id)}\if{html}{\out{</div>}}
 }
 
 }
@@ -654,14 +667,28 @@ Create MPP for registration
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-archive_MPP_for_registration_old"></a>}}
+\if{latex}{\out{\hypertarget{method-archive_MPP_for_registration_old}{}}}
+\subsection{Method \code{archive_MPP_for_registration_old()}}{
+Archive mpp for registration
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_MPP_for_registration_old(
+  registration_id,
+  user_id,
+  createLog = TRUE
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-archive_MPP_for_registration"></a>}}
 \if{latex}{\out{\hypertarget{method-archive_MPP_for_registration}{}}}
 \subsection{Method \code{archive_MPP_for_registration()}}{
-Archive mpp for registration
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_MPP_for_registration(
   registration_id,
   user_id,
+  mpp_names,
   createLog = TRUE
 )}\if{html}{\out{</div>}}
 }
@@ -674,6 +701,20 @@ Archive mpp for registration
 Update mpp for registration
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$updateMPP(registration_id, data, user_id)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-update_MPP_for_registration"></a>}}
+\if{latex}{\out{\hypertarget{method-update_MPP_for_registration}{}}}
+\subsection{Method \code{update_MPP_for_registration()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$update_MPP_for_registration(
+  registration_id,
+  data,
+  user_id,
+  registration_name = NULL
+)}\if{html}{\out{</div>}}
 }
 
 }
