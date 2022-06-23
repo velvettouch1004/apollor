@@ -99,6 +99,7 @@ ApolloEngine <- R6::R6Class(
     
     #' @description Translate buurt or wijk codes into names
     #' @param code E.g. "WK022801" or "BU02280105"
+    #' TODO this is not vectorized!
     geo_name_from_code = function(code){
       
       self$assert_geo()
@@ -164,6 +165,17 @@ ApolloEngine <- R6::R6Class(
       
     },
     
+    street_from_bagid = function(id){
+      
+      query <- glue::glue(
+        "select openbareruimtenaam from bagactueel.adres_plus ",
+        "where adresseerbaarobject_id = '{id}'"
+      )
+      
+      DBI::dbGetQuery(self$bag_con, query)[[1]]
+      
+    },
+
 
 #--------  UTILITIES -----
 
@@ -532,7 +544,9 @@ ApolloEngine <- R6::R6Class(
     get_active_actions= function(){
       self$actions %>% filter(expired==FALSE) %>% arrange(desc(action_date))
     },
+
     list_actions = function(update=FALSE){
+      
       if(is.null(self$actions)  || update){
         self$read_actions() 
       } 
@@ -540,7 +554,8 @@ ApolloEngine <- R6::R6Class(
         self$read_signals()
       }  
 
-       dplyr::left_join( self$actions, self$signals, by=c('registration_id' ), suffix = c(".actie", ".signaal"))
+      # ?
+      dplyr::left_join( self$actions, self$signals, by=c('registration_id' ), suffix = c(".actie", ".signaal"))
 
     },
     
