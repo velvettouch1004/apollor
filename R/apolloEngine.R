@@ -192,7 +192,7 @@ ApolloEngine <- R6::R6Class(
       self$indicator <- self$read_table('indicator') 
       invisible(self$indicator)
     },
-    read_person = function(){ 
+    read_person = function(){
       self$person <- self$read_table('person') 
       invisible(self$person)
     },
@@ -540,7 +540,7 @@ ApolloEngine <- R6::R6Class(
         self$read_signals()
       }  
 
-       dplyr::left_join( self$actions, self$signals, by=c('registration_id' ), suffix = c(".actie", ".signaal"))
+       dplyr::left_join( self$actions, self$signals, by=c('registration_id' ), suffix = c("", ".signaal"))
 
     },
     
