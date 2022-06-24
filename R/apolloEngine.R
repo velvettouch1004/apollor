@@ -4,7 +4,6 @@
 #' @importFrom R6 R6Class
 #' @importFrom dbplyr in_schema  
 #' @importFrom dplyr tbl left_join collect bind_rows
-#' @importFrom plyr join_all 
 #' @importFrom safer encrypt_string decrypt_string
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom tibble tibble
