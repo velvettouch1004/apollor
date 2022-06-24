@@ -19,6 +19,8 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-get_cbs_buurt_data}{\code{ApolloEngine$get_cbs_buurt_data()}}
 \item \href{#method-get_cbs_buurt_metadata}{\code{ApolloEngine$get_cbs_buurt_metadata()}}
 \item \href{#method-street_from_bagid}{\code{ApolloEngine$street_from_bagid()}}
+\item \href{#method-get_bag_from_bagid}{\code{ApolloEngine$get_bag_from_bagid()}}
+\item \href{#method-join_bag_geometry}{\code{ApolloEngine$join_bag_geometry()}}
 \item \href{#method-to_json}{\code{ApolloEngine$to_json()}}
 \item \href{#method-from_json}{\code{ApolloEngine$from_json()}}
 \item \href{#method-read_signals}{\code{ApolloEngine$read_signals()}}
@@ -90,6 +92,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="replace_value_where2">}\href{../../apollor/html/NA.html#method-replace_value_where2}{\code{apollor::NA$replace_value_where2()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="table_columns">}\href{../../apollor/html/NA.html#method-table_columns}{\code{apollor::NA$table_columns()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="table_info">}\href{../../apollor/html/NA.html#method-table_info}{\code{apollor::NA$table_info()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="to_sql_string">}\href{../../apollor/html/NA.html#method-to_sql_string}{\code{apollor::NA$to_sql_string()}}\out{</span>}
 }
 \out{</details>}
 }
@@ -103,7 +106,8 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
   schema,
   pool,
   config_file = getOption("config_file", "conf/config.yml"),
-  geo_file = NULL
+  geo_file = NULL,
+  load_data = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -173,6 +177,24 @@ Existing geo columns will be overwritten
 \subsection{Method \code{street_from_bagid()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$street_from_bagid(id)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_bag_from_bagid"></a>}}
+\if{latex}{\out{\hypertarget{method-get_bag_from_bagid}{}}}
+\subsection{Method \code{get_bag_from_bagid()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_bag_from_bagid(id, spatial = FALSE, geo_only = FALSE)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-join_bag_geometry"></a>}}
+\if{latex}{\out{\hypertarget{method-join_bag_geometry}{}}}
+\subsection{Method \code{join_bag_geometry()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$join_bag_geometry(data, id_column = "adresseerbaarobject_id")}\if{html}{\out{</div>}}
 }
 
 }
