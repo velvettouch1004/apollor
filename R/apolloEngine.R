@@ -1,6 +1,5 @@
 #' Business logic of the Apollo application
 #' @description An R6 object with methods for use in the Shiny application `apollo`. 
-#' @importFrom shintobag shinto_db_connection
 #' @importFrom pool dbPool poolClose
 #' @importFrom R6 R6Class
 #' @importFrom dbplyr in_schema  
