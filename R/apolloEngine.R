@@ -180,6 +180,41 @@ ApolloEngine <- R6::R6Class(
       
     },
 
+    get_bag_from_bagid = function(id, spatial = FALSE, geo_only = FALSE){
+      
+      cols <- ifelse(geo_only, "adresseerbaarobject_id, geopunt", "*")
+      
+      data_out <- data.frame(adresseerbaarobject_id = id)
+      
+      id_lookup <- unique(id[!is.na(id)])
+      if(length(id_lookup) == 0){
+        return(NULL) # TODO might need something else here
+      }
+      
+      query <- glue::glue(
+        "select {cols} from bagactueel.adres_plus ",
+        "where adresseerbaarobject_id in {self$to_sql_string(id_lookup)}"
+      )
+      
+      if(!spatial){
+        out <- DBI::dbGetQuery(self$bag_con, query)  
+      } else {
+        out <- sf::st_read(self$bag_con, query = query) 
+        if(nrow(out) > 0)out <- out %>% st_transform(4326)
+      }
+      
+      left_join(data_out, out, by = "adresseerbaarobject_id")
+      
+    },
+
+    join_bag_geometry = function(data, id_column = "adresseerbaarobject_id"){
+      
+      data_bag <- self$get_bag_from_bagid(data[[id_column]], spatial = TRUE, geo_only = TRUE)
+      
+      st_as_sf(left_join(data, data_bag, by = setNames("adresseerbaarobject_id",id_column)))
+      
+    },
+
 
 #--------  UTILITIES -----
 

@@ -354,7 +354,18 @@ databaseObject <- R6::R6Class(
         dbExecute(self$con, query)   
       )
       
+    },
+    
+    to_sql_string = function(x){
+        
+        paste0(
+          "('",
+          paste(x, collapse="','"),
+          "')"
+        )
+        
     }
+     
   )
   
   
