@@ -39,7 +39,7 @@ ApolloEngine <- R6::R6Class(
       
       self$gemeente <- gemeente
       self$pool <- pool
-      self$schema <- schema
+      self$schema <- schema 
       what <- gemeente
       
       cf <- config::get(what, file = config_file)
@@ -62,6 +62,7 @@ ApolloEngine <- R6::R6Class(
         self$read_address()
         self$read_indicator()
         self$read_signals()
+        self$read_metadata()
         
         self$relocations <- self$read_table("brp_verhuis_historie")
         self$model_privacy_protocol <- self$read_table("model_privacy_protocol") 
@@ -89,7 +90,7 @@ ApolloEngine <- R6::R6Class(
     },
     
     
-
+     
 #----- GEO UTILITIES ----
 
     
@@ -245,6 +246,10 @@ ApolloEngine <- R6::R6Class(
       self$person <- self$read_table('person') 
       invisible(self$person)
     },
+    read_metadata = function(){ 
+      self$metadata <- self$read_table('metadata') 
+      invisible(self$metadata)
+    }, 
     read_business = function(){ 
       self$business <- self$read_table('business') 
       invisible(self$business)
@@ -265,11 +270,7 @@ ApolloEngine <- R6::R6Class(
     read_log = function(){ 
       self$user_event_log <- self$read_table('user_event_log') 
       invisible(self$user_event_log)
-    },
-    read_metadata = function(){ 
-      self$metadata <- self$read_table('metadata') 
-      invisible(self$metadata)
-    },
+    }, 
     read_mpp = function(registration_id=NULL, archived=FALSE){ 
       if(is.null(registration_id)){
         self$model_privacy_protocol <- self$read_table('model_privacy_protocol') 
@@ -281,6 +282,39 @@ ApolloEngine <- R6::R6Class(
     },
     
     
+
+#----- TRANSPARACY ----
+    get_indicator = function(indicator_name){
+      self$indicator$label[match(indicator_name, self$indicator$indicator_name)]
+      
+    },
+    get_metadata = function(){
+      
+        self$metadata 
+       
+      
+    },
+set_metadata = function(name, label, timestamp_provided,  owner, depends_on, step, colnames, description, timestamp_processed=Sys.time() ){
+  
+   
+  metadata <- tibble::tibble(
+    name=name, 
+    label=label, 
+    timestamp_provided=timestamp_provided, 
+    timestamp_processed=timestamp_processed, 
+    owner=owner, 
+    depends_on=self$to_json(depends_on), 
+    step=step, 
+    colnames=self$to_json(colnames), 
+    description=description
+  )
+  
+  try( 
+    self$append_data('metadata', metadata)
+  ) 
+  
+},
+
 
 #--------- INDICATOR FUNCTIONS ----------
 
@@ -309,13 +343,9 @@ ApolloEngine <- R6::R6Class(
                              description, 
                              user_id, 
                              theme, 
-                             columns, 
-                             weight, 
-                             threshold){
+                             columns  ){
       
-      type <- match.arg(type)
-      stopifnot(is.numeric(weight))
-      stopifnot(is.numeric(threshold))
+      type <- match.arg(type) 
       
       data <- tibble::tibble(
         indicator_name = indicator_name,
@@ -325,8 +355,8 @@ ApolloEngine <- R6::R6Class(
         user_id = user_id,
         theme = self$to_json(theme),
         columns = self$to_json(columns),
-        weight = weight,
-        threshold = threshold,
+        #weight = weight,
+        #threshold = threshold,
         timestamp = format(Sys.time())
       )
       
@@ -743,7 +773,7 @@ ApolloEngine <- R6::R6Class(
     updateMPP = function(registration_id, data, user_id){
     
       self$log_user_event(user_id, description=glue("Heeft het privacy protocol van registratie {registration_id} gewijzigd"))  
-      data_formatted <- data %>% select(mpp_name, bool_val, text_val)
+      data_formatted <- data %>% select(mpp_name, bool_val, text_val, checklist)
       self$archive_MPP_for_registration_old(registration_id, user_id, createLog=FALSE)
       self$create_MPP_for_registration(registration_id, user_id, data_formatted, createLog=FALSE)
        
@@ -753,10 +783,13 @@ ApolloEngine <- R6::R6Class(
     if(!is.null(registration_name)){
       self$log_user_event(user_id, description=glue("Heeft het privacy protocol velden {paste(data$mpp_name)} van registratie {registration_name} gewijzigd"))  
     } else {
-      self$log_user_event(user_id, description=glue("Heeft het privacy protocol velden {paste(data$mpp_name)} van registratie {registration_id} gewijzigd")) 
+      print(11111)
+      #self$log_user_event(user_id, description=glue("Heeft het privacy protocol velden {paste(data$mpp_name)} van registratie {registration_id} gewijzigd")) 
     }
-     
+    
+    print(22222)
     self$archive_MPP_for_registration(registration_id, user_id, data$mpp_name, createLog=FALSE) 
+    print(33333)
     self$create_MPP_for_registration(registration_id, user_id, data, createLog=FALSE)
     
   },

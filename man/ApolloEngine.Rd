@@ -27,12 +27,15 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-read_actions}{\code{ApolloEngine$read_actions()}}
 \item \href{#method-read_indicator}{\code{ApolloEngine$read_indicator()}}
 \item \href{#method-read_person}{\code{ApolloEngine$read_person()}}
+\item \href{#method-read_metadata}{\code{ApolloEngine$read_metadata()}}
 \item \href{#method-read_business}{\code{ApolloEngine$read_business()}}
 \item \href{#method-read_address}{\code{ApolloEngine$read_address()}}
 \item \href{#method-read_favorites}{\code{ApolloEngine$read_favorites()}}
 \item \href{#method-read_log}{\code{ApolloEngine$read_log()}}
-\item \href{#method-read_metadata}{\code{ApolloEngine$read_metadata()}}
 \item \href{#method-read_mpp}{\code{ApolloEngine$read_mpp()}}
+\item \href{#method-get_indicator}{\code{ApolloEngine$get_indicator()}}
+\item \href{#method-get_metadata}{\code{ApolloEngine$get_metadata()}}
+\item \href{#method-set_metadata}{\code{ApolloEngine$set_metadata()}}
 \item \href{#method-label_indicator}{\code{ApolloEngine$label_indicator()}}
 \item \href{#method-add_indicator}{\code{ApolloEngine$add_indicator()}}
 \item \href{#method-remove_indicator}{\code{ApolloEngine$remove_indicator()}}
@@ -253,6 +256,15 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-read_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-read_metadata}{}}}
+\subsection{Method \code{read_metadata()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_metadata()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-read_business"></a>}}
 \if{latex}{\out{\hypertarget{method-read_business}{}}}
 \subsection{Method \code{read_business()}}{
@@ -289,20 +301,48 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_metadata"></a>}}
-\if{latex}{\out{\hypertarget{method-read_metadata}{}}}
-\subsection{Method \code{read_metadata()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_metadata()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-read_mpp"></a>}}
 \if{latex}{\out{\hypertarget{method-read_mpp}{}}}
 \subsection{Method \code{read_mpp()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_mpp(registration_id = NULL, archived = FALSE)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_indicator"></a>}}
+\if{latex}{\out{\hypertarget{method-get_indicator}{}}}
+\subsection{Method \code{get_indicator()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_indicator(indicator_name)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-get_metadata}{}}}
+\subsection{Method \code{get_metadata()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_metadata()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-set_metadata}{}}}
+\subsection{Method \code{set_metadata()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$set_metadata(
+  name,
+  label,
+  timestamp_provided,
+  owner,
+  depends_on,
+  step,
+  colnames,
+  description,
+  timestamp_processed = Sys.time()
+)}\if{html}{\out{</div>}}
 }
 
 }
@@ -336,9 +376,7 @@ Adds an indicator's metadata to the 'indicator' table
   description,
   user_id,
   theme,
-  columns,
-  weight,
-  threshold
+  columns
 )}\if{html}{\out{</div>}}
 }
 
