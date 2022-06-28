@@ -405,8 +405,13 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
       
       data
     },
-
-
+    
+    delete_user_riskmodel = function(user_id){
+      
+      # Get user settings
+      self$execute_query(glue("DELETE from {self$schema}.indicator_riskmodel WHERE user_id = '{user_id}'"))
+        
+    },
 
 
     #' @description Convert raw indicator data to TRUE/FALSE

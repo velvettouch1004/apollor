@@ -41,6 +41,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-remove_indicator}{\code{ApolloEngine$remove_indicator()}}
 \item \href{#method-get_indicators_theme}{\code{ApolloEngine$get_indicators_theme()}}
 \item \href{#method-get_indicators_riskmodel}{\code{ApolloEngine$get_indicators_riskmodel()}}
+\item \href{#method-delete_user_riskmodel}{\code{ApolloEngine$delete_user_riskmodel()}}
 \item \href{#method-make_boolean_indicator}{\code{ApolloEngine$make_boolean_indicator()}}
 \item \href{#method-make_indicator_table}{\code{ApolloEngine$make_indicator_table()}}
 \item \href{#method-combine_indicator_tables}{\code{ApolloEngine$combine_indicator_tables()}}
@@ -430,6 +431,15 @@ Use this function to find definitions for indicators in a theme.
 \subsection{Method \code{get_indicators_riskmodel()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_indicators_riskmodel(user_id, theme, gemeente)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-delete_user_riskmodel"></a>}}
+\if{latex}{\out{\hypertarget{method-delete_user_riskmodel}{}}}
+\subsection{Method \code{delete_user_riskmodel()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$delete_user_riskmodel(user_id)}\if{html}{\out{</div>}}
 }
 
 }
