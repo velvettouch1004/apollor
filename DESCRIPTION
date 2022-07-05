@@ -1,7 +1,7 @@
 Package: apollor
 Title: Apollo as an R package
 Version: 0.1.9
-Author: Remko Duursma, Martijn Heijstek
+Author: Remko Duursma, Martijn Heijstek, Wesley Brants
 Maintainer: Remko Duursma <remko@shintolabs.nl>
 Description: Apollo as an R package. Used in apollo Frontend
 Depends: DBI, dbplyr, jsonlite, tibble,  dplyr, R6, pool

@@ -67,7 +67,7 @@ ApolloEngine <- R6::R6Class(
         self$relocations <- self$read_table("brp_verhuis_historie")
         self$model_privacy_protocol <- self$read_table("model_privacy_protocol") 
       }
-
+      
       
       # BAG connectie
       self$bag_con <- shintobag::shinto_db_connection("data_bag", file = config_file)
@@ -90,9 +90,9 @@ ApolloEngine <- R6::R6Class(
     },
     
     
-     
-#----- GEO UTILITIES ----
-
+    
+    #----- GEO UTILITIES ----
+    
     
     assert_geo = function(){
       if(!self$have_geo){
@@ -147,7 +147,7 @@ ApolloEngine <- R6::R6Class(
                     gemeente_naam = gm_naam)
       
       left_join(data, key, by = "buurt_code_cbs")
-                    
+      
       
     },
     
@@ -178,7 +178,7 @@ ApolloEngine <- R6::R6Class(
       DBI::dbGetQuery(self$bag_con, query)[[1]]
       
     },
-
+    
     get_bag_from_bagid = function(id, spatial = FALSE, geo_only = FALSE){
       
       cols <- ifelse(geo_only, "adresseerbaarobject_id, geopunt", "*")
@@ -205,7 +205,7 @@ ApolloEngine <- R6::R6Class(
       left_join(data_out, out, by = "adresseerbaarobject_id")
       
     },
-
+    
     join_bag_geometry = function(data, id_column = "adresseerbaarobject_id"){
       
       data_bag <- self$get_bag_from_bagid(data[[id_column]], spatial = TRUE, geo_only = TRUE)
@@ -213,10 +213,10 @@ ApolloEngine <- R6::R6Class(
       st_as_sf(left_join(data, data_bag, by = setNames("adresseerbaarobject_id",id_column)))
       
     },
-
-
-#--------  UTILITIES -----
-
+    
+    
+    #--------  UTILITIES -----
+    
     
     to_json = function(x){
       jsonlite::toJSON(x, auto_unbox = TRUE)
@@ -227,9 +227,9 @@ ApolloEngine <- R6::R6Class(
     },
     
     
-
-#----  APOLLO SPECIFIC FUNCTIONS ----
-  
+    
+    #----  APOLLO SPECIFIC FUNCTIONS ----
+    
     read_signals = function(){
       self$signals <- self$read_table('registrations') 
       invisible(self$signals)
@@ -282,42 +282,60 @@ ApolloEngine <- R6::R6Class(
     },
     
     
-
-#----- TRANSPARACY ----
+    
+    #----- TRANSPARACY ----
     get_indicator = function(indicator_name){
       self$indicator$label[match(indicator_name, self$indicator$indicator_name)]
       
     },
     get_metadata = function(){
       
-        self$metadata 
-       
+      self$metadata 
+      
       
     },
-set_metadata = function(name, label, timestamp_provided,  owner, depends_on, step, colnames, description, timestamp_processed=Sys.time() ){
-  
-   
-  metadata <- tibble::tibble(
-    name=name, 
-    label=label, 
-    timestamp_provided=timestamp_provided, 
-    timestamp_processed=timestamp_processed, 
-    owner=owner, 
-    depends_on=self$to_json(depends_on), 
-    step=step, 
-    colnames=self$to_json(colnames), 
-    description=description
-  )
-  
-  try( 
-    self$append_data('metadata', metadata)
-  ) 
-  
-},
-
-
-#--------- INDICATOR FUNCTIONS ----------
-
+    set_metadata = function(name, label, timestamp_provided,  owner, depends_on, step, colnames, description, timestamp_processed=Sys.time() ){
+      
+      
+      metadata <- tibble::tibble(
+        name=name, 
+        label=label, 
+        timestamp_provided=timestamp_provided, 
+        timestamp_processed=timestamp_processed, 
+        owner=owner, 
+        depends_on=self$to_json(depends_on), 
+        step=step, 
+        colnames=self$to_json(colnames), 
+        description=description
+      )
+      
+      try( 
+        self$append_data('metadata', metadata)
+      ) 
+      
+    },
+    
+    edit_indicator_filter_transparency = function(id, short_desc, long_desc, depends, def, calc, new_date){
+      if(!is.na(depends) && !is.null(depends)){
+        depends <- self$to_json(depends)  
+      } else {
+        depends <- "[]"
+      }
+      
+      if(is.null(self$schema)){
+        qu <- glue::glue("UPDATE indicator SET description = '{short_desc}', description_long = '{long_desc}', ",
+        "depends_on = '{depends}', definitie = '{def}', berekening = '{calc}', datum_wijziging  = '{new_date}' WHERE indicator_id = '{id}'")
+      } else {
+        qu <- glue::glue("UPDATE {self$schema}.indicator SET description = '{short_desc}', description_long = '{long_desc}', ",
+                         "depends_on = '{depends}', definitie = '{def}', berekening = '{calc}', datum_wijziging  = '{new_date}' WHERE indicator_id = '{id}'")
+      }
+      
+     self$execute_query(qu)
+    },
+    
+    
+    #--------- INDICATOR FUNCTIONS ----------
+    
     
     
     #' @description Get labels for indicators
@@ -376,7 +394,7 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
     #' @description Get rows of indicators table for a theme
     #' @details Use this function to find definitions for indicators in a theme.
     get_indicators_theme = function(theme){
-    
+      
       out <- self$indicator %>% 
         filter(grepl(!!theme, theme))  
       
@@ -391,17 +409,17 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
     
     get_indicators_riskmodel = function(user_id, theme, gemeente){
       
-        # Get user settings
+      # Get user settings
+      data <- self$read_table("indicator_riskmodel", lazy = TRUE) %>%
+        filter(user_id == !!user_id, theme == !!theme) %>%
+        collect
+      
+      # Don't have those? Get gemeente settings.
+      if(nrow(data) == 0){
         data <- self$read_table("indicator_riskmodel", lazy = TRUE) %>%
-          filter(user_id == !!user_id, theme == !!theme) %>%
+          filter(user_id == !!gemeente, theme == !!theme) %>%
           collect
-        
-        # Don't have those? Get gemeente settings.
-        if(nrow(data) == 0){
-          data <- self$read_table("indicator_riskmodel", lazy = TRUE) %>%
-            filter(user_id == !!gemeente, theme == !!theme) %>%
-            collect
-        }
+      }
       
       data
     },
@@ -410,10 +428,10 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
       
       # Get user settings
       self$execute_query(glue("DELETE from {self$schema}.indicator_riskmodel WHERE user_id = '{user_id}'"))
-        
+      
     },
-
-
+    
+    
     #' @description Convert raw indicator data to TRUE/FALSE
     #' @param data Dataframe subset from `indicator` table, read with `$get_indicators_theme`
     #' @param indicator Name of the indicator to convert
@@ -444,7 +462,7 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
                                     type = c("address","person","business"),
                                     id_columns = c("address_id","buurt_code_cbs"),
                                     user_id, gemeente
-                                    ){
+    ){
       
       type <- match.arg(type)
       
@@ -461,7 +479,7 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
       
       # Selecteer alleen de adres id en buurt code,
       tab <- self[[type]] %>% select(all_of(!!id_columns))
-
+      
       # voeg alle boolean indicators toe
       i_data <- lapply(def$indicator_name, function(x){
         self$make_boolean_indicator(data = risk, indicator = x)
@@ -531,11 +549,11 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
       
       data
     },
-
-
-#---- RISKMODEL ADMIN -----
-
-
+    
+    
+    #---- RISKMODEL ADMIN -----
+    
+    
     #' @description Set the weight (riskmodel) for an indicator in a theme
     set_indicator_weight = function(indicator_name, theme, weight){
       
@@ -550,8 +568,8 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
                                val_compare = indi_id)
       
     },
-
-
+    
+    
     #' @description Write weight/threshold for an indicator in a theme for a user
     #' @details Written to table indicator_riskmodel. If the entry does not exist for the user,
     #' add a new row for this user. If it does exist, use an UPDATE statement to replace the value.
@@ -562,7 +580,7 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
         collect
       
       if(nrow(data_old) == 0){
-      # append  
+        # append  
         
         data_new <- data.frame(user_id = user_id,
                                indicator_name = indicator_name,
@@ -574,7 +592,7 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
         self$append_data("indicator_riskmodel", data_new)
         
       } else {
-      # update
+        # update
         
         self$replace_value_where(
           table = "indicator_riskmodel", 
@@ -608,15 +626,15 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
     },
     
     
-
-#--------- LIST FUNCTIONS -----------
+    
+    #--------- LIST FUNCTIONS -----------
     
     #' @description Get the active actions ordered by date
     #' @param
     get_active_actions= function(){
       self$actions %>% filter(expired==FALSE) %>% arrange(desc(action_date))
     },
-
+    
     list_actions = function(update=FALSE){
       
       if(is.null(self$actions)  || update){
@@ -625,10 +643,10 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
       if(is.null(self$signals)  || update){ 
         self$read_signals()
       }  
-
-
-       dplyr::left_join( self$actions, self$signals, by=c('registration_id' ), suffix = c("", ".signaal"))
-
+      
+      
+      dplyr::left_join( self$actions, self$signals, by=c('registration_id' ), suffix = c("", ".signaal"))
+      
     },
     
     list_favorites = function(user_id=NULL, update=FALSE){
@@ -646,9 +664,9 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
       B <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'person')  , self$person, by=c('object_id'='person_id'), suffix = c(".fav", ".person"))
       #C <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'business')  , self$business, by=c('object_id'='business_id'), suffix = c(".fav", ".business"))
       #D <- dplyr::left_join( dplyr::filter( self$favorites, object_type == 'address')  , self$address, by=c('object_id'='address_id'), suffix = c(".fav", ".address"))
-       B
+      B
       #plyr::join_all(list(A,B,C,D), by='favorite_id', type='left') 
-    
+      
     },
     
     #' @description Get persons based on person or address_id
@@ -673,14 +691,14 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
       
       dplyr::filter(self$address, 
                     address_id %in% !!address_id)
-    
+      
     },
     
     
     
-
-#--------- LOGGING -------------
-
+    
+    #--------- LOGGING -------------
+    
     get_log_ping = function(){
       try( 
         self$execute_query(glue("select max(timestamp) from {self$schema}.user_event_log;"))
@@ -699,9 +717,9 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
                                    timestamp = Sys.time()))
     },
     
-
-#-------------- FAVORITES -----------
-
+    
+    #-------------- FAVORITES -----------
+    
     
     
     #' @description check if object is currently in favorites of user_id 
@@ -740,9 +758,9 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
       ) 
     },
     
-
-#--------- PRIVACY PROTOCOL  -------
-
+    
+    #--------- PRIVACY PROTOCOL  -------
+    
     #' @description Create MPP for registration
     create_MPP_for_registration = function(registration_id, user_id, data, createLog=TRUE){
       if(createLog) {self$log_user_event(user_id, description=glue("Heeft het privacy protocol van registratie {registration_id} aangemaakt"))}
@@ -750,7 +768,7 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
       data$registration_id <- rep(registration_id, nrow(data))
       data$user_id <- rep(user_id, nrow(data))
       data$timestamp <- rep(Sys.time(), nrow(data))
-       
+      
       try( 
         self$append_data('model_privacy_protocol', 
                          data)
@@ -765,7 +783,7 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
       ) 
       
     },
-
+    
     archive_MPP_for_registration = function(registration_id, user_id, mpp_names, createLog=TRUE){
       if(createLog){ self$log_user_event(user_id, description=glue("Heeft het privacy protocol van registratie {registration_id} gerachiveerd"))}
       
@@ -776,31 +794,31 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
     },
     #' @description Update mpp for registration
     updateMPP = function(registration_id, data, user_id){
-    
+      
       self$log_user_event(user_id, description=glue("Heeft het privacy protocol van registratie {registration_id} gewijzigd"))  
       data_formatted <- data %>% select(mpp_name, bool_val, text_val, checklist)
       self$archive_MPP_for_registration_old(registration_id, user_id, createLog=FALSE)
       self$create_MPP_for_registration(registration_id, user_id, data_formatted, createLog=FALSE)
-       
+      
     },
     
-  update_MPP_for_registration = function(registration_id, data, user_id, registration_name=NULL){
-    if(!is.null(registration_name)){
-      self$log_user_event(user_id, description=glue("Heeft het privacy protocol velden {paste(data$mpp_name)} van registratie {registration_name} gewijzigd"))  
-    } else {
-      print(11111)
-      #self$log_user_event(user_id, description=glue("Heeft het privacy protocol velden {paste(data$mpp_name)} van registratie {registration_id} gewijzigd")) 
-    }
+    update_MPP_for_registration = function(registration_id, data, user_id, registration_name=NULL){
+      if(!is.null(registration_name)){
+        self$log_user_event(user_id, description=glue("Heeft het privacy protocol velden {paste(data$mpp_name)} van registratie {registration_name} gewijzigd"))  
+      } else {
+        print(11111)
+        #self$log_user_event(user_id, description=glue("Heeft het privacy protocol velden {paste(data$mpp_name)} van registratie {registration_id} gewijzigd")) 
+      }
+      
+      print(22222)
+      self$archive_MPP_for_registration(registration_id, user_id, data$mpp_name, createLog=FALSE) 
+      print(33333)
+      self$create_MPP_for_registration(registration_id, user_id, data, createLog=FALSE)
+      
+    },
     
-    print(22222)
-    self$archive_MPP_for_registration(registration_id, user_id, data$mpp_name, createLog=FALSE) 
-    print(33333)
-    self$create_MPP_for_registration(registration_id, user_id, data, createLog=FALSE)
+    #---------  ACTIELIJST -----------
     
-  },
-
-#---------  ACTIELIJST -----------
-
     
     
     #' @description Add action to actionlist
@@ -851,10 +869,10 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
         self$execute_query(glue("UPDATE {self$schema}.actionlist SET expired = TRUE, timestamp = '{Sys.time()}' WHERE action_id = {action_id}"))
       ) 
     },
-      
-
-#--------  DETAILPAGINA ---------
-
+    
+    
+    #--------  DETAILPAGINA ---------
+    
     
     #' @description Get person details from the identifier
     #' @param person_id Person's identifier FI: (pseudo)bsn 
@@ -902,7 +920,7 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
                                text="Is overleden",
                                icon_name = "person-dash-fill",
                                icon_status="danger")
- 
+        
         timelineData <- bind_rows(timelineData, death_row)
       } 
       timelineData %>% distinct(timestamp,title,text, .keep_all = TRUE)
@@ -910,17 +928,17 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
     
     #' @description Create suitable node format for network(Viz)
     create_network_nodes = function(person_data=NULL, 
-                                     address_data=NULL, 
-                                     resident_data=NULL, 
-                                     business_data=NULL, 
-                                     registration_data=NULL){
+                                    address_data=NULL, 
+                                    resident_data=NULL, 
+                                    business_data=NULL, 
+                                    registration_data=NULL){
       
       # intitialise node object with person data    
       if(!is.null(person_data)){
         network_nodes <- data.frame(label = person_data$person_id,   
-                                  group = c("person"),          
-                                  title = person_data$person_id,
-                                  level = 0)   %>% 
+                                    group = c("person"),          
+                                    title = person_data$person_id,
+                                    level = 0)   %>% 
           add_net_nodes(address_data, 'address_id', 'address_id', 'address', level= 2 )   %>%
           add_net_nodes(resident_data %>% filter(person_id != person_data$person_id), 'person_id', 'person_id', 'resident', level=0)
       }
@@ -938,7 +956,7 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
                                      title =  c(),
                                      level =  c())  
       }
-        
+      
       # add subsequent nodes
       network_nodes  %>%
         add_net_nodes(business_data, 'business_id', 'business_id', 'business',level=2) %>%
@@ -946,15 +964,15 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
         mutate(id=row_number())
       
     },
-      
+    
     
     #' @description Create suitable edge format for network(Viz)
     create_network_edges = function(person_data=NULL, 
-                                      address_data=NULL, 
-                                      resident_data=NULL, 
-                                      business_data=NULL, 
-                                      registration_data=NULL){
-        
+                                    address_data=NULL, 
+                                    resident_data=NULL, 
+                                    business_data=NULL, 
+                                    registration_data=NULL){
+      
       # intitialise edge object empty
       network_edges <- data.frame(label = c(), title = c())
       
@@ -982,8 +1000,8 @@ set_metadata = function(name, label, timestamp_provided,  owner, depends_on, ste
           filter(from != 1) # remove address identitiy
       }  
       
-       network_edges 
-       
+      network_edges 
+      
     }
   )  
 )
