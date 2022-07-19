@@ -555,22 +555,31 @@ ApolloEngine <- R6::R6Class(
     
     #---- RISKMODEL ADMIN -----
     
-    
-    #' @description Set the weight (riskmodel) for an indicator in a theme
-    set_indicator_weight = function(indicator_name, theme, weight){
-      
-      def <- self$get_indicators_theme(theme)
-      indi_id <- dplyr::filter(def, indicator_name == !!indicator_name) %>% 
-        dplyr::pull(indicator_id)
+    #' @description Set a value of a column given an indicator ID in the 
+    #' indicator table, e.g. label, description, disabled, deleted,theme
+    #'  (json or vector) etc.
+    set_indicator_field = function(indicator_id, field, value){
       
       self$replace_value_where(table = "indicator", 
-                               col_replace = "weight", 
-                               val_replace = weight, 
+                               col_replace = field, 
+                               val_replace = value, 
                                col_compare = "indicator_id", 
-                               val_compare = indi_id)
+                               val_compare = indicator_id)
       
     },
     
+    #' @description Set a value of a column given an indicator ID in the 
+    #' indicator_riskmodel table, e.g. label, description, disabled, deleted,theme
+    #'  (json or vector) etc.
+    set_indicator_riskmodel_field = function(indicator_id, field, value){
+      
+      self$replace_value_where(table = "indicator_riskmodel", 
+                               col_replace = field, 
+                               val_replace = value, 
+                               col_compare = "risk_id", 
+                               val_compare = indicator_id)
+      
+    },
     
     #' @description Write weight/threshold for an indicator in a theme for a user
     #' @details Written to table indicator_riskmodel. If the entry does not exist for the user,
@@ -585,40 +594,21 @@ ApolloEngine <- R6::R6Class(
         # append  
         
         data_new <- data.frame(user_id = user_id,
-                               indicator_name = indicator_name,
-                               theme = theme,
-                               weight = weight,
+                               timestamp = format(Sys.time()),
                                threshold = threshold,
-                               timestamp = format(Sys.time()))
+                               weight = weight,
+                               theme = theme,
+                               indicator_name = indicator_name)
         
         self$append_data("indicator_riskmodel", data_new)
         
       } else {
         # update
         
-        self$replace_value_where(
-          table = "indicator_riskmodel", 
-          col_replace = "threshold", 
-          val_replace = threshold, 
-          col_compare = "risk_id", 
-          val_compare = data_old$risk_id
-        )
-        
-        self$replace_value_where(
-          table = "indicator_riskmodel", 
-          col_replace = "weight", 
-          val_replace = weight, 
-          col_compare = "risk_id", 
-          val_compare = data_old$risk_id
-        )
-        
-        self$replace_value_where(
-          table = "indicator_riskmodel", 
-          col_replace = "timestamp", 
-          val_replace = format(Sys.time()), 
-          col_compare = "risk_id", 
-          val_compare = data_old$risk_id
-        )
+        self$set_indicator_riskmodel_field(data_old$risk_id, "weight", value = weight)
+        self$set_indicator_riskmodel_field(data_old$risk_id, "threshold", value = threshold)
+        self$set_indicator_riskmodel_field(data_old$risk_id, "timestamp", value = format(Sys.time()))
+
         
       }
       

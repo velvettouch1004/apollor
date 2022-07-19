@@ -12,97 +12,99 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{ApolloEngine$new()}}
-\item \href{#method-assert_geo}{\code{ApolloEngine$assert_geo()}}
-\item \href{#method-geo_name_from_code}{\code{ApolloEngine$geo_name_from_code()}}
-\item \href{#method-add_geo_columns}{\code{ApolloEngine$add_geo_columns()}}
-\item \href{#method-get_cbs_buurt_data}{\code{ApolloEngine$get_cbs_buurt_data()}}
-\item \href{#method-get_cbs_buurt_metadata}{\code{ApolloEngine$get_cbs_buurt_metadata()}}
-\item \href{#method-street_from_bagid}{\code{ApolloEngine$street_from_bagid()}}
-\item \href{#method-get_bag_from_bagid}{\code{ApolloEngine$get_bag_from_bagid()}}
-\item \href{#method-join_bag_geometry}{\code{ApolloEngine$join_bag_geometry()}}
-\item \href{#method-to_json}{\code{ApolloEngine$to_json()}}
-\item \href{#method-from_json}{\code{ApolloEngine$from_json()}}
-\item \href{#method-read_signals}{\code{ApolloEngine$read_signals()}}
-\item \href{#method-read_actions}{\code{ApolloEngine$read_actions()}}
-\item \href{#method-read_indicator}{\code{ApolloEngine$read_indicator()}}
-\item \href{#method-read_person}{\code{ApolloEngine$read_person()}}
-\item \href{#method-read_metadata}{\code{ApolloEngine$read_metadata()}}
-\item \href{#method-read_business}{\code{ApolloEngine$read_business()}}
-\item \href{#method-read_address}{\code{ApolloEngine$read_address()}}
-\item \href{#method-read_favorites}{\code{ApolloEngine$read_favorites()}}
-\item \href{#method-read_log}{\code{ApolloEngine$read_log()}}
-\item \href{#method-read_mpp}{\code{ApolloEngine$read_mpp()}}
-\item \href{#method-get_indicator}{\code{ApolloEngine$get_indicator()}}
-\item \href{#method-get_metadata}{\code{ApolloEngine$get_metadata()}}
-\item \href{#method-set_metadata}{\code{ApolloEngine$set_metadata()}}
-\item \href{#method-label_indicator}{\code{ApolloEngine$label_indicator()}}
-\item \href{#method-add_indicator}{\code{ApolloEngine$add_indicator()}}
-\item \href{#method-remove_indicator}{\code{ApolloEngine$remove_indicator()}}
-\item \href{#method-get_indicators_theme}{\code{ApolloEngine$get_indicators_theme()}}
-\item \href{#method-get_indicators_riskmodel}{\code{ApolloEngine$get_indicators_riskmodel()}}
-\item \href{#method-delete_user_riskmodel}{\code{ApolloEngine$delete_user_riskmodel()}}
-\item \href{#method-make_boolean_indicator}{\code{ApolloEngine$make_boolean_indicator()}}
-\item \href{#method-make_indicator_table}{\code{ApolloEngine$make_indicator_table()}}
-\item \href{#method-combine_indicator_tables}{\code{ApolloEngine$combine_indicator_tables()}}
-\item \href{#method-calculate_riskmodel}{\code{ApolloEngine$calculate_riskmodel()}}
-\item \href{#method-set_indicator_weight}{\code{ApolloEngine$set_indicator_weight()}}
-\item \href{#method-write_indicator_riskmodel}{\code{ApolloEngine$write_indicator_riskmodel()}}
-\item \href{#method-get_active_actions}{\code{ApolloEngine$get_active_actions()}}
-\item \href{#method-list_actions}{\code{ApolloEngine$list_actions()}}
-\item \href{#method-list_favorites}{\code{ApolloEngine$list_favorites()}}
-\item \href{#method-list_persons_by_id}{\code{ApolloEngine$list_persons_by_id()}}
-\item \href{#method-list_addresses_by_id}{\code{ApolloEngine$list_addresses_by_id()}}
-\item \href{#method-get_log_ping}{\code{ApolloEngine$get_log_ping()}}
-\item \href{#method-log_user_event}{\code{ApolloEngine$log_user_event()}}
-\item \href{#method-get_favorite}{\code{ApolloEngine$get_favorite()}}
-\item \href{#method-add_favorite}{\code{ApolloEngine$add_favorite()}}
-\item \href{#method-remove_favorite}{\code{ApolloEngine$remove_favorite()}}
-\item \href{#method-create_MPP_for_registration}{\code{ApolloEngine$create_MPP_for_registration()}}
-\item \href{#method-archive_MPP_for_registration_old}{\code{ApolloEngine$archive_MPP_for_registration_old()}}
-\item \href{#method-archive_MPP_for_registration}{\code{ApolloEngine$archive_MPP_for_registration()}}
-\item \href{#method-updateMPP}{\code{ApolloEngine$updateMPP()}}
-\item \href{#method-update_MPP_for_registration}{\code{ApolloEngine$update_MPP_for_registration()}}
-\item \href{#method-create_action}{\code{ApolloEngine$create_action()}}
-\item \href{#method-update_action}{\code{ApolloEngine$update_action()}}
-\item \href{#method-archive_action}{\code{ApolloEngine$archive_action()}}
-\item \href{#method-get_person_from_id}{\code{ApolloEngine$get_person_from_id()}}
-\item \href{#method-get_tags_for_person}{\code{ApolloEngine$get_tags_for_person()}}
-\item \href{#method-get_address_from_id}{\code{ApolloEngine$get_address_from_id()}}
-\item \href{#method-get_residents}{\code{ApolloEngine$get_residents()}}
-\item \href{#method-get_businesses_at_address}{\code{ApolloEngine$get_businesses_at_address()}}
-\item \href{#method-get_relocations_for_person}{\code{ApolloEngine$get_relocations_for_person()}}
-\item \href{#method-get_relocations_timeline}{\code{ApolloEngine$get_relocations_timeline()}}
-\item \href{#method-create_network_nodes}{\code{ApolloEngine$create_network_nodes()}}
-\item \href{#method-create_network_edges}{\code{ApolloEngine$create_network_edges()}}
-\item \href{#method-clone}{\code{ApolloEngine$clone()}}
+\item \href{#method-NA-new}{\code{ApolloEngine$new()}}
+\item \href{#method-NA-assert_geo}{\code{ApolloEngine$assert_geo()}}
+\item \href{#method-NA-geo_name_from_code}{\code{ApolloEngine$geo_name_from_code()}}
+\item \href{#method-NA-add_geo_columns}{\code{ApolloEngine$add_geo_columns()}}
+\item \href{#method-NA-get_cbs_buurt_data}{\code{ApolloEngine$get_cbs_buurt_data()}}
+\item \href{#method-NA-get_cbs_buurt_metadata}{\code{ApolloEngine$get_cbs_buurt_metadata()}}
+\item \href{#method-NA-street_from_bagid}{\code{ApolloEngine$street_from_bagid()}}
+\item \href{#method-NA-get_bag_from_bagid}{\code{ApolloEngine$get_bag_from_bagid()}}
+\item \href{#method-NA-join_bag_geometry}{\code{ApolloEngine$join_bag_geometry()}}
+\item \href{#method-NA-to_json}{\code{ApolloEngine$to_json()}}
+\item \href{#method-NA-from_json}{\code{ApolloEngine$from_json()}}
+\item \href{#method-NA-read_signals}{\code{ApolloEngine$read_signals()}}
+\item \href{#method-NA-read_actions}{\code{ApolloEngine$read_actions()}}
+\item \href{#method-NA-read_indicator}{\code{ApolloEngine$read_indicator()}}
+\item \href{#method-NA-read_person}{\code{ApolloEngine$read_person()}}
+\item \href{#method-NA-read_metadata}{\code{ApolloEngine$read_metadata()}}
+\item \href{#method-NA-read_business}{\code{ApolloEngine$read_business()}}
+\item \href{#method-NA-read_address}{\code{ApolloEngine$read_address()}}
+\item \href{#method-NA-read_favorites}{\code{ApolloEngine$read_favorites()}}
+\item \href{#method-NA-read_log}{\code{ApolloEngine$read_log()}}
+\item \href{#method-NA-read_mpp}{\code{ApolloEngine$read_mpp()}}
+\item \href{#method-NA-get_indicator}{\code{ApolloEngine$get_indicator()}}
+\item \href{#method-NA-get_metadata}{\code{ApolloEngine$get_metadata()}}
+\item \href{#method-NA-set_metadata}{\code{ApolloEngine$set_metadata()}}
+\item \href{#method-NA-edit_indicator_filter_transparency}{\code{ApolloEngine$edit_indicator_filter_transparency()}}
+\item \href{#method-NA-label_indicator}{\code{ApolloEngine$label_indicator()}}
+\item \href{#method-NA-add_indicator}{\code{ApolloEngine$add_indicator()}}
+\item \href{#method-NA-remove_indicator}{\code{ApolloEngine$remove_indicator()}}
+\item \href{#method-NA-get_indicators_theme}{\code{ApolloEngine$get_indicators_theme()}}
+\item \href{#method-NA-get_indicators_riskmodel}{\code{ApolloEngine$get_indicators_riskmodel()}}
+\item \href{#method-NA-delete_user_riskmodel}{\code{ApolloEngine$delete_user_riskmodel()}}
+\item \href{#method-NA-make_boolean_indicator}{\code{ApolloEngine$make_boolean_indicator()}}
+\item \href{#method-NA-make_indicator_table}{\code{ApolloEngine$make_indicator_table()}}
+\item \href{#method-NA-combine_indicator_tables}{\code{ApolloEngine$combine_indicator_tables()}}
+\item \href{#method-NA-calculate_riskmodel}{\code{ApolloEngine$calculate_riskmodel()}}
+\item \href{#method-NA-set_indicator_field}{\code{ApolloEngine$set_indicator_field()}}
+\item \href{#method-NA-set_indicator_riskmodel_field}{\code{ApolloEngine$set_indicator_riskmodel_field()}}
+\item \href{#method-NA-write_indicator_riskmodel}{\code{ApolloEngine$write_indicator_riskmodel()}}
+\item \href{#method-NA-get_active_actions}{\code{ApolloEngine$get_active_actions()}}
+\item \href{#method-NA-list_actions}{\code{ApolloEngine$list_actions()}}
+\item \href{#method-NA-list_favorites}{\code{ApolloEngine$list_favorites()}}
+\item \href{#method-NA-list_persons_by_id}{\code{ApolloEngine$list_persons_by_id()}}
+\item \href{#method-NA-list_addresses_by_id}{\code{ApolloEngine$list_addresses_by_id()}}
+\item \href{#method-NA-get_log_ping}{\code{ApolloEngine$get_log_ping()}}
+\item \href{#method-NA-log_user_event}{\code{ApolloEngine$log_user_event()}}
+\item \href{#method-NA-get_favorite}{\code{ApolloEngine$get_favorite()}}
+\item \href{#method-NA-add_favorite}{\code{ApolloEngine$add_favorite()}}
+\item \href{#method-NA-remove_favorite}{\code{ApolloEngine$remove_favorite()}}
+\item \href{#method-NA-create_MPP_for_registration}{\code{ApolloEngine$create_MPP_for_registration()}}
+\item \href{#method-NA-archive_MPP_for_registration_old}{\code{ApolloEngine$archive_MPP_for_registration_old()}}
+\item \href{#method-NA-archive_MPP_for_registration}{\code{ApolloEngine$archive_MPP_for_registration()}}
+\item \href{#method-NA-updateMPP}{\code{ApolloEngine$updateMPP()}}
+\item \href{#method-NA-update_MPP_for_registration}{\code{ApolloEngine$update_MPP_for_registration()}}
+\item \href{#method-NA-create_action}{\code{ApolloEngine$create_action()}}
+\item \href{#method-NA-update_action}{\code{ApolloEngine$update_action()}}
+\item \href{#method-NA-archive_action}{\code{ApolloEngine$archive_action()}}
+\item \href{#method-NA-get_person_from_id}{\code{ApolloEngine$get_person_from_id()}}
+\item \href{#method-NA-get_tags_for_person}{\code{ApolloEngine$get_tags_for_person()}}
+\item \href{#method-NA-get_address_from_id}{\code{ApolloEngine$get_address_from_id()}}
+\item \href{#method-NA-get_residents}{\code{ApolloEngine$get_residents()}}
+\item \href{#method-NA-get_businesses_at_address}{\code{ApolloEngine$get_businesses_at_address()}}
+\item \href{#method-NA-get_relocations_for_person}{\code{ApolloEngine$get_relocations_for_person()}}
+\item \href{#method-NA-get_relocations_timeline}{\code{ApolloEngine$get_relocations_timeline()}}
+\item \href{#method-NA-create_network_nodes}{\code{ApolloEngine$create_network_nodes()}}
+\item \href{#method-NA-create_network_edges}{\code{ApolloEngine$create_network_edges()}}
+\item \href{#method-unknown-clone}{\code{ApolloEngine$clone()}}
 }
 }
-\if{html}{
-\out{<details ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="append_data">}\href{../../apollor/html/NA.html#method-append_data}{\code{apollor::NA$append_data()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="close">}\href{../../apollor/html/NA.html#method-close}{\code{apollor::NA$close()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="connect_to_database">}\href{../../apollor/html/NA.html#method-connect_to_database}{\code{apollor::NA$connect_to_database()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="delete_rows_where">}\href{../../apollor/html/NA.html#method-delete_rows_where}{\code{apollor::NA$delete_rows_where()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="execute_query">}\href{../../apollor/html/NA.html#method-execute_query}{\code{apollor::NA$execute_query()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="has_value">}\href{../../apollor/html/NA.html#method-has_value}{\code{apollor::NA$has_value()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="have_column">}\href{../../apollor/html/NA.html#method-have_column}{\code{apollor::NA$have_column()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="list_tables">}\href{../../apollor/html/NA.html#method-list_tables}{\code{apollor::NA$list_tables()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="make_column">}\href{../../apollor/html/NA.html#method-make_column}{\code{apollor::NA$make_column()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="query">}\href{../../apollor/html/NA.html#method-query}{\code{apollor::NA$query()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="read_table">}\href{../../apollor/html/NA.html#method-read_table}{\code{apollor::NA$read_table()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="replace_value_where">}\href{../../apollor/html/NA.html#method-replace_value_where}{\code{apollor::NA$replace_value_where()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="replace_value_where2">}\href{../../apollor/html/NA.html#method-replace_value_where2}{\code{apollor::NA$replace_value_where2()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="table_columns">}\href{../../apollor/html/NA.html#method-table_columns}{\code{apollor::NA$table_columns()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="table_info">}\href{../../apollor/html/NA.html#method-table_info}{\code{apollor::NA$table_info()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="to_sql_string">}\href{../../apollor/html/NA.html#method-to_sql_string}{\code{apollor::NA$to_sql_string()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="append_data"><a href='../../apollor/html/NA.html#method-NA-append_data'><code>apollor::NA$append_data()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="close"><a href='../../apollor/html/NA.html#method-NA-close'><code>apollor::NA$close()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="connect_to_database"><a href='../../apollor/html/NA.html#method-NA-connect_to_database'><code>apollor::NA$connect_to_database()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="delete_rows_where"><a href='../../apollor/html/NA.html#method-NA-delete_rows_where'><code>apollor::NA$delete_rows_where()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="execute_query"><a href='../../apollor/html/NA.html#method-NA-execute_query'><code>apollor::NA$execute_query()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="has_value"><a href='../../apollor/html/NA.html#method-NA-has_value'><code>apollor::NA$has_value()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="have_column"><a href='../../apollor/html/NA.html#method-NA-have_column'><code>apollor::NA$have_column()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="list_tables"><a href='../../apollor/html/NA.html#method-NA-list_tables'><code>apollor::NA$list_tables()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="make_column"><a href='../../apollor/html/NA.html#method-NA-make_column'><code>apollor::NA$make_column()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="query"><a href='../../apollor/html/NA.html#method-NA-query'><code>apollor::NA$query()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="read_table"><a href='../../apollor/html/NA.html#method-NA-read_table'><code>apollor::NA$read_table()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="replace_value_where"><a href='../../apollor/html/NA.html#method-NA-replace_value_where'><code>apollor::NA$replace_value_where()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="replace_value_where2"><a href='../../apollor/html/NA.html#method-NA-replace_value_where2'><code>apollor::NA$replace_value_where2()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="table_columns"><a href='../../apollor/html/NA.html#method-NA-table_columns'><code>apollor::NA$table_columns()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="table_info"><a href='../../apollor/html/NA.html#method-NA-table_info'><code>apollor::NA$table_info()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="to_sql_string"><a href='../../apollor/html/NA.html#method-NA-to_sql_string'><code>apollor::NA$to_sql_string()</code></a></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-NA-new"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$new(
@@ -117,8 +119,8 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-assert_geo"></a>}}
-\if{latex}{\out{\hypertarget{method-assert_geo}{}}}
+\if{html}{\out{<a id="method-NA-assert_geo"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-assert_geo}{}}}
 \subsection{Method \code{assert_geo()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$assert_geo()}\if{html}{\out{</div>}}
@@ -126,8 +128,8 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-geo_name_from_code"></a>}}
-\if{latex}{\out{\hypertarget{method-geo_name_from_code}{}}}
+\if{html}{\out{<a id="method-NA-geo_name_from_code"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-geo_name_from_code}{}}}
 \subsection{Method \code{geo_name_from_code()}}{
 Translate buurt or wijk codes into names
 \subsection{Usage}{
@@ -144,8 +146,8 @@ TODO this is not vectorized!}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_geo_columns"></a>}}
-\if{latex}{\out{\hypertarget{method-add_geo_columns}{}}}
+\if{html}{\out{<a id="method-NA-add_geo_columns"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-add_geo_columns}{}}}
 \subsection{Method \code{add_geo_columns()}}{
 Add wijk, gemeente columns to a dataframe with buurt_code_cbs column
 \subsection{Usage}{
@@ -158,8 +160,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_cbs_buurt_data"></a>}}
-\if{latex}{\out{\hypertarget{method-get_cbs_buurt_data}{}}}
+\if{html}{\out{<a id="method-NA-get_cbs_buurt_data"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_cbs_buurt_data}{}}}
 \subsection{Method \code{get_cbs_buurt_data()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_cbs_buurt_data(buurt_code_cbs)}\if{html}{\out{</div>}}
@@ -167,8 +169,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_cbs_buurt_metadata"></a>}}
-\if{latex}{\out{\hypertarget{method-get_cbs_buurt_metadata}{}}}
+\if{html}{\out{<a id="method-NA-get_cbs_buurt_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_cbs_buurt_metadata}{}}}
 \subsection{Method \code{get_cbs_buurt_metadata()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_cbs_buurt_metadata()}\if{html}{\out{</div>}}
@@ -176,8 +178,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-street_from_bagid"></a>}}
-\if{latex}{\out{\hypertarget{method-street_from_bagid}{}}}
+\if{html}{\out{<a id="method-NA-street_from_bagid"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-street_from_bagid}{}}}
 \subsection{Method \code{street_from_bagid()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$street_from_bagid(id)}\if{html}{\out{</div>}}
@@ -185,8 +187,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_bag_from_bagid"></a>}}
-\if{latex}{\out{\hypertarget{method-get_bag_from_bagid}{}}}
+\if{html}{\out{<a id="method-NA-get_bag_from_bagid"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_bag_from_bagid}{}}}
 \subsection{Method \code{get_bag_from_bagid()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_bag_from_bagid(id, spatial = FALSE, geo_only = FALSE)}\if{html}{\out{</div>}}
@@ -194,8 +196,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-join_bag_geometry"></a>}}
-\if{latex}{\out{\hypertarget{method-join_bag_geometry}{}}}
+\if{html}{\out{<a id="method-NA-join_bag_geometry"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-join_bag_geometry}{}}}
 \subsection{Method \code{join_bag_geometry()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$join_bag_geometry(data, id_column = "adresseerbaarobject_id")}\if{html}{\out{</div>}}
@@ -203,8 +205,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-to_json"></a>}}
-\if{latex}{\out{\hypertarget{method-to_json}{}}}
+\if{html}{\out{<a id="method-NA-to_json"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-to_json}{}}}
 \subsection{Method \code{to_json()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$to_json(x)}\if{html}{\out{</div>}}
@@ -212,8 +214,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-from_json"></a>}}
-\if{latex}{\out{\hypertarget{method-from_json}{}}}
+\if{html}{\out{<a id="method-NA-from_json"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-from_json}{}}}
 \subsection{Method \code{from_json()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$from_json(x)}\if{html}{\out{</div>}}
@@ -221,8 +223,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_signals"></a>}}
-\if{latex}{\out{\hypertarget{method-read_signals}{}}}
+\if{html}{\out{<a id="method-NA-read_signals"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_signals}{}}}
 \subsection{Method \code{read_signals()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_signals()}\if{html}{\out{</div>}}
@@ -230,8 +232,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_actions"></a>}}
-\if{latex}{\out{\hypertarget{method-read_actions}{}}}
+\if{html}{\out{<a id="method-NA-read_actions"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_actions}{}}}
 \subsection{Method \code{read_actions()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_actions()}\if{html}{\out{</div>}}
@@ -239,8 +241,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_indicator"></a>}}
-\if{latex}{\out{\hypertarget{method-read_indicator}{}}}
+\if{html}{\out{<a id="method-NA-read_indicator"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_indicator}{}}}
 \subsection{Method \code{read_indicator()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_indicator()}\if{html}{\out{</div>}}
@@ -248,8 +250,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_person"></a>}}
-\if{latex}{\out{\hypertarget{method-read_person}{}}}
+\if{html}{\out{<a id="method-NA-read_person"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_person}{}}}
 \subsection{Method \code{read_person()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_person()}\if{html}{\out{</div>}}
@@ -257,8 +259,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_metadata"></a>}}
-\if{latex}{\out{\hypertarget{method-read_metadata}{}}}
+\if{html}{\out{<a id="method-NA-read_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_metadata}{}}}
 \subsection{Method \code{read_metadata()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_metadata()}\if{html}{\out{</div>}}
@@ -266,8 +268,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_business"></a>}}
-\if{latex}{\out{\hypertarget{method-read_business}{}}}
+\if{html}{\out{<a id="method-NA-read_business"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_business}{}}}
 \subsection{Method \code{read_business()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_business()}\if{html}{\out{</div>}}
@@ -275,8 +277,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_address"></a>}}
-\if{latex}{\out{\hypertarget{method-read_address}{}}}
+\if{html}{\out{<a id="method-NA-read_address"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_address}{}}}
 \subsection{Method \code{read_address()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_address()}\if{html}{\out{</div>}}
@@ -284,8 +286,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_favorites"></a>}}
-\if{latex}{\out{\hypertarget{method-read_favorites}{}}}
+\if{html}{\out{<a id="method-NA-read_favorites"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_favorites}{}}}
 \subsection{Method \code{read_favorites()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_favorites(user_id = NULL)}\if{html}{\out{</div>}}
@@ -293,8 +295,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_log"></a>}}
-\if{latex}{\out{\hypertarget{method-read_log}{}}}
+\if{html}{\out{<a id="method-NA-read_log"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_log}{}}}
 \subsection{Method \code{read_log()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_log()}\if{html}{\out{</div>}}
@@ -302,8 +304,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read_mpp"></a>}}
-\if{latex}{\out{\hypertarget{method-read_mpp}{}}}
+\if{html}{\out{<a id="method-NA-read_mpp"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_mpp}{}}}
 \subsection{Method \code{read_mpp()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_mpp(registration_id = NULL, archived = FALSE)}\if{html}{\out{</div>}}
@@ -311,8 +313,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_indicator"></a>}}
-\if{latex}{\out{\hypertarget{method-get_indicator}{}}}
+\if{html}{\out{<a id="method-NA-get_indicator"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_indicator}{}}}
 \subsection{Method \code{get_indicator()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_indicator(indicator_name)}\if{html}{\out{</div>}}
@@ -320,8 +322,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_metadata"></a>}}
-\if{latex}{\out{\hypertarget{method-get_metadata}{}}}
+\if{html}{\out{<a id="method-NA-get_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_metadata}{}}}
 \subsection{Method \code{get_metadata()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_metadata()}\if{html}{\out{</div>}}
@@ -329,8 +331,8 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_metadata"></a>}}
-\if{latex}{\out{\hypertarget{method-set_metadata}{}}}
+\if{html}{\out{<a id="method-NA-set_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-set_metadata}{}}}
 \subsection{Method \code{set_metadata()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$set_metadata(
@@ -348,8 +350,25 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-label_indicator"></a>}}
-\if{latex}{\out{\hypertarget{method-label_indicator}{}}}
+\if{html}{\out{<a id="method-NA-edit_indicator_filter_transparency"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-edit_indicator_filter_transparency}{}}}
+\subsection{Method \code{edit_indicator_filter_transparency()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$edit_indicator_filter_transparency(
+  id,
+  short_desc,
+  long_desc,
+  depends,
+  def,
+  calc,
+  new_date
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-label_indicator"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-label_indicator}{}}}
 \subsection{Method \code{label_indicator()}}{
 Get labels for indicators
 \subsection{Usage}{
@@ -365,8 +384,8 @@ Get labels for indicators
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_indicator"></a>}}
-\if{latex}{\out{\hypertarget{method-add_indicator}{}}}
+\if{html}{\out{<a id="method-NA-add_indicator"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-add_indicator}{}}}
 \subsection{Method \code{add_indicator()}}{
 Adds an indicator's metadata to the 'indicator' table
 \subsection{Usage}{
@@ -377,7 +396,8 @@ Adds an indicator's metadata to the 'indicator' table
   description,
   user_id,
   theme,
-  columns
+  columns,
+  disabled = FALSE
 )}\if{html}{\out{</div>}}
 }
 
@@ -402,8 +422,8 @@ Adds an indicator's metadata to the 'indicator' table
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-remove_indicator"></a>}}
-\if{latex}{\out{\hypertarget{method-remove_indicator}{}}}
+\if{html}{\out{<a id="method-NA-remove_indicator"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-remove_indicator}{}}}
 \subsection{Method \code{remove_indicator()}}{
 Remove an indicator's metadata from the 'indicator' table0
 \subsection{Usage}{
@@ -412,8 +432,8 @@ Remove an indicator's metadata from the 'indicator' table0
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_indicators_theme"></a>}}
-\if{latex}{\out{\hypertarget{method-get_indicators_theme}{}}}
+\if{html}{\out{<a id="method-NA-get_indicators_theme"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_indicators_theme}{}}}
 \subsection{Method \code{get_indicators_theme()}}{
 Get rows of indicators table for a theme
 \subsection{Usage}{
@@ -426,8 +446,8 @@ Use this function to find definitions for indicators in a theme.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_indicators_riskmodel"></a>}}
-\if{latex}{\out{\hypertarget{method-get_indicators_riskmodel}{}}}
+\if{html}{\out{<a id="method-NA-get_indicators_riskmodel"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_indicators_riskmodel}{}}}
 \subsection{Method \code{get_indicators_riskmodel()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_indicators_riskmodel(user_id, theme, gemeente)}\if{html}{\out{</div>}}
@@ -435,8 +455,8 @@ Use this function to find definitions for indicators in a theme.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-delete_user_riskmodel"></a>}}
-\if{latex}{\out{\hypertarget{method-delete_user_riskmodel}{}}}
+\if{html}{\out{<a id="method-NA-delete_user_riskmodel"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-delete_user_riskmodel}{}}}
 \subsection{Method \code{delete_user_riskmodel()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$delete_user_riskmodel(user_id)}\if{html}{\out{</div>}}
@@ -444,8 +464,8 @@ Use this function to find definitions for indicators in a theme.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-make_boolean_indicator"></a>}}
-\if{latex}{\out{\hypertarget{method-make_boolean_indicator}{}}}
+\if{html}{\out{<a id="method-NA-make_boolean_indicator"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-make_boolean_indicator}{}}}
 \subsection{Method \code{make_boolean_indicator()}}{
 Convert raw indicator data to TRUE/FALSE
 \subsection{Usage}{
@@ -463,8 +483,8 @@ Convert raw indicator data to TRUE/FALSE
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-make_indicator_table"></a>}}
-\if{latex}{\out{\hypertarget{method-make_indicator_table}{}}}
+\if{html}{\out{<a id="method-NA-make_indicator_table"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-make_indicator_table}{}}}
 \subsection{Method \code{make_indicator_table()}}{
 Make a table with indicator (boolean) values
 \subsection{Usage}{
@@ -490,8 +510,8 @@ Make a table with indicator (boolean) values
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-combine_indicator_tables"></a>}}
-\if{latex}{\out{\hypertarget{method-combine_indicator_tables}{}}}
+\if{html}{\out{<a id="method-NA-combine_indicator_tables"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-combine_indicator_tables}{}}}
 \subsection{Method \code{combine_indicator_tables()}}{
 Combine address level and person level indicators
 \subsection{Usage}{
@@ -515,8 +535,8 @@ then the address is TRUE. TODO business level indicators
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-calculate_riskmodel"></a>}}
-\if{latex}{\out{\hypertarget{method-calculate_riskmodel}{}}}
+\if{html}{\out{<a id="method-NA-calculate_riskmodel"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-calculate_riskmodel}{}}}
 \subsection{Method \code{calculate_riskmodel()}}{
 Calculate riskmodel at address level
 \subsection{Usage}{
@@ -534,18 +554,32 @@ Calculate riskmodel at address level
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_indicator_weight"></a>}}
-\if{latex}{\out{\hypertarget{method-set_indicator_weight}{}}}
-\subsection{Method \code{set_indicator_weight()}}{
-Set the weight (riskmodel) for an indicator in a theme
+\if{html}{\out{<a id="method-NA-set_indicator_field"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-set_indicator_field}{}}}
+\subsection{Method \code{set_indicator_field()}}{
+Set a value of a column given an indicator ID in the
+indicator table, e.g. label, description, disabled, deleted,theme
+(json or vector) etc.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$set_indicator_weight(indicator_name, theme, weight)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$set_indicator_field(indicator_id, field, value)}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-write_indicator_riskmodel"></a>}}
-\if{latex}{\out{\hypertarget{method-write_indicator_riskmodel}{}}}
+\if{html}{\out{<a id="method-NA-set_indicator_riskmodel_field"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-set_indicator_riskmodel_field}{}}}
+\subsection{Method \code{set_indicator_riskmodel_field()}}{
+Set a value of a column given an indicator ID in the
+indicator_riskmodel table, e.g. label, description, disabled, deleted,theme
+(json or vector) etc.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$set_indicator_riskmodel_field(indicator_id, field, value)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-write_indicator_riskmodel"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-write_indicator_riskmodel}{}}}
 \subsection{Method \code{write_indicator_riskmodel()}}{
 Write weight/threshold for an indicator in a theme for a user
 \subsection{Usage}{
@@ -565,8 +599,8 @@ add a new row for this user. If it does exist, use an UPDATE statement to replac
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_active_actions"></a>}}
-\if{latex}{\out{\hypertarget{method-get_active_actions}{}}}
+\if{html}{\out{<a id="method-NA-get_active_actions"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_active_actions}{}}}
 \subsection{Method \code{get_active_actions()}}{
 Get the active actions ordered by date
 \subsection{Usage}{
@@ -575,8 +609,8 @@ Get the active actions ordered by date
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-list_actions"></a>}}
-\if{latex}{\out{\hypertarget{method-list_actions}{}}}
+\if{html}{\out{<a id="method-NA-list_actions"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-list_actions}{}}}
 \subsection{Method \code{list_actions()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$list_actions(update = FALSE)}\if{html}{\out{</div>}}
@@ -584,8 +618,8 @@ Get the active actions ordered by date
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-list_favorites"></a>}}
-\if{latex}{\out{\hypertarget{method-list_favorites}{}}}
+\if{html}{\out{<a id="method-NA-list_favorites"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-list_favorites}{}}}
 \subsection{Method \code{list_favorites()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$list_favorites(user_id = NULL, update = FALSE)}\if{html}{\out{</div>}}
@@ -593,8 +627,8 @@ Get the active actions ordered by date
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-list_persons_by_id"></a>}}
-\if{latex}{\out{\hypertarget{method-list_persons_by_id}{}}}
+\if{html}{\out{<a id="method-NA-list_persons_by_id"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-list_persons_by_id}{}}}
 \subsection{Method \code{list_persons_by_id()}}{
 Get persons based on person or address_id
 \subsection{Usage}{
@@ -612,8 +646,8 @@ Get persons based on person or address_id
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-list_addresses_by_id"></a>}}
-\if{latex}{\out{\hypertarget{method-list_addresses_by_id}{}}}
+\if{html}{\out{<a id="method-NA-list_addresses_by_id"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-list_addresses_by_id}{}}}
 \subsection{Method \code{list_addresses_by_id()}}{
 Get addresses based on address_id
 \subsection{Usage}{
@@ -629,8 +663,8 @@ Get addresses based on address_id
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_log_ping"></a>}}
-\if{latex}{\out{\hypertarget{method-get_log_ping}{}}}
+\if{html}{\out{<a id="method-NA-get_log_ping"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_log_ping}{}}}
 \subsection{Method \code{get_log_ping()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_log_ping()}\if{html}{\out{</div>}}
@@ -638,8 +672,8 @@ Get addresses based on address_id
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-log_user_event"></a>}}
-\if{latex}{\out{\hypertarget{method-log_user_event}{}}}
+\if{html}{\out{<a id="method-NA-log_user_event"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-log_user_event}{}}}
 \subsection{Method \code{log_user_event()}}{
 Log an user action
 \subsection{Usage}{
@@ -657,8 +691,8 @@ Log an user action
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_favorite"></a>}}
-\if{latex}{\out{\hypertarget{method-get_favorite}{}}}
+\if{html}{\out{<a id="method-NA-get_favorite"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_favorite}{}}}
 \subsection{Method \code{get_favorite()}}{
 check if object is currently in favorites of user_id
 \subsection{Usage}{
@@ -678,8 +712,8 @@ check if object is currently in favorites of user_id
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_favorite"></a>}}
-\if{latex}{\out{\hypertarget{method-add_favorite}{}}}
+\if{html}{\out{<a id="method-NA-add_favorite"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-add_favorite}{}}}
 \subsection{Method \code{add_favorite()}}{
 Add favorite to list
 \subsection{Usage}{
@@ -703,8 +737,8 @@ Favorites can be addresses, persons, businesses and registrations
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-remove_favorite"></a>}}
-\if{latex}{\out{\hypertarget{method-remove_favorite}{}}}
+\if{html}{\out{<a id="method-NA-remove_favorite"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-remove_favorite}{}}}
 \subsection{Method \code{remove_favorite()}}{
 Remove from favorites
 \subsection{Usage}{
@@ -722,8 +756,8 @@ Remove from favorites
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-create_MPP_for_registration"></a>}}
-\if{latex}{\out{\hypertarget{method-create_MPP_for_registration}{}}}
+\if{html}{\out{<a id="method-NA-create_MPP_for_registration"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-create_MPP_for_registration}{}}}
 \subsection{Method \code{create_MPP_for_registration()}}{
 Create MPP for registration
 \subsection{Usage}{
@@ -737,8 +771,8 @@ Create MPP for registration
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-archive_MPP_for_registration_old"></a>}}
-\if{latex}{\out{\hypertarget{method-archive_MPP_for_registration_old}{}}}
+\if{html}{\out{<a id="method-NA-archive_MPP_for_registration_old"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-archive_MPP_for_registration_old}{}}}
 \subsection{Method \code{archive_MPP_for_registration_old()}}{
 Archive mpp for registration
 \subsection{Usage}{
@@ -751,8 +785,8 @@ Archive mpp for registration
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-archive_MPP_for_registration"></a>}}
-\if{latex}{\out{\hypertarget{method-archive_MPP_for_registration}{}}}
+\if{html}{\out{<a id="method-NA-archive_MPP_for_registration"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-archive_MPP_for_registration}{}}}
 \subsection{Method \code{archive_MPP_for_registration()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_MPP_for_registration(
@@ -765,8 +799,8 @@ Archive mpp for registration
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-updateMPP"></a>}}
-\if{latex}{\out{\hypertarget{method-updateMPP}{}}}
+\if{html}{\out{<a id="method-NA-updateMPP"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-updateMPP}{}}}
 \subsection{Method \code{updateMPP()}}{
 Update mpp for registration
 \subsection{Usage}{
@@ -775,8 +809,8 @@ Update mpp for registration
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-update_MPP_for_registration"></a>}}
-\if{latex}{\out{\hypertarget{method-update_MPP_for_registration}{}}}
+\if{html}{\out{<a id="method-NA-update_MPP_for_registration"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-update_MPP_for_registration}{}}}
 \subsection{Method \code{update_MPP_for_registration()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$update_MPP_for_registration(
@@ -789,8 +823,8 @@ Update mpp for registration
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-create_action"></a>}}
-\if{latex}{\out{\hypertarget{method-create_action}{}}}
+\if{html}{\out{<a id="method-NA-create_action"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-create_action}{}}}
 \subsection{Method \code{create_action()}}{
 Add action to actionlist
 \subsection{Usage}{
@@ -823,8 +857,8 @@ Add action to actionlist
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-update_action"></a>}}
-\if{latex}{\out{\hypertarget{method-update_action}{}}}
+\if{html}{\out{<a id="method-NA-update_action"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-update_action}{}}}
 \subsection{Method \code{update_action()}}{
 Update action in actionlist
 \subsection{Usage}{
@@ -858,8 +892,8 @@ Update action in actionlist
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-archive_action"></a>}}
-\if{latex}{\out{\hypertarget{method-archive_action}{}}}
+\if{html}{\out{<a id="method-NA-archive_action"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-archive_action}{}}}
 \subsection{Method \code{archive_action()}}{
 Archive action in actionlist
 \subsection{Usage}{
@@ -879,8 +913,8 @@ Archive action in actionlist
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_person_from_id"></a>}}
-\if{latex}{\out{\hypertarget{method-get_person_from_id}{}}}
+\if{html}{\out{<a id="method-NA-get_person_from_id"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_person_from_id}{}}}
 \subsection{Method \code{get_person_from_id()}}{
 Get person details from the identifier
 \subsection{Usage}{
@@ -896,8 +930,8 @@ Get person details from the identifier
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_tags_for_person"></a>}}
-\if{latex}{\out{\hypertarget{method-get_tags_for_person}{}}}
+\if{html}{\out{<a id="method-NA-get_tags_for_person"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_tags_for_person}{}}}
 \subsection{Method \code{get_tags_for_person()}}{
 Hardcoded method to simulate tags
 \subsection{Usage}{
@@ -913,8 +947,8 @@ Hardcoded method to simulate tags
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_address_from_id"></a>}}
-\if{latex}{\out{\hypertarget{method-get_address_from_id}{}}}
+\if{html}{\out{<a id="method-NA-get_address_from_id"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_address_from_id}{}}}
 \subsection{Method \code{get_address_from_id()}}{
 Get address details from the identifier
 \subsection{Usage}{
@@ -930,8 +964,8 @@ Get address details from the identifier
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_residents"></a>}}
-\if{latex}{\out{\hypertarget{method-get_residents}{}}}
+\if{html}{\out{<a id="method-NA-get_residents"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_residents}{}}}
 \subsection{Method \code{get_residents()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_residents(address_id)}\if{html}{\out{</div>}}
@@ -939,8 +973,8 @@ Get address details from the identifier
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_businesses_at_address"></a>}}
-\if{latex}{\out{\hypertarget{method-get_businesses_at_address}{}}}
+\if{html}{\out{<a id="method-NA-get_businesses_at_address"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_businesses_at_address}{}}}
 \subsection{Method \code{get_businesses_at_address()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_businesses_at_address(address_id)}\if{html}{\out{</div>}}
@@ -948,8 +982,8 @@ Get address details from the identifier
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_relocations_for_person"></a>}}
-\if{latex}{\out{\hypertarget{method-get_relocations_for_person}{}}}
+\if{html}{\out{<a id="method-NA-get_relocations_for_person"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_relocations_for_person}{}}}
 \subsection{Method \code{get_relocations_for_person()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_relocations_for_person(person_id)}\if{html}{\out{</div>}}
@@ -957,8 +991,8 @@ Get address details from the identifier
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_relocations_timeline"></a>}}
-\if{latex}{\out{\hypertarget{method-get_relocations_timeline}{}}}
+\if{html}{\out{<a id="method-NA-get_relocations_timeline"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_relocations_timeline}{}}}
 \subsection{Method \code{get_relocations_timeline()}}{
 Create data suitable for timeline plot
 \subsection{Usage}{
@@ -976,8 +1010,8 @@ Create data suitable for timeline plot
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-create_network_nodes"></a>}}
-\if{latex}{\out{\hypertarget{method-create_network_nodes}{}}}
+\if{html}{\out{<a id="method-NA-create_network_nodes"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-create_network_nodes}{}}}
 \subsection{Method \code{create_network_nodes()}}{
 Create suitable node format for network(Viz)
 \subsection{Usage}{
@@ -992,8 +1026,8 @@ Create suitable node format for network(Viz)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-create_network_edges"></a>}}
-\if{latex}{\out{\hypertarget{method-create_network_edges}{}}}
+\if{html}{\out{<a id="method-NA-create_network_edges"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-create_network_edges}{}}}
 \subsection{Method \code{create_network_edges()}}{
 Create suitable edge format for network(Viz)
 \subsection{Usage}{
@@ -1008,8 +1042,8 @@ Create suitable edge format for network(Viz)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-unknown-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-unknown-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
