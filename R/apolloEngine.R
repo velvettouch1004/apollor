@@ -315,22 +315,23 @@ ApolloEngine <- R6::R6Class(
       
     },
     
-    edit_indicator_filter_transparency = function(id, short_desc, long_desc, depends, def, calc, new_date){
-      if(!is.na(depends) && !is.null(depends)){
-        depends <- self$to_json(depends)  
-      } else {
-        depends <- "[]"
-      }
+    edit_indicator_filter_transparency = function(id, short_desc, long_desc, depends, def, calc){
+      
+      if(is.na(depends) && is.null(depends)){
+        depends <- "[]" 
+      } 
       
       if(is.null(self$schema)){
-        qu <- glue::glue("UPDATE indicator SET description = '{short_desc}', description_long = '{long_desc}', ",
-        "depends_on = '{depends}', definitie = '{def}', berekening = '{calc}', datum_wijziging  = '{new_date}' WHERE indicator_id = '{id}'")
+        qu <- glue("UPDATE indicator SET description = '{short_desc}', description_long = '{long_desc}', depends_on = ?val_depends, definitie = '{def}', berekening = '{calc}', datum_wijziging  = '{now()}' WHERE indicator_id = '{id}'") %>%
+          as.character()
       } else {
-        qu <- glue::glue("UPDATE {self$schema}.indicator SET description = '{short_desc}', description_long = '{long_desc}', ",
-                         "depends_on = '{depends}', definitie = '{def}', berekening = '{calc}', datum_wijziging  = '{new_date}' WHERE indicator_id = '{id}'")
+        qu <- glue("UPDATE {self$schema}.indicator SET description = '{short_desc}', description_long = '{long_desc}', depends_on = ?val_depends, definitie = '{def}', berekening = '{calc}', datum_wijziging  = '{now()}'WHERE indicator_id = '{id}'") %>%
+          as.character()
       }
       
-     self$execute_query(qu)
+      query <- sqlInterpolate(DBI::ANSI(), qu, val_depends = depends)
+      
+      dbExecute(self$con, query)
     },
     
     
