@@ -316,21 +316,19 @@ ApolloEngine <- R6::R6Class(
     },
     
     edit_indicator_filter_transparency = function(id, short_desc, long_desc, depends, def, calc, new_date){
-      if(!is.na(depends) && !is.null(depends)){
-        depends <- self$to_json(depends)  
-      } else {
-        depends <- "[]"
-      }
+      if(is.na(depends) && is.null(depends)){
+        depends <- "[]" 
+      } 
       
       if(is.null(self$schema)){
         qu <- glue::glue("UPDATE indicator SET description = '{short_desc}', description_long = '{long_desc}', ",
-        "depends_on = '{depends}', definitie = '{def}', berekening = '{calc}', datum_wijziging  = '{new_date}' WHERE indicator_id = '{id}'")
+                         "depends_on = '{depends}', definitie = '{def}', berekening = '{calc}', datum_wijziging  = '{new_date}' WHERE indicator_id = '{id}'")
       } else {
         qu <- glue::glue("UPDATE {self$schema}.indicator SET description = '{short_desc}', description_long = '{long_desc}', ",
                          "depends_on = '{depends}', definitie = '{def}', berekening = '{calc}', datum_wijziging  = '{new_date}' WHERE indicator_id = '{id}'")
       }
       
-     self$execute_query(qu)
+      self$execute_query(qu)
     },
     
     
