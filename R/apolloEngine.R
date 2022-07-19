@@ -361,7 +361,8 @@ ApolloEngine <- R6::R6Class(
                              description, 
                              user_id, 
                              theme, 
-                             columns  ){
+                             columns,
+                             disabled = FALSE){
       
       type <- match.arg(type) 
       
@@ -375,7 +376,8 @@ ApolloEngine <- R6::R6Class(
         columns = self$to_json(columns),
         #weight = weight,
         #threshold = threshold,
-        timestamp = format(Sys.time())
+        timestamp = format(Sys.time()),
+        disabled = as.logical(disabled)
       )
       
       self$append_data("indicator", data)
