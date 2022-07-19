@@ -398,7 +398,8 @@ ApolloEngine <- R6::R6Class(
     get_indicators_theme = function(theme){
       
       out <- self$indicator %>% 
-        filter(grepl(!!theme, theme))  
+        filter(grepl(!!theme, theme),
+               !disabled, !deleted)
       
       if(nrow(out) == 0){
         stop(paste("Theme",theme,"not found"))
