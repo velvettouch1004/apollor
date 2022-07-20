@@ -23,13 +23,15 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-join_bag_geometry}{\code{ApolloEngine$join_bag_geometry()}}
 \item \href{#method-NA-to_json}{\code{ApolloEngine$to_json()}}
 \item \href{#method-NA-from_json}{\code{ApolloEngine$from_json()}}
+\item \href{#method-NA-is_local}{\code{ApolloEngine$is_local()}}
+\item \href{#method-NA-read_table_cached}{\code{ApolloEngine$read_table_cached()}}
+\item \href{#method-NA-read_person}{\code{ApolloEngine$read_person()}}
+\item \href{#method-NA-read_business}{\code{ApolloEngine$read_business()}}
+\item \href{#method-NA-read_address}{\code{ApolloEngine$read_address()}}
 \item \href{#method-NA-read_signals}{\code{ApolloEngine$read_signals()}}
 \item \href{#method-NA-read_actions}{\code{ApolloEngine$read_actions()}}
 \item \href{#method-NA-read_indicator}{\code{ApolloEngine$read_indicator()}}
-\item \href{#method-NA-read_person}{\code{ApolloEngine$read_person()}}
 \item \href{#method-NA-read_metadata}{\code{ApolloEngine$read_metadata()}}
-\item \href{#method-NA-read_business}{\code{ApolloEngine$read_business()}}
-\item \href{#method-NA-read_address}{\code{ApolloEngine$read_address()}}
 \item \href{#method-NA-read_favorites}{\code{ApolloEngine$read_favorites()}}
 \item \href{#method-NA-read_log}{\code{ApolloEngine$read_log()}}
 \item \href{#method-NA-read_mpp}{\code{ApolloEngine$read_mpp()}}
@@ -223,6 +225,51 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-is_local"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-is_local}{}}}
+\subsection{Method \code{is_local()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$is_local()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-read_table_cached"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_table_cached}{}}}
+\subsection{Method \code{read_table_cached()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_table_cached(table)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-read_person"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_person}{}}}
+\subsection{Method \code{read_person()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_person(cache = TRUE)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-read_business"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_business}{}}}
+\subsection{Method \code{read_business()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_business(cache = TRUE)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-read_address"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_address}{}}}
+\subsection{Method \code{read_address()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_address(cache = TRUE)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NA-read_signals"></a>}}
 \if{latex}{\out{\hypertarget{method-NA-read_signals}{}}}
 \subsection{Method \code{read_signals()}}{
@@ -250,38 +297,11 @@ Existing geo columns will be overwritten
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-read_person"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-read_person}{}}}
-\subsection{Method \code{read_person()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_person()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NA-read_metadata"></a>}}
 \if{latex}{\out{\hypertarget{method-NA-read_metadata}{}}}
 \subsection{Method \code{read_metadata()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_metadata()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-read_business"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-read_business}{}}}
-\subsection{Method \code{read_business()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_business()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-read_address"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-read_address}{}}}
-\subsection{Method \code{read_address()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_address()}\if{html}{\out{</div>}}
 }
 
 }
@@ -360,8 +380,7 @@ Existing geo columns will be overwritten
   long_desc,
   depends,
   def,
-  calc,
-  new_date
+  calc
 )}\if{html}{\out{</div>}}
 }
 

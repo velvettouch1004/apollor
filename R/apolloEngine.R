@@ -60,6 +60,7 @@ ApolloEngine <- R6::R6Class(
         self$read_person()
         self$read_business()
         self$read_address()
+        
         self$read_indicator()
         self$read_signals()
         self$read_metadata()
@@ -230,6 +231,66 @@ ApolloEngine <- R6::R6Class(
     
     #----  APOLLO SPECIFIC FUNCTIONS ----
     
+    is_local = function(){
+      Sys.getenv("CONNECT_SERVER") == ""
+    },
+    
+    # Cache reader
+    read_table_cached = function(table){
+      
+      cache_path <- ifelse(self$is_local(), 
+                         "cache", 
+                         "/data/ede_ondermijning") 
+      
+      if(cache_path == "cache"){
+        dir.create(cache_path, showWarnings = FALSE)
+      }
+      
+      rds_name <- paste0(table, ".rds")
+      rds_path <- file.path(cache_path, rds_name)
+      
+      if(!file.exists(rds_path)){
+        flog.info(glue("Reading {table} from Postgres, saving in cache."))
+        data <- self$read_table(table)
+        saveRDS(data, rds_path)
+      } else {
+        flog.info(glue("Reading {table} from cache."))
+        data <- readRDS(rds_path)
+      }
+      
+      return(data)
+      
+    },
+    
+    
+    read_person = function(cache = TRUE){
+      if(cache){
+        self$person <- self$read_table_cached("person")
+      } else {
+        self$person <- self$read_table('person')   
+      }
+      
+      invisible(self$person)
+    },
+    read_business = function(cache = TRUE){ 
+      if(cache){
+        self$business <- self$read_table_cached("business")
+      } else {
+        self$business <- self$read_table('business')   
+      }
+      invisible(self$business)
+    }, 
+    read_address = function(cache = TRUE){ 
+      if(cache){
+        self$address <- self$read_table_cached("address")
+      } else {
+        self$address <- self$read_table('address')   
+      }
+      invisible(self$address)
+    },
+    
+    
+    
     read_signals = function(){
       self$signals <- self$read_table('registrations') 
       invisible(self$signals)
@@ -242,22 +303,12 @@ ApolloEngine <- R6::R6Class(
       self$indicator <- self$read_table('indicator') 
       invisible(self$indicator)
     },
-    read_person = function(){
-      self$person <- self$read_table('person') 
-      invisible(self$person)
-    },
+    
     read_metadata = function(){ 
       self$metadata <- self$read_table('metadata') 
       invisible(self$metadata)
     }, 
-    read_business = function(){ 
-      self$business <- self$read_table('business') 
-      invisible(self$business)
-    }, 
-    read_address = function(){ 
-      self$address <- self$read_table('address') 
-      invisible(self$address)
-    },
+    
     read_favorites = function(user_id=NULL){ 
       if(is.null(user_id)){
         self$favorites <- self$read_table('favorites') 
