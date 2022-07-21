@@ -502,7 +502,16 @@ ApolloEngine <- R6::R6Class(
       
       def <- filter(data, indicator_name == !!indicator)
       
-      tab <- rlang::env_get(self, def$object_type)
+      if(def$object_type == "person"){
+        tab <- self$person
+      }
+      if(def$object_type == "address"){
+        tab <- self$address
+      }
+      if(def$object_type == "business"){
+        tab <- self$business
+      }
+      
       if(is.null(tab)){
         stop("object_type must refer to a dataset loaded in the R6 (address, person, business)")
       }
@@ -540,8 +549,21 @@ ApolloEngine <- R6::R6Class(
         filter(indicator_name %in% !!def$indicator_name) %>%
         mutate(object_type = type)  # needed in $make_boolean_indicator
       
+      
+      # TODO was cleaner maar werkt niet meer online (????)
+      # maak een $get methode.
+      if(type == "person"){
+        tab <- self$person
+      }
+      if(type == "address"){
+        tab <- self$address
+      }
+      if(type == "business"){
+        tab <- self$business
+      }
+      
       # Selecteer alleen de adres id en buurt code,
-      tab <- self[[type]] %>% select(all_of(!!id_columns))
+      tab <- tab %>% select(all_of(!!id_columns))
       
       # voeg alle boolean indicators toe
       i_data <- lapply(def$indicator_name, function(x){
