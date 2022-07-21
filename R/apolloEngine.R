@@ -502,6 +502,9 @@ ApolloEngine <- R6::R6Class(
       
       def <- filter(data, indicator_name == !!indicator)
       
+      print("====== make_boolean_indicator")
+      print(def)
+      
       if(def$object_type == "person"){
         tab <- self$person
       }
