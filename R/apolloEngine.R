@@ -502,7 +502,7 @@ ApolloEngine <- R6::R6Class(
       
       def <- filter(data, indicator_name == !!indicator)
       
-      tab <- self[[def$object_type]]
+      tab <- rlang::env_get(self, def$object_type)
       if(is.null(tab)){
         stop("object_type must refer to a dataset loaded in the R6 (address, person, business)")
       }
