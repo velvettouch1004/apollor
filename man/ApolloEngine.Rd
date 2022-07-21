@@ -115,7 +115,8 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
   pool,
   config_file = getOption("config_file", "conf/config.yml"),
   geo_file = NULL,
-  load_data = TRUE
+  load_data = TRUE,
+  use_cache = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -415,7 +416,6 @@ Adds an indicator's metadata to the 'indicator' table
   description,
   user_id,
   theme,
-  columns,
   disabled = FALSE
 )}\if{html}{\out{</div>}}
 }
@@ -433,9 +433,9 @@ Adds an indicator's metadata to the 'indicator' table
 
 \item{\code{theme}}{Which theme(s) is the indicator used in? e.g. c("mensenhandel","drugs")}
 
-\item{\code{columns}}{}
-
 \item{\code{column_name}}{Name of the column (indicator)}
+
+\item{\code{columns}}{}
 }
 \if{html}{\out{</div>}}
 }

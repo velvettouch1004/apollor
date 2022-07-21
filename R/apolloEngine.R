@@ -33,7 +33,8 @@ ApolloEngine <- R6::R6Class(
     initialize = function(gemeente, schema, pool, 
                           config_file = getOption("config_file","conf/config.yml"),
                           geo_file = NULL,
-                          load_data = TRUE){
+                          load_data = TRUE,
+                          use_cache = TRUE){
       
       flog.info("DB Connection", name = "DBR6")
       
@@ -57,9 +58,9 @@ ApolloEngine <- R6::R6Class(
       }
       
       if(load_data){
-        self$read_person()
-        self$read_business()
-        self$read_address()
+        self$read_person(use_cache)
+        self$read_business(use_cache)
+        self$read_address(use_cache)
         
         self$read_indicator()
         self$read_signals()
@@ -87,6 +88,14 @@ ApolloEngine <- R6::R6Class(
         self$have_geo <- TRUE
         self$geo <- readRDS(geo_file)
       }
+      
+      
+      # tijdelijke hack: buurt codes toevoegen aan person
+      key <- select(st_drop_geometry(self$geo$buurten), bu_naam, buurt_code_cbs = bu_code)
+      self$person <- left_join(self$person,
+                               key, 
+                               by = c("vblplanalogischewijkomschrijving" = "bu_naam"))
+      
       
     },
     
@@ -413,7 +422,6 @@ ApolloEngine <- R6::R6Class(
                              description, 
                              user_id, 
                              theme, 
-                             columns,
                              disabled = FALSE){
       
       type <- match.arg(type) 
@@ -425,7 +433,7 @@ ApolloEngine <- R6::R6Class(
         description = description,
         user_id = user_id,
         theme = self$to_json(theme),
-        columns = self$to_json(columns),
+        #columns = self$to_json(columns),
         #weight = weight,
         #threshold = threshold,
         timestamp = format(Sys.time()),
