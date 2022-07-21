@@ -249,7 +249,7 @@ ApolloEngine <- R6::R6Class(
       
       cache_path <- ifelse(self$is_local(), 
                          "cache", 
-                         "/data/ede_ondermijning") 
+                         "/data/ede-ondermijning") 
       
       if(cache_path == "cache"){
         dir.create(cache_path, showWarnings = FALSE)
