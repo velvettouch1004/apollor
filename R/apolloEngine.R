@@ -502,6 +502,12 @@ ApolloEngine <- R6::R6Class(
           collect
       }
       
+      # get indicators that are not disabled 
+      # disabled is a global setting; not per user!
+      indi <- self$get_indicators_theme(theme)
+      data <- filter(data, indicator_name %in% indi$indicator_name)
+      
+      
       data
     },
     
