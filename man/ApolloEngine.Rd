@@ -7,7 +7,7 @@
 An R6 object with methods for use in the Shiny application \code{apollo}.
 }
 \section{Super class}{
-\code{\link[apollor:NA]{apollor::NA}}
+\code{apollor::NA}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -24,6 +24,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-to_json}{\code{ApolloEngine$to_json()}}
 \item \href{#method-NA-from_json}{\code{ApolloEngine$from_json()}}
 \item \href{#method-NA-is_local}{\code{ApolloEngine$is_local()}}
+\item \href{#method-NA-last_data_update}{\code{ApolloEngine$last_data_update()}}
 \item \href{#method-NA-read_table_cached}{\code{ApolloEngine$read_table_cached()}}
 \item \href{#method-NA-read_person}{\code{ApolloEngine$read_person()}}
 \item \href{#method-NA-read_business}{\code{ApolloEngine$read_business()}}
@@ -85,22 +86,22 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \if{html}{\out{
 <details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="append_data"><a href='../../apollor/html/NA.html#method-NA-append_data'><code>apollor::NA$append_data()</code></a></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="close"><a href='../../apollor/html/NA.html#method-NA-close'><code>apollor::NA$close()</code></a></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="connect_to_database"><a href='../../apollor/html/NA.html#method-NA-connect_to_database'><code>apollor::NA$connect_to_database()</code></a></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="delete_rows_where"><a href='../../apollor/html/NA.html#method-NA-delete_rows_where'><code>apollor::NA$delete_rows_where()</code></a></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="execute_query"><a href='../../apollor/html/NA.html#method-NA-execute_query'><code>apollor::NA$execute_query()</code></a></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="has_value"><a href='../../apollor/html/NA.html#method-NA-has_value'><code>apollor::NA$has_value()</code></a></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="have_column"><a href='../../apollor/html/NA.html#method-NA-have_column'><code>apollor::NA$have_column()</code></a></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="list_tables"><a href='../../apollor/html/NA.html#method-NA-list_tables'><code>apollor::NA$list_tables()</code></a></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="make_column"><a href='../../apollor/html/NA.html#method-NA-make_column'><code>apollor::NA$make_column()</code></a></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="query"><a href='../../apollor/html/NA.html#method-NA-query'><code>apollor::NA$query()</code></a></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="read_table"><a href='../../apollor/html/NA.html#method-NA-read_table'><code>apollor::NA$read_table()</code></a></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="replace_value_where"><a href='../../apollor/html/NA.html#method-NA-replace_value_where'><code>apollor::NA$replace_value_where()</code></a></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="replace_value_where2"><a href='../../apollor/html/NA.html#method-NA-replace_value_where2'><code>apollor::NA$replace_value_where2()</code></a></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="table_columns"><a href='../../apollor/html/NA.html#method-NA-table_columns'><code>apollor::NA$table_columns()</code></a></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="table_info"><a href='../../apollor/html/NA.html#method-NA-table_info'><code>apollor::NA$table_info()</code></a></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="to_sql_string"><a href='../../apollor/html/NA.html#method-NA-to_sql_string'><code>apollor::NA$to_sql_string()</code></a></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="append_data"><a href='../../apollor/html/NA.html#method-NA-append_data'><code>apollor::NA$append_data()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="close"><a href='../../apollor/html/NA.html#method-NA-close'><code>apollor::NA$close()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="connect_to_database"><a href='../../apollor/html/NA.html#method-NA-connect_to_database'><code>apollor::NA$connect_to_database()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="delete_rows_where"><a href='../../apollor/html/NA.html#method-NA-delete_rows_where'><code>apollor::NA$delete_rows_where()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="execute_query"><a href='../../apollor/html/NA.html#method-NA-execute_query'><code>apollor::NA$execute_query()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="has_value"><a href='../../apollor/html/NA.html#method-NA-has_value'><code>apollor::NA$has_value()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="have_column"><a href='../../apollor/html/NA.html#method-NA-have_column'><code>apollor::NA$have_column()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="list_tables"><a href='../../apollor/html/NA.html#method-NA-list_tables'><code>apollor::NA$list_tables()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="make_column"><a href='../../apollor/html/NA.html#method-NA-make_column'><code>apollor::NA$make_column()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="query"><a href='../../apollor/html/NA.html#method-NA-query'><code>apollor::NA$query()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="read_table"><a href='../../apollor/html/NA.html#method-NA-read_table'><code>apollor::NA$read_table()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="replace_value_where"><a href='../../apollor/html/NA.html#method-NA-replace_value_where'><code>apollor::NA$replace_value_where()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="replace_value_where2"><a href='../../apollor/html/NA.html#method-NA-replace_value_where2'><code>apollor::NA$replace_value_where2()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="table_columns"><a href='../../apollor/html/NA.html#method-NA-table_columns'><code>apollor::NA$table_columns()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="table_info"><a href='../../apollor/html/NA.html#method-NA-table_info'><code>apollor::NA$table_info()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="to_sql_string"><a href='../../apollor/html/NA.html#method-NA-to_sql_string'><code>apollor::NA$to_sql_string()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -231,6 +232,15 @@ Existing geo columns will be overwritten
 \subsection{Method \code{is_local()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$is_local()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-last_data_update"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-last_data_update}{}}}
+\subsection{Method \code{last_data_update()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$last_data_update()}\if{html}{\out{</div>}}
 }
 
 }

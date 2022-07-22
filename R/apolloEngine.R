@@ -244,6 +244,13 @@ ApolloEngine <- R6::R6Class(
       Sys.getenv("CONNECT_SERVER") == ""
     },
     
+    last_data_update = function(){
+      
+      db_info <- self$read_table("db_info")
+      as.POSIXct(paste(db_info$last_updated_date, db_info$last_updated_time), tz="UTC")
+      
+    },
+    
     # Cache reader
     read_table_cached = function(table){
       
@@ -257,14 +264,26 @@ ApolloEngine <- R6::R6Class(
       
       rds_name <- paste0(table, ".rds")
       rds_path <- file.path(cache_path, rds_name)
+      timestamp_path <- file.path(cache_path, "timestamp.rds")
+      save_timestamp <- function()saveRDS(as.POSIXct(format(Sys.time()),tz="UTC"), timestamp_path)
       
-      if(!file.exists(rds_path)){
+      cache_is_expired <- file.exists(timestamp_path) && self$last_data_update() > readRDS(timestamp_path)
+      
+      if(!file.exists(rds_path) || cache_is_expired){
         flog.info(glue("Reading {table} from Postgres, saving in cache."))
         data <- self$read_table(table)
         saveRDS(data, rds_path)
+        
+        # timestamp
+        save_timestamp()
       } else {
         flog.info(glue("Reading {table} from cache."))
         data <- readRDS(rds_path)
+        
+        # timestamp not yet saved, data is (old cache)
+        if(!file.exists(timestamp_path)){
+          save_timestamp()
+        }
       }
       
       return(data)
