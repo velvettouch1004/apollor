@@ -243,6 +243,11 @@ databaseObject <- R6::R6Class(
     # replace_value_where("table", 'verwijderd', 'true', 'naam', 'gekozennaam')
     replace_value_where = function(table, col_replace, val_replace, col_compare, val_compare,
                                    query_only = FALSE, quiet = FALSE){
+
+      # postgres accepts 'true' but not 1 (which sqlInterpolate makes it into)
+      if(is.logical(val_replace)){
+        val_replace <- tolower(as.character(val_replace))
+      }
       
       if(!is.null(self$schema)){
         query <- glue("update {self$schema}.{table} set {col_replace} = ?val_replace where ",

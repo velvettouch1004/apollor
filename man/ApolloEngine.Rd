@@ -46,6 +46,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-get_indicators_theme}{\code{ApolloEngine$get_indicators_theme()}}
 \item \href{#method-NA-get_indicators_riskmodel}{\code{ApolloEngine$get_indicators_riskmodel()}}
 \item \href{#method-NA-delete_user_riskmodel}{\code{ApolloEngine$delete_user_riskmodel()}}
+\item \href{#method-NA-get_users_riskmodel}{\code{ApolloEngine$get_users_riskmodel()}}
 \item \href{#method-NA-make_boolean_indicator}{\code{ApolloEngine$make_boolean_indicator()}}
 \item \href{#method-NA-make_indicator_table}{\code{ApolloEngine$make_indicator_table()}}
 \item \href{#method-NA-combine_indicator_tables}{\code{ApolloEngine$combine_indicator_tables()}}
@@ -487,8 +488,20 @@ Use this function to find definitions for indicators in a theme.
 \if{html}{\out{<a id="method-NA-delete_user_riskmodel"></a>}}
 \if{latex}{\out{\hypertarget{method-NA-delete_user_riskmodel}{}}}
 \subsection{Method \code{delete_user_riskmodel()}}{
+Delete riskmmodel settings for a user (so that the gemeente default
+is used again)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$delete_user_riskmodel(user_id)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-get_users_riskmodel"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_users_riskmodel}{}}}
+\subsection{Method \code{get_users_riskmodel()}}{
+Which users have user-specific riskmodel settings for this theme?
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_users_riskmodel(theme)}\if{html}{\out{</div>}}
 }
 
 }

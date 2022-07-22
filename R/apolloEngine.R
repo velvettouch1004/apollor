@@ -360,8 +360,7 @@ ApolloEngine <- R6::R6Class(
       invisible(self$model_privacy_protocol)
     },
     
-    
-    
+
     #----- TRANSPARACY ----
     get_indicator = function(indicator_name){
       self$indicator$label[match(indicator_name, self$indicator$indicator_name)]
@@ -506,11 +505,19 @@ ApolloEngine <- R6::R6Class(
       data
     },
     
+    #' @description Delete riskmmodel settings for a user (so that the gemeente default
+    #' is used again)
     delete_user_riskmodel = function(user_id){
       
       # Get user settings
-      self$execute_query(glue("DELETE from {self$schema}.indicator_riskmodel WHERE user_id = '{user_id}'"))
+      self$execute_query(glue::glue("DELETE from {self$schema}.indicator_riskmodel WHERE user_id = '{user_id}'"))
       
+    },
+    
+    #' @description Which users have user-specific riskmodel settings for this theme?
+    get_users_riskmodel = function(theme){
+      
+      self$query(glue::glue("select distinct user_id from {self$schema}.indicator_riskmodel where theme = '{theme}'"))[[1]]
     },
     
     
