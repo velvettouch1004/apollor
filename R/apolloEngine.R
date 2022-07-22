@@ -528,9 +528,6 @@ ApolloEngine <- R6::R6Class(
       
       def <- filter(data, indicator_name == !!indicator)
       
-      print("====== make_boolean_indicator")
-      print(def)
-      
       if(def$object_type == "person"){
         tab <- self$person
       }
@@ -654,7 +651,9 @@ ApolloEngine <- R6::R6Class(
       def <- self$get_indicators_riskmodel(user_id, theme, gemeente)
       
       if(!all(def$indicator_name %in% names(data))){
-        stop("Some indicator definitions not found in data!")
+        
+        # disabled indicators are still in the riskmodel table
+        def <- filter(def, indicator_name %in% names(data))
       }
       
       # Matrix multiply ftw
@@ -910,13 +909,13 @@ ApolloEngine <- R6::R6Class(
       if(!is.null(registration_name)){
         self$log_user_event(user_id, description=glue("Heeft het privacy protocol velden {paste(data$mpp_name)} van registratie {registration_name} gewijzigd"))  
       } else {
-        print(11111)
+
         #self$log_user_event(user_id, description=glue("Heeft het privacy protocol velden {paste(data$mpp_name)} van registratie {registration_id} gewijzigd")) 
       }
       
-      print(22222)
+      
       self$archive_MPP_for_registration(registration_id, user_id, data$mpp_name, createLog=FALSE) 
-      print(33333)
+    
       self$create_MPP_for_registration(registration_id, user_id, data, createLog=FALSE)
       
     },
