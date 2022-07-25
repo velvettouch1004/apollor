@@ -169,9 +169,17 @@ Existing geo columns will be overwritten
 \if{latex}{\out{\hypertarget{method-NA-get_cbs_buurt_data}{}}}
 \subsection{Method \code{get_cbs_buurt_data()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_cbs_buurt_data(buurt_code_cbs)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_cbs_buurt_data(buurt_code_cbs = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{buurt_code_cbs}}{If NULL, gets all buurt data for this gemeente, otherwise
+only the selected buurt code.s.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NA-get_cbs_buurt_metadata"></a>}}

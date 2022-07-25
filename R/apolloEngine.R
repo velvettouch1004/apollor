@@ -161,13 +161,25 @@ ApolloEngine <- R6::R6Class(
       
     },
     
-    
-    get_cbs_buurt_data = function(buurt_code_cbs){
+    #' @description 
+    #' @param buurt_code_cbs If NULL, gets all buurt data for this gemeente, otherwise
+    #' only the selected buurt code.s.
+    get_cbs_buurt_data = function(buurt_code_cbs = NULL){
       
-      tbl(self$cbs_con, "cbs_kerncijfers_2013_2021") %>%
-        filter(regio_type == "Buurt",
-               gwb_code == !!buurt_code_cbs) %>%
-        collect
+      if(is.null(buurt_code_cbs)){
+        out <- tbl(self$cbs_con, "cbs_kerncijfers_2013_2021") %>%
+          filter(regio_type == "Buurt",
+                 gm_naam == !!self$gemeente) %>%
+          collect
+      } else {
+        out <- tbl(self$cbs_con, "cbs_kerncijfers_2013_2021") %>%
+          filter(regio_type == "Buurt",
+                 gwb_code == !!buurt_code_cbs) %>%
+          collect  
+      }
+      
+      rename(out, buurt_code_cbs = gwb_code)
+      
       
     },
     
