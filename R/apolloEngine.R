@@ -89,6 +89,9 @@ ApolloEngine <- R6::R6Class(
         self$geo <- readRDS(geo_file)
       }
       
+      # CBS kerncijfers
+      self$cbs_kern_buurten <- self$get_cbs_buurt_data()
+      self$cbs_kern_metadata <- self$get_cbs_buurt_metadata()
       
       # tijdelijke hack: buurt codes toevoegen aan person
       key <- select(st_drop_geometry(self$geo$buurten), bu_naam, buurt_code_cbs = bu_code)
