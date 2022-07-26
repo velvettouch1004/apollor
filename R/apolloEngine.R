@@ -30,8 +30,10 @@ ApolloEngine <- R6::R6Class(
                            verhuisd_binnen = "info", 
                            geboorte = "success"),
     
+    # ---- Init
     initialize = function(gemeente, schema, pool, 
                           config_file = getOption("config_file","conf/config.yml"),
+                          secret = "",
                           geo_file = NULL,
                           load_data = TRUE,
                           use_cache = TRUE){
@@ -42,6 +44,9 @@ ApolloEngine <- R6::R6Class(
       self$pool <- pool
       self$schema <- schema 
       what <- gemeente
+      
+      # symmetric encrypt/decrypt
+      self$secret <- secret
       
       cf <- config::get(what, file = config_file)
       print("----CONNECTING TO----")
@@ -103,6 +108,15 @@ ApolloEngine <- R6::R6Class(
     },
     
     
+    #----- Encrypt/decrypt utilities
+    encrypt = function(x){
+      out <- shintobag::encrypt(x, secret = self$secret)
+      out[is.na(x)] <- NA_character_
+      out
+    },
+    decrypt = function(x){
+      shintobag::decrypt(x, secret = self$secret)
+    },
     
     #----- GEO UTILITIES ----
     

@@ -13,6 +13,8 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-NA-new}{\code{ApolloEngine$new()}}
+\item \href{#method-NA-encrypt}{\code{ApolloEngine$encrypt()}}
+\item \href{#method-NA-decrypt}{\code{ApolloEngine$decrypt()}}
 \item \href{#method-NA-assert_geo}{\code{ApolloEngine$assert_geo()}}
 \item \href{#method-NA-geo_name_from_code}{\code{ApolloEngine$geo_name_from_code()}}
 \item \href{#method-NA-add_geo_columns}{\code{ApolloEngine$add_geo_columns()}}
@@ -116,10 +118,29 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
   schema,
   pool,
   config_file = getOption("config_file", "conf/config.yml"),
+  secret = "",
   geo_file = NULL,
   load_data = TRUE,
   use_cache = TRUE
 )}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-encrypt"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-encrypt}{}}}
+\subsection{Method \code{encrypt()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$encrypt(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-decrypt"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-decrypt}{}}}
+\subsection{Method \code{decrypt()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$decrypt(x)}\if{html}{\out{</div>}}
 }
 
 }
