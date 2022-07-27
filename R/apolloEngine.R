@@ -97,12 +97,7 @@ ApolloEngine <- R6::R6Class(
       # CBS kerncijfers
       self$cbs_kern_buurten <- self$get_cbs_buurt_data()
       self$cbs_kern_metadata <- self$get_cbs_buurt_metadata()
-      
-      # tijdelijke hack: buurt codes toevoegen aan person
-      key <- select(st_drop_geometry(self$geo$buurten), bu_naam, buurt_code_cbs = bu_code)
-      self$person <- left_join(self$person,
-                               key, 
-                               by = c("vblplanalogischewijkomschrijving" = "bu_naam"))
+
       
       
     },
@@ -293,12 +288,12 @@ ApolloEngine <- R6::R6Class(
       
       rds_name <- paste0(table, ".rds")
       rds_path <- file.path(cache_path, rds_name)
-      timestamp_path <- file.path(cache_path, "timestamp.rds")
+      timestamp_path <- file.path(cache_path, paste0(table,"_timestamp.rds"))
       save_timestamp <- function()saveRDS(as.POSIXct(format(Sys.time()),tz="UTC"), timestamp_path)
       
       cache_is_expired <- file.exists(timestamp_path) && self$last_data_update() > readRDS(timestamp_path)
       
-      if(!file.exists(rds_path) || cache_is_expired){
+      if(!file.exists(rds_path) || !file.exists(timestamp_path) || cache_is_expired){
         flog.info(glue("Reading {table} from Postgres, saving in cache."))
         data <- self$read_table(table)
         saveRDS(data, rds_path)
