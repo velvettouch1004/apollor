@@ -97,7 +97,7 @@ ApolloEngine <- R6::R6Class(
       # CBS kerncijfers
       self$cbs_kern_buurten <- self$get_cbs_buurt_data()
       self$cbs_kern_metadata <- self$get_cbs_buurt_metadata()
-
+      
       
       
     },
@@ -279,8 +279,8 @@ ApolloEngine <- R6::R6Class(
     read_table_cached = function(table){
       
       cache_path <- ifelse(self$is_local(), 
-                         "cache", 
-                         "/data/ede-ondermijning") 
+                           "cache", 
+                           "/data/ede-ondermijning") 
       
       if(cache_path == "cache"){
         dir.create(cache_path, showWarnings = FALSE)
@@ -384,7 +384,7 @@ ApolloEngine <- R6::R6Class(
       invisible(self$model_privacy_protocol)
     },
     
-
+    
     #----- TRANSPARACY ----
     get_indicator = function(indicator_name){
       self$indicator$label[match(indicator_name, self$indicator$indicator_name)]
@@ -494,6 +494,17 @@ ApolloEngine <- R6::R6Class(
       
     },
     
+    #' @description Get all rows of indicators table that are currently active
+    #' @details Use this function to find definitions for indicators
+    get_indicators_all = function(){
+      
+      out <- self$indicator %>% 
+        filter(!disabled, !deleted)
+      
+      out
+      
+    },
+    
     
     #' @description Get rows of indicators table for a theme
     #' @details Use this function to find definitions for indicators in a theme.
@@ -509,6 +520,29 @@ ApolloEngine <- R6::R6Class(
       
       out
       
+    },
+    
+    get_indicators_riskmodel_notheme = function(user_id, gemeente){
+      
+      # Get user settings
+      data <- self$read_table("indicator_riskmodel", lazy = TRUE) %>%
+        filter(user_id == !!user_id) %>%
+        collect
+      
+      # Don't have those? Get gemeente settings.
+      if(nrow(data) == 0){
+        data <- self$read_table("indicator_riskmodel", lazy = TRUE) %>%
+          filter(user_id == !!gemeente) %>%
+          collect
+      }
+      
+      # get indicators that are not disabled 
+      # disabled is a global setting; not per user!
+      indi <- self$get_indicators_all()
+      data <- filter(data, indicator_name %in% indi$indicator_name)
+      
+      
+      data
     },
     
     
@@ -552,11 +586,16 @@ ApolloEngine <- R6::R6Class(
     
     
     #' @description Convert raw indicator data to TRUE/FALSE
-    #' @param data Dataframe subset from `indicator` table, read with `$get_indicators_theme`
+    #' @param data Dataframe subset from `indicator` table, read with `$get_indicators_theme` or `$get_indicators_all`
     #' @param indicator Name of the indicator to convert
     make_boolean_indicator = function(data, indicator){
       
       def <- filter(data, indicator_name == !!indicator)
+      
+      # in case $get_indicators_all is used, take only first value (everthing besides theme is the same)
+      if(nrow(def)>1){
+        def <- def[1,]
+      }
       
       if(def$object_type == "person"){
         tab <- self$person
@@ -580,6 +619,62 @@ ApolloEngine <- R6::R6Class(
       # for now, only a simple threshold calculation
       values >= def$threshold
       
+    },
+    
+    #' @description Make a table with indicator (boolean) values
+    #' @param type One of the [object_type]'s in the `indicator` table
+    #' @param id_columns Columns from the base table (e.g. person) that are copied to the indicator table
+    make_indicator_table_no_theme = function(type = c("address","person","business"),
+                                             id_columns = c("address_id","buurt_code_cbs"),
+                                             user_id, gemeente
+    ){
+      
+      type <- match.arg(type)
+      
+      # Get indicators for this type
+      def <- self$get_indicators_all() %>%
+        filter(object_type == !!type)
+      
+      # Get risk parameters for these indicators / this user / this gemeente
+      risk <- self$get_indicators_riskmodel_notheme(user_id = user_id,
+                                                    gemeente = gemeente) %>%
+        filter(indicator_name %in% !!def$indicator_name) %>%
+        mutate(object_type = type)  # needed in $make_boolean_indicator
+      
+      
+      # TODO was cleaner maar werkt niet meer online (????)
+      # maak een $get methode.
+      if(type == "person"){
+        tab <- self$person
+      }
+      if(type == "address"){
+        tab <- self$address
+      }
+      if(type == "business"){
+        tab <- self$business
+      }
+      
+      # Selecteer alleen de adres id en buurt code,
+      tab <- tab %>% select(all_of(!!id_columns))
+      
+      # voeg alle boolean indicators toe
+      i_data <- lapply(def$indicator_name, function(x){
+        self$make_boolean_indicator(data = risk, indicator = x)
+      })
+      
+      out <- do.call(cbind, i_data) %>%
+        as_tibble(., .name_repair = "minimal") %>%
+        setNames(def$indicator_name)
+      
+      if(nrow(out) != nrow(tab)){
+        stop("Fatal error 1 in `make_address_indicator_table`")
+      }
+      
+      out <- cbind(tab, out)
+      
+      attr(out, "id_columns") <- id_columns
+      
+      out
     },
     
     #' @description Make a table with indicator (boolean) values
@@ -674,6 +769,26 @@ ApolloEngine <- R6::R6Class(
     
     #' @description Calculate riskmodel at address level
     #' @param data Combined indicator table at address level (made with `combine_indicator_tables`)
+    calculate_riskmodel_notheme = function(data, user_id, gemeente){
+      
+      # Definition for this theme
+      def <- self$get_indicators_riskmodel_notheme(user_id, gemeente)
+      
+      if(!all(def$indicator_name %in% names(data))){
+        
+        # disabled indicators are still in the riskmodel table
+        def <- filter(def, indicator_name %in% names(data))
+      }
+      
+      # Matrix multiply ftw
+      m <- as.matrix(data[, def$indicator_name])
+      data$riskmodel <- as.vector(m %*% def$weight)
+      
+      data
+    },
+    
+    #' @description Calculate riskmodel at address level
+    #' @param data Combined indicator table at address level (made with `combine_indicator_tables`)
     #' @param theme Theme for the indicators; used to get weights from definition table
     calculate_riskmodel = function(data, theme, user_id, gemeente){
       
@@ -749,7 +864,7 @@ ApolloEngine <- R6::R6Class(
         self$set_indicator_riskmodel_field(data_old$risk_id, "weight", value = weight)
         self$set_indicator_riskmodel_field(data_old$risk_id, "threshold", value = threshold)
         self$set_indicator_riskmodel_field(data_old$risk_id, "timestamp", value = format(Sys.time()))
-
+        
         
       }
       
@@ -939,13 +1054,13 @@ ApolloEngine <- R6::R6Class(
       if(!is.null(registration_name)){
         self$log_user_event(user_id, description=glue("Heeft het privacy protocol velden {paste(data$mpp_name)} van registratie {registration_name} gewijzigd"))  
       } else {
-
+        
         #self$log_user_event(user_id, description=glue("Heeft het privacy protocol velden {paste(data$mpp_name)} van registratie {registration_id} gewijzigd")) 
       }
       
       
       self$archive_MPP_for_registration(registration_id, user_id, data$mpp_name, createLog=FALSE) 
-    
+      
       self$create_MPP_for_registration(registration_id, user_id, data, createLog=FALSE)
       
     },
@@ -955,24 +1070,32 @@ ApolloEngine <- R6::R6Class(
     
     
     #' @description Add action to actionlist
-    #' @param registration_id Signal where the action relates to
-    #' @param user_id User that creates the action
-    #' @param action_name Short title
-    #' @param action_date Date (yyyy-mm-dd) action occurs 
-    #' @param description Content of action 
-    #' @param status Current action status 
-    create_action = function(registration_id, user_id, action_name, action_date, description, status){
+    #' @param uid User that creates the action
+    #' @param acdate Date (yyyy-mm-dd) action occurs 
+    #' @param desc Content of action 
+    #' @param acname Short title
+    #' @param rid Signal where the action relates to
+    #' @param gid Group ID the action is a part of 
+    #' @param gname Group name the action is a part of
+    #' @param aid The address the action is registered for
+    create_action = function(uid, acdate, desc, acname, rid, gid, gname, aid){
       self$log_user_event(user_id, description=glue("Heeft actie {action_name} aangemaakt"))
       
       try( 
         self$append_data('actionlist', 
-                         data.frame (action_name = action_name,
-                                     registration_id  =  registration_id,
-                                     user_id =  user_id,
-                                     action_date = action_date,
-                                     description = description,
-                                     status = status,
-                                     timestamp = Sys.time()))
+                         data.frame(action_id = uuid::UUIDgenerate(),
+                                    user_id =  uid,
+                                    action_date = acdate,
+                                    description = desc,
+                                    status = "In behandeling",
+                                    timestamp = Sys.time(),
+                                    expired = FALSE, 
+                                    action_name = acname,
+                                    registration_id  =  rid,
+                                    group_id = gid,
+                                    group_name = gname,
+                                    address_id = aid
+                                    ))
       ) 
     }, 
     #' @description Update action in actionlist
