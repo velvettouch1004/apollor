@@ -351,6 +351,32 @@ ApolloEngine <- R6::R6Class(
       self$actions <- self$read_table('actionlist') 
       invisible(self$actions)
     },
+    
+    # Naar custom module plaatsen?
+    read_actions_groups = function(){ 
+      data <- self$read_table('actionlist') 
+      invisible(data)
+      data <- data %>%
+        filter(!is.na(group_id)) %>%
+        select(action_id, group_id, group_name) %>%
+        unique()
+      
+      return(data)
+    },
+    # Naar custom module plaatsen?
+    get_actiongroup_title = function(id){ 
+      name <- self$query(glue("select distinct(group_name) from {self$schema}.actionlist where group_id = '{id}';")) %>%
+        pull(group_name)
+      
+      return(name)
+    },
+    # Naar custom module plaatsen?
+    check_actiongroup_name = function(name){ 
+      res <- self$query(glue("select exists(select 1 from {self$schema}.actionlist where group_name='{name}');")) %>%
+        pull(exists)
+      
+      return(res)
+    },
     read_indicator = function(){ 
       self$indicator <- self$read_table('indicator') 
       invisible(self$indicator)
@@ -1078,23 +1104,23 @@ ApolloEngine <- R6::R6Class(
     #' @param gid Group ID the action is a part of 
     #' @param gname Group name the action is a part of
     #' @param aid The address the action is registered for
-    create_action = function(uid, acdate, desc, acname, rid, gid, gname, aid){
-      self$log_user_event(user_id, description=glue("Heeft actie {action_name} aangemaakt"))
+    create_action = function(uid, acdate, desc, stat, acname, rid, gid, gname, aid, uitv){
+      self$log_user_event(uid, description=glue("Heeft actie {acname} aangemaakt"))
       
       try( 
         self$append_data('actionlist', 
-                         data.frame(action_id = uuid::UUIDgenerate(),
-                                    user_id =  uid,
+                         data.frame(user_id =  uid,
                                     action_date = acdate,
                                     description = desc,
-                                    status = "In behandeling",
+                                    status = stat,
                                     timestamp = Sys.time(),
                                     expired = FALSE, 
                                     action_name = acname,
                                     registration_id  =  rid,
                                     group_id = gid,
                                     group_name = gname,
-                                    address_id = aid
+                                    address_id = aid,
+                                    uitvoerder = uitv
                                     ))
       ) 
     }, 
