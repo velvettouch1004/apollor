@@ -78,6 +78,7 @@ ApolloEngine <- R6::R6Class(
       
       # BAG connectie
       self$bag_con <- shintobag::shinto_db_connection("data_bag", file = config_file)
+      self$bag_columns <- dbListFields(self$bag_con, Id(schema = "bagactueel", table = "adres_plus"))
       
       # CBS connectie
       self$cbs_con <- shintobag::shinto_db_connection("data_cbs", file = config_file)
@@ -213,9 +214,20 @@ ApolloEngine <- R6::R6Class(
       
     },
     
-    get_bag_from_bagid = function(id, spatial = FALSE, geo_only = FALSE){
-      
-      cols <- ifelse(geo_only, "adresseerbaarobject_id, geopunt", "*")
+    get_bag_from_bagid = function(id, spatial = FALSE, geo_only = FALSE, request_cols = NULL){
+      if(!geo_only){
+        if(is.null(request_cols)){
+          cols <- "*"
+        } else {
+          all_cols_correct <- identical(setdiff(request_cols, self$bag_columns), character(0))
+          if(!all_cols_correct){
+            stop("Not all requested columns are present in bagactueel.adres_plus!")
+          }
+          cols <- paste0(request_cols, collapse = ",") 
+        }
+      } else { 
+        cols <- "adresseerbaarobject_id, geopunt"
+      }
       
       data_out <- data.frame(adresseerbaarobject_id = id)
       
@@ -243,6 +255,14 @@ ApolloEngine <- R6::R6Class(
     join_bag_geometry = function(data, id_column = "adresseerbaarobject_id"){
       
       data_bag <- self$get_bag_from_bagid(data[[id_column]], spatial = TRUE, geo_only = TRUE)
+      
+      st_as_sf(left_join(data, data_bag, by = setNames("adresseerbaarobject_id",id_column)))
+      
+    },
+    
+    join_bag = function(data, id_column = "adresseerbaarobject_id", bag_columns = NULL){
+      # SQL Injection Sensitive?
+      data_bag <- self$get_bag_from_bagid(data[[id_column]], spatial = TRUE, geo_only = FALSE, request_cols = bag_columns)
       
       st_as_sf(left_join(data, data_bag, by = setNames("adresseerbaarobject_id",id_column)))
       
@@ -1121,7 +1141,7 @@ ApolloEngine <- R6::R6Class(
                                     group_name = gname,
                                     address_id = aid,
                                     uitvoerder = uitv
-                                    ))
+                         ))
       ) 
     }, 
     #' @description Update action in actionlist
