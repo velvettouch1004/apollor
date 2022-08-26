@@ -23,6 +23,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-street_from_bagid}{\code{ApolloEngine$street_from_bagid()}}
 \item \href{#method-NA-get_bag_from_bagid}{\code{ApolloEngine$get_bag_from_bagid()}}
 \item \href{#method-NA-join_bag_geometry}{\code{ApolloEngine$join_bag_geometry()}}
+\item \href{#method-NA-join_bag}{\code{ApolloEngine$join_bag()}}
 \item \href{#method-NA-to_json}{\code{ApolloEngine$to_json()}}
 \item \href{#method-NA-from_json}{\code{ApolloEngine$from_json()}}
 \item \href{#method-NA-is_local}{\code{ApolloEngine$is_local()}}
@@ -33,6 +34,9 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-read_address}{\code{ApolloEngine$read_address()}}
 \item \href{#method-NA-read_signals}{\code{ApolloEngine$read_signals()}}
 \item \href{#method-NA-read_actions}{\code{ApolloEngine$read_actions()}}
+\item \href{#method-NA-read_actions_groups}{\code{ApolloEngine$read_actions_groups()}}
+\item \href{#method-NA-get_actiongroup_title}{\code{ApolloEngine$get_actiongroup_title()}}
+\item \href{#method-NA-check_actiongroup_name}{\code{ApolloEngine$check_actiongroup_name()}}
 \item \href{#method-NA-read_indicator}{\code{ApolloEngine$read_indicator()}}
 \item \href{#method-NA-read_metadata}{\code{ApolloEngine$read_metadata()}}
 \item \href{#method-NA-read_favorites}{\code{ApolloEngine$read_favorites()}}
@@ -45,13 +49,17 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-label_indicator}{\code{ApolloEngine$label_indicator()}}
 \item \href{#method-NA-add_indicator}{\code{ApolloEngine$add_indicator()}}
 \item \href{#method-NA-remove_indicator}{\code{ApolloEngine$remove_indicator()}}
+\item \href{#method-NA-get_indicators_all}{\code{ApolloEngine$get_indicators_all()}}
 \item \href{#method-NA-get_indicators_theme}{\code{ApolloEngine$get_indicators_theme()}}
+\item \href{#method-NA-get_indicators_riskmodel_notheme}{\code{ApolloEngine$get_indicators_riskmodel_notheme()}}
 \item \href{#method-NA-get_indicators_riskmodel}{\code{ApolloEngine$get_indicators_riskmodel()}}
 \item \href{#method-NA-delete_user_riskmodel}{\code{ApolloEngine$delete_user_riskmodel()}}
 \item \href{#method-NA-get_users_riskmodel}{\code{ApolloEngine$get_users_riskmodel()}}
 \item \href{#method-NA-make_boolean_indicator}{\code{ApolloEngine$make_boolean_indicator()}}
+\item \href{#method-NA-make_indicator_table_no_theme}{\code{ApolloEngine$make_indicator_table_no_theme()}}
 \item \href{#method-NA-make_indicator_table}{\code{ApolloEngine$make_indicator_table()}}
 \item \href{#method-NA-combine_indicator_tables}{\code{ApolloEngine$combine_indicator_tables()}}
+\item \href{#method-NA-calculate_riskmodel_notheme}{\code{ApolloEngine$calculate_riskmodel_notheme()}}
 \item \href{#method-NA-calculate_riskmodel}{\code{ApolloEngine$calculate_riskmodel()}}
 \item \href{#method-NA-set_indicator_field}{\code{ApolloEngine$set_indicator_field()}}
 \item \href{#method-NA-set_indicator_riskmodel_field}{\code{ApolloEngine$set_indicator_riskmodel_field()}}
@@ -225,7 +233,12 @@ only the selected buurt code.s.}
 \if{latex}{\out{\hypertarget{method-NA-get_bag_from_bagid}{}}}
 \subsection{Method \code{get_bag_from_bagid()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_bag_from_bagid(id, spatial = FALSE, geo_only = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_bag_from_bagid(
+  id,
+  spatial = FALSE,
+  geo_only = FALSE,
+  request_cols = NULL
+)}\if{html}{\out{</div>}}
 }
 
 }
@@ -235,6 +248,19 @@ only the selected buurt code.s.}
 \subsection{Method \code{join_bag_geometry()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$join_bag_geometry(data, id_column = "adresseerbaarobject_id")}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-join_bag"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-join_bag}{}}}
+\subsection{Method \code{join_bag()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$join_bag(
+  data,
+  id_column = "adresseerbaarobject_id",
+  bag_columns = NULL
+)}\if{html}{\out{</div>}}
 }
 
 }
@@ -325,6 +351,33 @@ only the selected buurt code.s.}
 \subsection{Method \code{read_actions()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_actions()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-read_actions_groups"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_actions_groups}{}}}
+\subsection{Method \code{read_actions_groups()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_actions_groups()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-get_actiongroup_title"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_actiongroup_title}{}}}
+\subsection{Method \code{get_actiongroup_title()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_actiongroup_title(id)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-check_actiongroup_name"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-check_actiongroup_name}{}}}
+\subsection{Method \code{check_actiongroup_name()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$check_actiongroup_name(name)}\if{html}{\out{</div>}}
 }
 
 }
@@ -491,6 +544,20 @@ Remove an indicator's metadata from the 'indicator' table0
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-get_indicators_all"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_indicators_all}{}}}
+\subsection{Method \code{get_indicators_all()}}{
+Get all rows of indicators table that are currently active
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_indicators_all()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+Use this function to find definitions for indicators
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NA-get_indicators_theme"></a>}}
 \if{latex}{\out{\hypertarget{method-NA-get_indicators_theme}{}}}
 \subsection{Method \code{get_indicators_theme()}}{
@@ -501,6 +568,15 @@ Get rows of indicators table for a theme
 
 \subsection{Details}{
 Use this function to find definitions for indicators in a theme.
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-get_indicators_riskmodel_notheme"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_indicators_riskmodel_notheme}{}}}
+\subsection{Method \code{get_indicators_riskmodel_notheme()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_indicators_riskmodel_notheme(user_id, gemeente)}\if{html}{\out{</div>}}
 }
 
 }
@@ -546,9 +622,33 @@ Convert raw indicator data to TRUE/FALSE
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{data}}{Dataframe subset from \code{indicator} table, read with \verb{$get_indicators_theme}}
+\item{\code{data}}{Dataframe subset from \code{indicator} table, read with \verb{$get_indicators_theme} or \verb{$get_indicators_all}}
 
 \item{\code{indicator}}{Name of the indicator to convert}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-make_indicator_table_no_theme"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-make_indicator_table_no_theme}{}}}
+\subsection{Method \code{make_indicator_table_no_theme()}}{
+Make a table with indicator (boolean) values
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$make_indicator_table_no_theme(
+  type = c("address", "person", "business"),
+  id_columns = c("address_id", "buurt_code_cbs"),
+  user_id,
+  gemeente
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{type}}{One of the \link{object_type}'s in the \code{indicator} table}
+
+\item{\code{id_columns}}{Columns from the base table (e.g. person) that are copied to the indicator table}
 }
 \if{html}{\out{</div>}}
 }
@@ -604,6 +704,23 @@ is summarized so that if at least one person at the address is TRUE for some ind
 then the address is TRUE. TODO business level indicators
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-calculate_riskmodel_notheme"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-calculate_riskmodel_notheme}{}}}
+\subsection{Method \code{calculate_riskmodel_notheme()}}{
+Calculate riskmodel at address level
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$calculate_riskmodel_notheme(data, user_id, gemeente)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data}}{Combined indicator table at address level (made with \code{combine_indicator_tables})}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NA-calculate_riskmodel"></a>}}
@@ -900,29 +1017,37 @@ Update mpp for registration
 Add action to actionlist
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_action(
-  registration_id,
-  user_id,
-  action_name,
-  action_date,
-  description,
-  status
+  uid,
+  acdate,
+  desc,
+  stat,
+  acname,
+  rid,
+  gid,
+  gname,
+  aid,
+  uitv
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{registration_id}}{Signal where the action relates to}
+\item{\code{uid}}{User that creates the action}
 
-\item{\code{user_id}}{User that creates the action}
+\item{\code{acdate}}{Date (yyyy-mm-dd) action occurs}
 
-\item{\code{action_name}}{Short title}
+\item{\code{desc}}{Content of action}
 
-\item{\code{action_date}}{Date (yyyy-mm-dd) action occurs}
+\item{\code{acname}}{Short title}
 
-\item{\code{description}}{Content of action}
+\item{\code{rid}}{Signal where the action relates to}
 
-\item{\code{status}}{Current action status}
+\item{\code{gid}}{Group ID the action is a part of}
+
+\item{\code{gname}}{Group name the action is a part of}
+
+\item{\code{aid}}{The address the action is registered for}
 }
 \if{html}{\out{</div>}}
 }
