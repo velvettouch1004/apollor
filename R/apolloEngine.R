@@ -34,6 +34,7 @@ ApolloEngine <- R6::R6Class(
     initialize = function(gemeente, schema, pool, 
                           config_file = getOption("config_file","conf/config.yml"),
                           secret = "",
+                          data_files = "", 
                           geo_file = NULL,
                           load_data = TRUE,
                           use_cache = TRUE){
@@ -62,17 +63,47 @@ ApolloEngine <- R6::R6Class(
         self$con <- response
       }
       
+      self$data_files <- data_files
+      
       if(load_data){
-        self$read_person(use_cache)
-        self$read_business(use_cache)
-        self$read_address(use_cache)
+        if(self$has_dataset("person") || paste(self$data_files, collapse = '') == ""){
+          self$read_person(use_cache)
+        }
         
-        self$read_indicator()
-        self$read_signals()
-        self$read_metadata()
+        if(self$has_dataset("business") || paste(self$data_files, collapse = '') == ""){
+          self$read_business(use_cache)
+        }
         
-        self$relocations <- self$read_table("brp_verhuis_historie")
-        self$model_privacy_protocol <- self$read_table("model_privacy_protocol") 
+        if(self$has_dataset("address") || paste(self$data_files, collapse = '') == ""){
+          self$read_address(use_cache)
+        }
+        
+        if(self$has_dataset("indicator") || paste(self$data_files, collapse = '') == ""){
+          self$read_indicator()
+        }
+        
+        if(self$has_dataset("signals") || paste(self$data_files, collapse = '') == ""){
+          self$read_signals()
+        }
+        
+        if(self$has_dataset("metadata") || paste(self$data_files, collapse = '') == ""){
+          self$read_metadata()
+        }
+        
+        if(self$has_dataset("relocations") || paste(self$data_files, collapse = '') == ""){
+          self$relocations <- self$read_table("brp_verhuis_historie")
+        }
+        
+        if(self$has_dataset("model_privacy_protocol") || paste(self$data_files, collapse = '') == ""){
+          self$model_privacy_protocol <- self$read_table("model_privacy_protocol")
+        }
+        
+        
+        
+        
+        
+        
+        
       }
       
       
@@ -106,12 +137,21 @@ ApolloEngine <- R6::R6Class(
     
     #----- Encrypt/decrypt utilities
     encrypt = function(x){
-      out <- shintobag::encrypt(x, secret = self$secret)
-      out[is.na(x)] <- NA_character_
+      if(self$secret != ""){
+        out <- shintobag::encrypt(x, secret = self$secret)
+        out[is.na(x)] <- NA_character_
+      } else {
+        out <- x
+      }
       out
     },
     decrypt = function(x){
-      shintobag::decrypt(x, secret = self$secret)
+      if(self$secret != ""){
+        shintobag::decrypt(x, secret = self$secret)
+      } else {
+        x
+      }
+      
     },
     
     #----- GEO UTILITIES ----
@@ -280,7 +320,10 @@ ApolloEngine <- R6::R6Class(
       jsonlite::fromJSON(x)
     },
     
-    
+    has_dataset = function(what){
+      what %in% self$data_files
+      
+    },
     
     #----  APOLLO SPECIFIC FUNCTIONS ----
     
@@ -297,10 +340,9 @@ ApolloEngine <- R6::R6Class(
     
     # Cache reader
     read_table_cached = function(table){
-      
       cache_path <- ifelse(self$is_local(), 
                            "cache", 
-                           "/data/ede-ondermijning") 
+                           glue("/data/{gemeente}-ondermijning"))
       
       if(cache_path == "cache"){
         dir.create(cache_path, showWarnings = FALSE)
@@ -372,31 +414,6 @@ ApolloEngine <- R6::R6Class(
       invisible(self$actions)
     },
     
-    # Naar custom module plaatsen?
-    read_actions_groups = function(){ 
-      data <- self$read_table('actionlist') 
-      invisible(data)
-      data <- data %>%
-        filter(!is.na(group_id)) %>%
-        select(action_id, group_id, group_name) %>%
-        unique()
-      
-      return(data)
-    },
-    # Naar custom module plaatsen?
-    get_actiongroup_title = function(id){ 
-      name <- self$query(glue("select distinct(group_name) from {self$schema}.actionlist where group_id = '{id}';")) %>%
-        pull(group_name)
-      
-      return(name)
-    },
-    # Naar custom module plaatsen?
-    check_actiongroup_name = function(name){ 
-      res <- self$query(glue("select exists(select 1 from {self$schema}.actionlist where group_name='{name}');")) %>%
-        pull(exists)
-      
-      return(res)
-    },
     read_indicator = function(){ 
       self$indicator <- self$read_table('indicator') 
       invisible(self$indicator)
