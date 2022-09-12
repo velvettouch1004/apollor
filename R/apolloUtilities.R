@@ -1,4 +1,4 @@
-library(stringr)
+
 
 format_event_func <- function(event, buurt, gemeente){ 
   case_when(event %in% c("verhuisd_naar", "verhuisd_binnen") & !is.na(buurt) ~ glue("Verhuisd naar buurt {buurt}"),

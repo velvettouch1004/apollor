@@ -67,42 +67,44 @@ ApolloEngine <- R6::R6Class(
       
       if(load_data){
         if(self$has_dataset("person") || paste(self$data_files, collapse = '') == ""){
+          print("READ PERSON")
           self$read_person(use_cache)
         }
         
         if(self$has_dataset("business") || paste(self$data_files, collapse = '') == ""){
+          print("READ BUSINESS")
           self$read_business(use_cache)
         }
         
         if(self$has_dataset("address") || paste(self$data_files, collapse = '') == ""){
+          print("READ ADDRESS")
           self$read_address(use_cache)
         }
         
         if(self$has_dataset("indicator") || paste(self$data_files, collapse = '') == ""){
+          print("READ INDICATOR")
           self$read_indicator()
         }
         
         if(self$has_dataset("signals") || paste(self$data_files, collapse = '') == ""){
+          print("READ SIGNALS")
           self$read_signals()
         }
         
         if(self$has_dataset("metadata") || paste(self$data_files, collapse = '') == ""){
+          print("READ METADATA")
           self$read_metadata()
         }
         
         if(self$has_dataset("relocations") || paste(self$data_files, collapse = '') == ""){
+          print("READ RELOCATIONS")
           self$relocations <- self$read_table("brp_verhuis_historie")
         }
         
         if(self$has_dataset("model_privacy_protocol") || paste(self$data_files, collapse = '') == ""){
+          print("READ MPP")
           self$model_privacy_protocol <- self$read_table("model_privacy_protocol")
         }
-        
-        
-        
-        
-        
-        
         
       }
       

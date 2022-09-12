@@ -26,6 +26,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-join_bag}{\code{ApolloEngine$join_bag()}}
 \item \href{#method-NA-to_json}{\code{ApolloEngine$to_json()}}
 \item \href{#method-NA-from_json}{\code{ApolloEngine$from_json()}}
+\item \href{#method-NA-has_dataset}{\code{ApolloEngine$has_dataset()}}
 \item \href{#method-NA-is_local}{\code{ApolloEngine$is_local()}}
 \item \href{#method-NA-last_data_update}{\code{ApolloEngine$last_data_update()}}
 \item \href{#method-NA-read_table_cached}{\code{ApolloEngine$read_table_cached()}}
@@ -34,9 +35,6 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-read_address}{\code{ApolloEngine$read_address()}}
 \item \href{#method-NA-read_signals}{\code{ApolloEngine$read_signals()}}
 \item \href{#method-NA-read_actions}{\code{ApolloEngine$read_actions()}}
-\item \href{#method-NA-read_actions_groups}{\code{ApolloEngine$read_actions_groups()}}
-\item \href{#method-NA-get_actiongroup_title}{\code{ApolloEngine$get_actiongroup_title()}}
-\item \href{#method-NA-check_actiongroup_name}{\code{ApolloEngine$check_actiongroup_name()}}
 \item \href{#method-NA-read_indicator}{\code{ApolloEngine$read_indicator()}}
 \item \href{#method-NA-read_metadata}{\code{ApolloEngine$read_metadata()}}
 \item \href{#method-NA-read_favorites}{\code{ApolloEngine$read_favorites()}}
@@ -127,6 +125,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
   pool,
   config_file = getOption("config_file", "conf/config.yml"),
   secret = "",
+  data_files = "",
   geo_file = NULL,
   load_data = TRUE,
   use_cache = TRUE
@@ -283,6 +282,15 @@ only the selected buurt code.s.}
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-has_dataset"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-has_dataset}{}}}
+\subsection{Method \code{has_dataset()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$has_dataset(what)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NA-is_local"></a>}}
 \if{latex}{\out{\hypertarget{method-NA-is_local}{}}}
 \subsection{Method \code{is_local()}}{
@@ -351,33 +359,6 @@ only the selected buurt code.s.}
 \subsection{Method \code{read_actions()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_actions()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-read_actions_groups"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-read_actions_groups}{}}}
-\subsection{Method \code{read_actions_groups()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_actions_groups()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-get_actiongroup_title"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-get_actiongroup_title}{}}}
-\subsection{Method \code{get_actiongroup_title()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_actiongroup_title(id)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-check_actiongroup_name"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-check_actiongroup_name}{}}}
-\subsection{Method \code{check_actiongroup_name()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$check_actiongroup_name(name)}\if{html}{\out{</div>}}
 }
 
 }
