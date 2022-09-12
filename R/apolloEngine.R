@@ -345,7 +345,7 @@ ApolloEngine <- R6::R6Class(
       
       cache_path <- ifelse(self$is_local(), 
                            "cache", 
-                           glue("/data/{self$gemeente}-ondermijning"))
+                           glue("/data/{tolower(self$gemeente)}-ondermijning"))
       
       if(cache_path == "cache"){
         dir.create(cache_path, showWarnings = FALSE)
