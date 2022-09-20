@@ -349,10 +349,10 @@ ApolloEngine <- R6::R6Class(
     read_table_cached = function(table){
       
       cache_path <- ifelse(self$is_local(), 
-                           "cache", 
-                           glue("/data/{tolower(self$gemeente)}-ondermijning"))
+                           glue::glue("cache/{tolower(self$gemeente)}-ondermijning"), 
+                           glue::glue("/data/{tolower(self$gemeente)}-ondermijning"))
       
-      if(cache_path == "cache"){
+      if(self$is_local()){
         dir.create(cache_path, showWarnings = FALSE)
       }
       
