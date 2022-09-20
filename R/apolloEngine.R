@@ -98,7 +98,7 @@ ApolloEngine <- R6::R6Class(
         
         if(self$has_dataset("relocations") || paste(self$data_files, collapse = '') == ""){
           print("READ RELOCATIONS")
-          self$relocations <- self$read_table("brp_verhuis_historie")
+          self$read_relocations()
         }
         
         if(self$has_dataset("model_privacy_protocol") || paste(self$data_files, collapse = '') == ""){
@@ -389,6 +389,7 @@ ApolloEngine <- R6::R6Class(
       
       invisible(self$person)
     },
+    
     read_business = function(cache = TRUE){ 
       if(cache){
         self$business <- self$read_table_cached("business")
@@ -397,6 +398,7 @@ ApolloEngine <- R6::R6Class(
       }
       invisible(self$business)
     }, 
+    
     read_address = function(cache = TRUE){ 
       if(cache){
         self$address <- self$read_table_cached("address")
@@ -406,6 +408,14 @@ ApolloEngine <- R6::R6Class(
       invisible(self$address)
     },
     
+    read_relocations = function(cache = TRUE){
+      if(cache){
+        self$relocations <- self$read_table_cached("brp_verhuis_historie")
+      } else {
+        self$relocations <- self$read_table('brp_verhuis_historie')   
+      }
+      invisible(self$relocations)
+    },
     
     
     read_signals = function(){
@@ -426,6 +436,8 @@ ApolloEngine <- R6::R6Class(
       self$metadata <- self$read_table('metadata') 
       invisible(self$metadata)
     }, 
+    
+    
     
     read_favorites = function(user_id=NULL){ 
       if(is.null(user_id)){
