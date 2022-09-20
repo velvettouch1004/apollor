@@ -12,7 +12,7 @@ library(yaml)
 
 
 # Test het system warehouse object. 
-if(TRUE){
+if(FALSE){
   print('-- using custom --') 
   testconf <- read_yaml('conf/testconf.yml') 
 } else { 
