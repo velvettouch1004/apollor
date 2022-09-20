@@ -40,7 +40,7 @@ options(config_file = glue("conf/config.yml"))
 #library(apollor)
 devtools::load_all()
 
-.sys <- ApolloEngine$new(gemeente = "Ede", 
+.sys <- ApolloEngine$new(gemeente = "Ede", config_file = "test/conf/config.yml",
                          schema = "ede_ondermijning",  
                          geo_file = "test/geo_Ede.rds", # !!
                          pool = TRUE)

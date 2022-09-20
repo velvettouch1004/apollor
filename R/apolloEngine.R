@@ -298,7 +298,12 @@ ApolloEngine <- R6::R6Class(
       
       data_bag <- self$get_bag_from_bagid(data[[id_column]], spatial = TRUE, geo_only = TRUE)
       
-      st_as_sf(left_join(data, data_bag, by = setNames("adresseerbaarobject_id",id_column)))
+      if(!is.null(data_bag)){
+        st_as_sf(left_join(data, data_bag, by = setNames("adresseerbaarobject_id",id_column)))  
+      } else {
+        data
+      }
+      
       
     },
     
