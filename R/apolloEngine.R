@@ -346,7 +346,7 @@ ApolloEngine <- R6::R6Class(
     },
     
     # Cache reader
-    read_table_cached = function(table){
+    read_table_cached = function(table, rewrite_cache = FALSE){
       
       cache_path <- ifelse(self$is_local(), 
                            glue::glue("cache/{tolower(self$gemeente)}-ondermijning"), 
@@ -363,7 +363,7 @@ ApolloEngine <- R6::R6Class(
       
       cache_is_expired <- file.exists(timestamp_path) && self$last_data_update() > readRDS(timestamp_path)
       
-      if(!file.exists(rds_path) || !file.exists(timestamp_path) || cache_is_expired){
+      if(!file.exists(rds_path) || !file.exists(timestamp_path) || cache_is_expired || rewrite_cache){
         flog.info(glue("Reading {table} from Postgres, saving in cache."))
         data <- self$read_table(table)
         saveRDS(data, rds_path)
