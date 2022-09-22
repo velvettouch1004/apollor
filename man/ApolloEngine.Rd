@@ -56,7 +56,6 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-make_boolean_indicator}{\code{ApolloEngine$make_boolean_indicator()}}
 \item \href{#method-NA-make_indicator_table}{\code{ApolloEngine$make_indicator_table()}}
 \item \href{#method-NA-combine_indicator_tables}{\code{ApolloEngine$combine_indicator_tables()}}
-\item \href{#method-NA-calculate_riskmodel_notheme}{\code{ApolloEngine$calculate_riskmodel_notheme()}}
 \item \href{#method-NA-calculate_riskmodel}{\code{ApolloEngine$calculate_riskmodel()}}
 \item \href{#method-NA-set_indicator_field}{\code{ApolloEngine$set_indicator_field()}}
 \item \href{#method-NA-set_indicator_riskmodel_field}{\code{ApolloEngine$set_indicator_riskmodel_field()}}
@@ -662,29 +661,12 @@ then the address is TRUE. TODO business level indicators
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-calculate_riskmodel_notheme"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-calculate_riskmodel_notheme}{}}}
-\subsection{Method \code{calculate_riskmodel_notheme()}}{
-Calculate riskmodel at address level
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$calculate_riskmodel_notheme(data, user_id, gemeente)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{Combined indicator table at address level (made with \code{combine_indicator_tables})}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NA-calculate_riskmodel"></a>}}
 \if{latex}{\out{\hypertarget{method-NA-calculate_riskmodel}{}}}
 \subsection{Method \code{calculate_riskmodel()}}{
 Calculate riskmodel at address level
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$calculate_riskmodel(data, theme, user_id, gemeente)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$calculate_riskmodel(data, theme = NULL, user_id, gemeente)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

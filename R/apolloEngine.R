@@ -623,7 +623,7 @@ ApolloEngine <- R6::R6Class(
       
       
       # Don't have those? Get gemeente settings.
-      if(nrow(data) == 0){
+      if(nrow(out) == 0){
         
         if(!is.null(theme)){
           out <- data %>%
@@ -798,30 +798,11 @@ ApolloEngine <- R6::R6Class(
       out
     },
     
-    #' @description Calculate riskmodel at address level
-    #' @param data Combined indicator table at address level (made with `combine_indicator_tables`)
-    calculate_riskmodel_notheme = function(data, user_id, gemeente){
-      
-      # Definition for this theme
-      def <- self$get_indicators_riskmodel_notheme(user_id, gemeente)
-      
-      if(!all(def$indicator_name %in% names(data))){
-        
-        # disabled indicators are still in the riskmodel table
-        def <- filter(def, indicator_name %in% names(data))
-      }
-      
-      # Matrix multiply ftw
-      m <- as.matrix(data[, def$indicator_name])
-      data$riskmodel <- as.vector(m %*% def$weight)
-      
-      data
-    },
-    
+
     #' @description Calculate riskmodel at address level
     #' @param data Combined indicator table at address level (made with `combine_indicator_tables`)
     #' @param theme Theme for the indicators; used to get weights from definition table
-    calculate_riskmodel = function(data, theme, user_id, gemeente){
+    calculate_riskmodel = function(data, theme = NULL, user_id, gemeente){
       
       # Definition for this theme
       def <- self$get_indicators_riskmodel(user_id, theme, gemeente)
