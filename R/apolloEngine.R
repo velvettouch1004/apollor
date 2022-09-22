@@ -147,6 +147,7 @@ ApolloEngine <- R6::R6Class(
       }
       out
     },
+    
     decrypt = function(x){
       if(self$secret != ""){
         shintobag::decrypt(x, secret = self$secret)

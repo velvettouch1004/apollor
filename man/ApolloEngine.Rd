@@ -314,7 +314,7 @@ only the selected buurt code.s.}
 \if{latex}{\out{\hypertarget{method-NA-read_table_cached}{}}}
 \subsection{Method \code{read_table_cached()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_table_cached(table)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_table_cached(table, rewrite_cache = FALSE)}\if{html}{\out{</div>}}
 }
 
 }
