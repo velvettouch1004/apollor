@@ -644,7 +644,7 @@ ApolloEngine <- R6::R6Class(
         indi <- self$get_indicators_all()
       }
       
-      out <- filter(out, indicator_name %in% indi$indicator_name)
+      out <- filter(out, indicator_name %in% !!indi$indicator_name)
       
       out
     },
@@ -782,7 +782,7 @@ ApolloEngine <- R6::R6Class(
       # drop extra columns except address_id
       drop_cols <- setdiff(attr(indi_person, "id_columns"), "address_id")
       if(length(drop_cols)){
-        indi_person <- select(indi_person, -all_of(drop_cols))
+        indi_person <- dplyr::select(indi_person, -all_of(drop_cols))
       }
       
       # summarize person indicators to end up with address level indicators
@@ -810,7 +810,7 @@ ApolloEngine <- R6::R6Class(
       if(!all(def$indicator_name %in% names(data))){
         
         # disabled indicators are still in the riskmodel table
-        def <- filter(def, indicator_name %in% names(data))
+        def <- dplyr::filter(def, indicator_name %in% names(data))
       }
       
       # Matrix multiply ftw
