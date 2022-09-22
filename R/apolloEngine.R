@@ -606,51 +606,47 @@ ApolloEngine <- R6::R6Class(
       
     },
     
-    get_indicators_riskmodel_notheme = function(user_id, gemeente){
+    get_indicators_riskmodel = function(user_id, theme = NULL, gemeente){
       
       # Get user settings
-      data <- self$read_table("indicator_riskmodel", lazy = TRUE) %>%
-        filter(user_id == !!user_id) %>%
-        collect
+      data <- self$read_table("indicator_riskmodel", lazy = TRUE)
+      
+      if(!is.null(theme)){
+        out <- data %>%
+          filter(user_id == !!user_id, theme == !!theme) %>%
+          collect
+      } else {
+        out <- data %>%
+          filter(user_id == !!user_id) %>%
+          collect
+      }
+      
       
       # Don't have those? Get gemeente settings.
       if(nrow(data) == 0){
-        data <- self$read_table("indicator_riskmodel", lazy = TRUE) %>%
-          filter(user_id == !!gemeente) %>%
-          collect
+        
+        if(!is.null(theme)){
+          out <- data %>%
+            filter(user_id == !!gemeente, theme == !!theme) %>%
+            collect
+        } else {
+          out <- data %>%
+            filter(user_id == !!gemeente) %>%
+            collect
+        }
       }
       
       # get indicators that are not disabled 
       # disabled is a global setting; not per user!
-      indi <- self$get_indicators_all()
-      data <- filter(data, indicator_name %in% indi$indicator_name)
-      
-      
-      data
-    },
-    
-    
-    get_indicators_riskmodel = function(user_id, theme, gemeente){
-      
-      # Get user settings
-      data <- self$read_table("indicator_riskmodel", lazy = TRUE) %>%
-        filter(user_id == !!user_id, theme == !!theme) %>%
-        collect
-      
-      # Don't have those? Get gemeente settings.
-      if(nrow(data) == 0){
-        data <- self$read_table("indicator_riskmodel", lazy = TRUE) %>%
-          filter(user_id == !!gemeente, theme == !!theme) %>%
-          collect
+      if(!is.null(theme)){
+        indi <- self$get_indicators_theme(theme)  
+      } else {
+        indi <- self$get_indicators_all()
       }
       
-      # get indicators that are not disabled 
-      # disabled is a global setting; not per user!
-      indi <- self$get_indicators_theme(theme)
-      data <- filter(data, indicator_name %in% indi$indicator_name)
+      out <- filter(out, indicator_name %in% indi$indicator_name)
       
-      
-      data
+      out
     },
     
     #' @description Delete riskmmodel settings for a user (so that the gemeente default
@@ -706,66 +702,10 @@ ApolloEngine <- R6::R6Class(
     },
     
     #' @description Make a table with indicator (boolean) values
-    #' @param type One of the [object_type]'s in the `indicator` table
-    #' @param id_columns Columns from the base table (e.g. person) that are copied to the indicator table
-    make_indicator_table_no_theme = function(type = c("address","person","business"),
-                                             id_columns = c("address_id","buurt_code_cbs"),
-                                             user_id, gemeente
-    ){
-      
-      type <- match.arg(type)
-      
-      # Get indicators for this type
-      def <- self$get_indicators_all() %>%
-        filter(object_type == !!type)
-      
-      # Get risk parameters for these indicators / this user / this gemeente
-      risk <- self$get_indicators_riskmodel_notheme(user_id = user_id,
-                                                    gemeente = gemeente) %>%
-        filter(indicator_name %in% !!def$indicator_name) %>%
-        mutate(object_type = type)  # needed in $make_boolean_indicator
-      
-      
-      # TODO was cleaner maar werkt niet meer online (????)
-      # maak een $get methode.
-      if(type == "person"){
-        tab <- self$person
-      }
-      if(type == "address"){
-        tab <- self$address
-      }
-      if(type == "business"){
-        tab <- self$business
-      }
-      
-      # Selecteer alleen de adres id en buurt code,
-      tab <- tab %>% select(all_of(!!id_columns))
-      
-      # voeg alle boolean indicators toe
-      i_data <- lapply(def$indicator_name, function(x){
-        self$make_boolean_indicator(data = risk, indicator = x)
-      })
-      
-      out <- do.call(cbind, i_data) %>%
-        as_tibble(., .name_repair = "minimal") %>%
-        setNames(def$indicator_name)
-      
-      if(nrow(out) != nrow(tab)){
-        stop("Fatal error 1 in `make_address_indicator_table`")
-      }
-      
-      out <- cbind(tab, out)
-      
-      attr(out, "id_columns") <- id_columns
-      
-      out
-    },
-    
-    #' @description Make a table with indicator (boolean) values
     #' @param theme One of the themes in the `indicator` table
     #' @param type One of the [object_type]'s in the `indicator` table
     #' @param id_columns Columns from the base table (e.g. person) that are copied to the indicator table
-    make_indicator_table = function(theme, 
+    make_indicator_table = function(theme = NULL, 
                                     type = c("address","person","business"),
                                     id_columns = c("address_id","buurt_code_cbs"),
                                     user_id, gemeente
@@ -773,9 +713,16 @@ ApolloEngine <- R6::R6Class(
       
       type <- match.arg(type)
       
-      # Get indicators for this theme / type
-      def <- self$get_indicators_theme(theme) %>%
-        filter(object_type == !!type)
+      if(!is.null(theme)){
+        # Get indicators for this theme / type
+        def <- self$get_indicators_theme(theme) %>%
+          filter(object_type == !!type)  
+      } else {
+        # Get indicators for this type
+        def <- self$get_indicators_all() %>%
+          filter(object_type == !!type)  
+      }
+      
       
       # Get risk parameters for these indicators / this user / this gemeente
       risk <- self$get_indicators_riskmodel(user_id = user_id,

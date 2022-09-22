@@ -50,12 +50,10 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-remove_indicator}{\code{ApolloEngine$remove_indicator()}}
 \item \href{#method-NA-get_indicators_all}{\code{ApolloEngine$get_indicators_all()}}
 \item \href{#method-NA-get_indicators_theme}{\code{ApolloEngine$get_indicators_theme()}}
-\item \href{#method-NA-get_indicators_riskmodel_notheme}{\code{ApolloEngine$get_indicators_riskmodel_notheme()}}
 \item \href{#method-NA-get_indicators_riskmodel}{\code{ApolloEngine$get_indicators_riskmodel()}}
 \item \href{#method-NA-delete_user_riskmodel}{\code{ApolloEngine$delete_user_riskmodel()}}
 \item \href{#method-NA-get_users_riskmodel}{\code{ApolloEngine$get_users_riskmodel()}}
 \item \href{#method-NA-make_boolean_indicator}{\code{ApolloEngine$make_boolean_indicator()}}
-\item \href{#method-NA-make_indicator_table_no_theme}{\code{ApolloEngine$make_indicator_table_no_theme()}}
 \item \href{#method-NA-make_indicator_table}{\code{ApolloEngine$make_indicator_table()}}
 \item \href{#method-NA-combine_indicator_tables}{\code{ApolloEngine$combine_indicator_tables()}}
 \item \href{#method-NA-calculate_riskmodel_notheme}{\code{ApolloEngine$calculate_riskmodel_notheme()}}
@@ -563,20 +561,11 @@ Use this function to find definitions for indicators in a theme.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-get_indicators_riskmodel_notheme"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-get_indicators_riskmodel_notheme}{}}}
-\subsection{Method \code{get_indicators_riskmodel_notheme()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_indicators_riskmodel_notheme(user_id, gemeente)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NA-get_indicators_riskmodel"></a>}}
 \if{latex}{\out{\hypertarget{method-NA-get_indicators_riskmodel}{}}}
 \subsection{Method \code{get_indicators_riskmodel()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_indicators_riskmodel(user_id, theme, gemeente)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_indicators_riskmodel(user_id, theme = NULL, gemeente)}\if{html}{\out{</div>}}
 }
 
 }
@@ -621,37 +610,13 @@ Convert raw indicator data to TRUE/FALSE
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-make_indicator_table_no_theme"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-make_indicator_table_no_theme}{}}}
-\subsection{Method \code{make_indicator_table_no_theme()}}{
-Make a table with indicator (boolean) values
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$make_indicator_table_no_theme(
-  type = c("address", "person", "business"),
-  id_columns = c("address_id", "buurt_code_cbs"),
-  user_id,
-  gemeente
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{type}}{One of the \link{object_type}'s in the \code{indicator} table}
-
-\item{\code{id_columns}}{Columns from the base table (e.g. person) that are copied to the indicator table}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NA-make_indicator_table"></a>}}
 \if{latex}{\out{\hypertarget{method-NA-make_indicator_table}{}}}
 \subsection{Method \code{make_indicator_table()}}{
 Make a table with indicator (boolean) values
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$make_indicator_table(
-  theme,
+  theme = NULL,
   type = c("address", "person", "business"),
   id_columns = c("address_id", "buurt_code_cbs"),
   user_id,
