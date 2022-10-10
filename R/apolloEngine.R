@@ -880,10 +880,34 @@ ApolloEngine <- R6::R6Class(
         
       }
       
+    },
+    
+    
+    #' @description Copy risk model settings from one theme to a new theme
+    #' @details When adding a new theme, riskmodel settings must be added to the indicator_riskmodel
+    #' table. Easiest to copy all settings from one theme to the new one.
+    copy_indicator_riskmodel_theme = function(theme_from, theme_new, tenant){
       
+      # first get indicators
+      new_indis <- self$get_indicators_theme(theme_new)
+      
+      if(nrow(new_indis) == 0){
+        stop("First add indicators for this theme in `indicator` table")
+      }
+      
+      data_from <- self$read_table("indicator_riskmodel", lazy = TRUE) %>%
+        filter(user_id == !!tenant, theme == theme_from) %>%
+        collect
+      
+      data_from$theme <- theme_new 
+      data_from$timestamp <- format(Sys.time())
+      data_from$risk_id <- NULL
+      
+      self$append_data("indicator_riskmodel", data_from)
       
       
     },
+    
     
     
     

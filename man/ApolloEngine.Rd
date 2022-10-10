@@ -60,6 +60,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-set_indicator_field}{\code{ApolloEngine$set_indicator_field()}}
 \item \href{#method-NA-set_indicator_riskmodel_field}{\code{ApolloEngine$set_indicator_riskmodel_field()}}
 \item \href{#method-NA-write_indicator_riskmodel}{\code{ApolloEngine$write_indicator_riskmodel()}}
+\item \href{#method-NA-copy_indicator_riskmodel_theme}{\code{ApolloEngine$copy_indicator_riskmodel_theme()}}
 \item \href{#method-NA-get_active_actions}{\code{ApolloEngine$get_active_actions()}}
 \item \href{#method-NA-list_actions}{\code{ApolloEngine$list_actions()}}
 \item \href{#method-NA-list_favorites}{\code{ApolloEngine$list_favorites()}}
@@ -721,6 +722,21 @@ Write weight/threshold for an indicator in a theme for a user
 \subsection{Details}{
 Written to table indicator_riskmodel. If the entry does not exist for the user,
 add a new row for this user. If it does exist, use an UPDATE statement to replace the value.
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-copy_indicator_riskmodel_theme"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-copy_indicator_riskmodel_theme}{}}}
+\subsection{Method \code{copy_indicator_riskmodel_theme()}}{
+Copy risk model settings from one theme to a new theme
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$copy_indicator_riskmodel_theme(theme_from, theme_new, tenant)}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+When adding a new theme, riskmodel settings must be added to the indicator_riskmodel
+table. Easiest to copy all settings from one theme to the new one.
 }
 
 }
