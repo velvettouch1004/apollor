@@ -292,7 +292,7 @@ ApolloEngine <- R6::R6Class(
       data_bag <- self$get_bag_from_bagid(data[[id_column]], spatial = TRUE, geo_only = TRUE)
       
       if(!is.null(data_bag)){
-        st_as_sf(left_join(data, data_bag, by = setNames("adresseerbaarobject_id",id_column)))  
+        sf::st_as_sf(dplyr::left_join(data, data_bag, by = setNames("adresseerbaarobject_id",id_column)))  
       } else {
         data
       }
@@ -304,7 +304,7 @@ ApolloEngine <- R6::R6Class(
       # SQL Injection Sensitive?
       data_bag <- self$get_bag_from_bagid(data[[id_column]], spatial = TRUE, geo_only = FALSE, request_cols = bag_columns)
       
-      st_as_sf(left_join(data, data_bag, by = setNames("adresseerbaarobject_id",id_column)))
+      sf::st_as_sf(dplyr::left_join(data, data_bag, by = setNames("adresseerbaarobject_id",id_column)))
       
     },
     
@@ -779,10 +779,10 @@ ApolloEngine <- R6::R6Class(
       
       # summarize person indicators to end up with address level indicators
       # If "any" of the persons on the address is TRUE, the address is TRUE
-      indi_person <- group_by(indi_person, address_id) %>%
-        summarize(across(everything(), any))
+      indi_person <- dplyr::group_by(indi_person, address_id) %>%
+        dplyr::summarize(across(everything(), any))
       
-      out <- left_join(indi_address, indi_person, by = "address_id")
+      out <- dplyr::left_join(indi_address, indi_person, by = "address_id")
       
       # Missing address from RHS (person) : should always be FALSE
       out[is.na(out)] <- FALSE
