@@ -226,7 +226,7 @@ ApolloEngine <- R6::R6Class(
           collect  
       }
       
-      rename(out, buurt_code_cbs = gwb_code)
+      dplyr::rename(out, buurt_code_cbs = gwb_code)
       
       
     },
