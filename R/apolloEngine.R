@@ -130,6 +130,8 @@ ApolloEngine <- R6::R6Class(
     
     
     #----- Encrypt/decrypt utilities
+    
+    #' @description Symmetric encrypt, using the secret 
     encrypt = function(x){
       if(self$secret != ""){
         out <- shintobag::encrypt(x, secret = self$secret)
@@ -140,12 +142,21 @@ ApolloEngine <- R6::R6Class(
       out
     },
     
+    #' @description Symmetric decrypt, using the secret 
     decrypt = function(x){
       if(self$secret != ""){
         shintobag::decrypt(x, secret = self$secret)
       } else {
         x
       }
+      
+    },
+    
+    #' @description Is the value encrypted using the secret? (can be vector input)
+    is_encrypted = function(x){
+      
+      res <- self$decrypt(x)
+      !is.na(res)
       
     },
     
@@ -417,6 +428,7 @@ ApolloEngine <- R6::R6Class(
     
     
     read_signals = function(){
+      print(" =====  READING SIGNALS ====== ")
       self$signals <- self$read_table('registrations') 
       invisible(self$signals)
     },
