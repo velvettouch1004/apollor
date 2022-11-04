@@ -57,8 +57,8 @@ databaseObject <- R6::R6Class(
         
         cf <- config::get(what, file = config_file)
         
-        print("----CONNECTING TO----")
-        print(cf$dbhost)
+        flog.info("Connecting to DB: {cf$dbname} on host : {cf$dbhost}")
+        flog.info("Connecting with user: {cf$dbuser}")
         
         self$dbuser <- cf$dbuser
         

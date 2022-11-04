@@ -50,8 +50,8 @@ ApolloEngine <- R6::R6Class(
       self$secret <- secret
       
       cf <- config::get(what, file = config_file)
-      print("----CONNECTING TO----")
-      print(cf$dbhost)
+      flog.info(glue::glue("Connecting to DB: {cf$dbname} on host : {cf$dbhost} with user {cf$dbuser}"))
+      
       
       response <- try({
         shintobag::shinto_db_connection(what = what, 
@@ -428,7 +428,6 @@ ApolloEngine <- R6::R6Class(
     
     
     read_signals = function(){
-      print(" =====  READING SIGNALS ====== ")
       self$signals <- self$read_table('registrations') 
       invisible(self$signals)
     },
