@@ -7,6 +7,7 @@
 #' @importFrom safer encrypt_string decrypt_string
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom tibble tibble
+#' @importFrom fastmatch fmatch
 #' @export
 
 ApolloEngine <- R6::R6Class(
@@ -128,6 +129,22 @@ ApolloEngine <- R6::R6Class(
       
     },
     
+    fast_in = function(x, table){
+      
+      fastmatch::fmatch(x, table, nomatch = 0L) > 0L
+      
+    },
+    
+    #----- Data filteren uit een inmemory dataset
+    data_filter = function(data, column, value){
+      if(!column %in% names(data)){
+        warning(paste(column,"not found in data ($data_filter)"))
+        return(data)
+      }
+      dplyr::filter(data, self$fast_in(data[[column]], value))
+      
+    },
+    
     
     #----- Encrypt/decrypt utilities
     
@@ -189,34 +206,56 @@ ApolloEngine <- R6::R6Class(
     
     #' @description Add wijk, gemeente columns to a dataframe with buurt_code_cbs column
     #' @details Existing geo columns will be overwritten
-    add_geo_columns = function(data, spatial = TRUE){
+    add_geo_columns = function(data, level = c("buurt","wijk"), spatial = TRUE){
       
       self$assert_geo()
       
-      if(!"buurt_code_cbs" %in% names(data)){
-        stop("buurt_code_cbs must be a column in data")
+      level <- match.arg(level)
+      id_col <- paste0(level, "_code_cbs")
+      
+      geo_cols <- if(level == "buurt"){
+        c("buurt_naam","wijk_code_cbs","wijk_naam","gemeente_naam")
+      } else if(level == "wijk") {
+        c("wijk_naam","gemeente_naam")
+      }
+
+      geo <- if(level == "buurt"){
+        self$geo$buurten 
+      } else if(level == "wijk"){
+        self$geo$wijken
       }
       
-      geo_cols <- c("buurt_naam","wijk_code_cbs","wijk_naam","gemeente_naam")
+      if(!spatial){
+        geo <- sf::st_drop_geometry(geo)
+      }
+      
       have_geo_cols <- intersect(names(data), geo_cols)
       if(length(have_geo_cols)){
         data <- select(data, -all_of(have_geo_cols))
       }
       
-      geo <- self$geo$buurten
-      if(!spatial){
-        geo <- sf::st_drop_geometry(geo)
+      if(level == "buurt"){
+        key <- select(geo,
+                      buurt_code_cbs = bu_code,
+                      buurt_naam = bu_naam,
+                      wijk_code_cbs = wk_code,
+                      wijk_naam = wk_naam,
+                      gemeente_naam = gm_naam)  
+        
+      } else if(level == "wijk"){
+        key <- select(geo,
+                      wijk_code_cbs = wk_code,
+                      wijk_naam = wk_naam,
+                      gemeente_naam = gm_naam)
+      }
+        
+      out <- left_join(data, key, by = id_col)
+      
+      if(spatial){
+        out <- sf::st_as_sf(out)
       }
       
-      key <- select(geo,
-                    buurt_code_cbs = bu_code,
-                    buurt_naam = bu_naam,
-                    wijk_code_cbs = wk_code,
-                    wijk_naam = wk_naam,
-                    gemeente_naam = gm_naam)
-      
-      left_join(data, key, by = "buurt_code_cbs")
-      
+      out
       
     },
     
