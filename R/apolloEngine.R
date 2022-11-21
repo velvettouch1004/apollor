@@ -299,7 +299,10 @@ ApolloEngine <- R6::R6Class(
       
     },
     
-    get_bag_from_bagid = function(id, spatial = FALSE, geo_only = FALSE, request_cols = NULL){
+    get_bag_from_bagid = function(id, spatial = FALSE, geo_only = FALSE, request_cols = NULL,
+                                  extra_cols = FALSE
+                                  ){
+      
       if(!geo_only){
         if(is.null(request_cols)){
           cols <- "*"
@@ -333,7 +336,30 @@ ApolloEngine <- R6::R6Class(
         if(nrow(out) > 0)out <- out %>% st_transform(4326)
       }
       
-      left_join(data_out, out, by = "adresseerbaarobject_id")
+      out <- left_join(data_out, out, by = "adresseerbaarobject_id")
+      
+      if(extra_cols){
+         out <- dplyr::mutate(out, 
+                       adres_display = paste0(
+                         openbareruimtenaam,
+                         " ",
+                         huisnummer,
+                         tidyr::replace_na(huisletter,""),
+                         ifelse(is.na(huisnummertoevoeging), 
+                                "",
+                                paste0(" ", huisnummertoevoeging)
+                         ),
+                         ", ",
+                         woonplaatsnaam
+                       )
+                      )
+      }
+      
+      
+      if(spatial)out <- sf::st_as_sf(out)
+      
+      
+      out
       
     },
     
@@ -1212,12 +1238,6 @@ ApolloEngine <- R6::R6Class(
     #' @param person_id Person's identifier FI: (pseudo)bsn 
     get_person_from_id = function(person_id){ 
       self$person[self$person$person_id == person_id, ]
-    },
-    
-    #' @description Hardcoded method to simulate tags
-    #' @param person_id Person's identifier FI: (pseudo)bsn 
-    get_tags_for_person = function(person_id){
-      c('Ondernemerschap', 'Duurzaamheid')
     },
     
     #' @description Get address details from the identifier
