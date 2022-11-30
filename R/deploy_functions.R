@@ -66,7 +66,7 @@ open_config_site <- function(){
   
   requireNamespace("rstudioapi")  
   
-  pth <- self$config_site_path(get_tenant())
+  pth <- config_site_path(get_tenant())
   
   if(file.exists(pth)){
     rstudioapi::navigateToFile(pth)  
