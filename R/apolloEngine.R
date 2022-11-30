@@ -1354,8 +1354,19 @@ ApolloEngine <- R6::R6Class(
           filter(from != 1) # remove address identitiy
       }  
       
-      network_edges 
-      
+      network_edges
+    },
+    save_custom_location = function(location_id, loc_name, loc_descr, wijk, buurt){
+      self$append_data('custom_locations',
+                       data.frame(location_id =  location_id,
+                                  location_name = loc_name,
+                                  location_description = loc_descr,
+                                  wijk = wijk,
+                                  buurt = buurt )
+                       ) 
+    }, 
+    get_all_custom_locations = function(){
+      self$read_table("custom_locations")
     }
   )  
 )
