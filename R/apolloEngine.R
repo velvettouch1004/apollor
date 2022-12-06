@@ -307,6 +307,7 @@ ApolloEngine <- R6::R6Class(
         if(is.null(request_cols)){
           cols <- "*"
         } else {
+          request_cols <- unique(c(request_cols, "geopunt"))
           all_cols_correct <- identical(setdiff(request_cols, self$bag_columns), character(0))
           if(!all_cols_correct){
             stop("Not all requested columns are present in bagactueel.adres_plus!")
@@ -790,7 +791,6 @@ ApolloEngine <- R6::R6Class(
         def <- self$get_indicators_all() %>%
           filter(object_type == !!type)  
       }
-      
       
       # Get risk parameters for these indicators / this user / this gemeente
       risk <- self$get_indicators_riskmodel(user_id = user_id,

@@ -306,11 +306,6 @@ databaseObject <- R6::R6Class(
     
     table_info = function(table){
       
-      if(self$dbtype == "sqlite"){
-        message("Not supported for SQLite")
-        return(NA)
-      }
-      
       query <- glue("select * from information_schema.columns ",
                     "where table_schema = '{self$schema}' and ",
                     "table_name = '{table}'")
