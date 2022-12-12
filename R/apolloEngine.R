@@ -467,10 +467,16 @@ ApolloEngine <- R6::R6Class(
     
     read_business = function(cache = TRUE){ 
       if(cache){
-        self$business <- self$read_table_cached("business")
+        out <- self$read_table_cached("business")
       } else {
-        self$business <- self$read_table('business')   
+        out <- self$read_table('business')
       }
+      
+      if(self$gemeente == "Ede"){
+        out$business_id <- as.character(out$business_id)
+      }
+      self$business <- out
+      
       invisible(self$business)
     }, 
     
