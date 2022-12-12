@@ -1,6 +1,6 @@
 Package: apollor
 Title: Apollo as an R package
-Version: 0.3-10
+Version: 0.3-11
 Author: Remko Duursma, Martijn Heijstek, Wesley Brants
 Maintainer: Remko Duursma <remko@shintolabs.nl>
 Description: Apollo as an R package. Used in apollo Frontend
