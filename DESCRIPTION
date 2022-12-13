@@ -4,8 +4,19 @@ Version: 0.3-11
 Author: Remko Duursma, Martijn Heijstek, Wesley Brants
 Maintainer: Remko Duursma <remko@shintolabs.nl>
 Description: Apollo as an R package. Used in apollo Frontend
-Depends: DBI, dbplyr, jsonlite, tibble,  dplyr, R6, pool, shintobag, stringr
+Depends: 
+    DBI,
+    dbplyr,
+    jsonlite,
+    tibble,
+    dplyr,
+    R6,
+    pool,
+    shintobag,
+    stringr,
+    R (>= 2.10)
 License: CC0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
+LazyData: true
