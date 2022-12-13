@@ -399,7 +399,6 @@ ApolloEngine <- R6::R6Class(
     
     has_dataset = function(what){
       what %in% self$data_files
-      
     },
     
     #----  APOLLO SPECIFIC FUNCTIONS ----
@@ -503,6 +502,7 @@ ApolloEngine <- R6::R6Class(
       self$signals <- self$read_table('registrations') 
       invisible(self$signals)
     },
+    
     read_actions = function(){ 
       self$actions <- self$read_table('actionlist') 
       invisible(self$actions)
@@ -529,10 +529,12 @@ ApolloEngine <- R6::R6Class(
       }    
       invisible(self$favorites)
     },
+    
     read_log = function(){ 
       self$user_event_log <- self$read_table('user_event_log') 
       invisible(self$user_event_log)
     }, 
+    
     read_mpp = function(registration_id=NULL, archived=FALSE){ 
       if(is.null(registration_id)){
         self$model_privacy_protocol <- self$read_table('model_privacy_protocol') 
@@ -547,14 +549,12 @@ ApolloEngine <- R6::R6Class(
     #----- TRANSPARACY ----
     get_indicator = function(indicator_name){
       self$indicator$label[match(indicator_name, self$indicator$indicator_name)]
-      
     },
+    
     get_metadata = function(){
-      
       self$metadata 
-      
-      
     },
+    
     set_metadata = function(name, label, timestamp_provided,  owner, depends_on, step, colnames, description, timestamp_processed=Sys.time() ){
       
       

@@ -13,6 +13,8 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-NA-new}{\code{ApolloEngine$new()}}
+\item \href{#method-NA-fast_in}{\code{ApolloEngine$fast_in()}}
+\item \href{#method-NA-data_filter}{\code{ApolloEngine$data_filter()}}
 \item \href{#method-NA-encrypt}{\code{ApolloEngine$encrypt()}}
 \item \href{#method-NA-decrypt}{\code{ApolloEngine$decrypt()}}
 \item \href{#method-NA-is_encrypted}{\code{ApolloEngine$is_encrypted()}}
@@ -81,7 +83,6 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-update_action}{\code{ApolloEngine$update_action()}}
 \item \href{#method-NA-archive_action}{\code{ApolloEngine$archive_action()}}
 \item \href{#method-NA-get_person_from_id}{\code{ApolloEngine$get_person_from_id()}}
-\item \href{#method-NA-get_tags_for_person}{\code{ApolloEngine$get_tags_for_person()}}
 \item \href{#method-NA-get_address_from_id}{\code{ApolloEngine$get_address_from_id()}}
 \item \href{#method-NA-get_residents}{\code{ApolloEngine$get_residents()}}
 \item \href{#method-NA-get_businesses_at_address}{\code{ApolloEngine$get_businesses_at_address()}}
@@ -89,6 +90,8 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-get_relocations_timeline}{\code{ApolloEngine$get_relocations_timeline()}}
 \item \href{#method-NA-create_network_nodes}{\code{ApolloEngine$create_network_nodes()}}
 \item \href{#method-NA-create_network_edges}{\code{ApolloEngine$create_network_edges()}}
+\item \href{#method-NA-save_custom_location}{\code{ApolloEngine$save_custom_location()}}
+\item \href{#method-NA-get_all_custom_locations}{\code{ApolloEngine$get_all_custom_locations()}}
 \item \href{#method-unknown-clone}{\code{ApolloEngine$clone()}}
 }
 }
@@ -130,6 +133,24 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
   load_data = TRUE,
   use_cache = TRUE
 )}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-fast_in"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-fast_in}{}}}
+\subsection{Method \code{fast_in()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$fast_in(x, table)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-data_filter"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-data_filter}{}}}
+\subsection{Method \code{data_filter()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$data_filter(data, column, value)}\if{html}{\out{</div>}}
 }
 
 }
@@ -196,7 +217,7 @@ TODO this is not vectorized!}
 \subsection{Method \code{add_geo_columns()}}{
 Add wijk, gemeente columns to a dataframe with buurt_code_cbs column
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$add_geo_columns(data, spatial = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$add_geo_columns(data, level = c("buurt", "wijk"), spatial = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Details}{
@@ -248,7 +269,8 @@ only the selected buurt code.s.}
   id,
   spatial = FALSE,
   geo_only = FALSE,
-  request_cols = NULL
+  request_cols = NULL,
+  extra_cols = FALSE
 )}\if{html}{\out{</div>}}
 }
 
@@ -270,7 +292,8 @@ only the selected buurt code.s.}
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$join_bag(
   data,
   id_column = "adresseerbaarobject_id",
-  bag_columns = NULL
+  bag_columns = NULL,
+  spatial = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -1093,23 +1116,6 @@ Get person details from the identifier
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-get_tags_for_person"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-get_tags_for_person}{}}}
-\subsection{Method \code{get_tags_for_person()}}{
-Hardcoded method to simulate tags
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_tags_for_person(person_id)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{person_id}}{Person's identifier FI: (pseudo)bsn}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NA-get_address_from_id"></a>}}
 \if{latex}{\out{\hypertarget{method-NA-get_address_from_id}{}}}
 \subsection{Method \code{get_address_from_id()}}{
@@ -1201,6 +1207,30 @@ Create suitable edge format for network(Viz)
   business_data = NULL,
   registration_data = NULL
 )}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-save_custom_location"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-save_custom_location}{}}}
+\subsection{Method \code{save_custom_location()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$save_custom_location(
+  location_id,
+  loc_name,
+  loc_descr,
+  wijk,
+  buurt
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-get_all_custom_locations"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_all_custom_locations}{}}}
+\subsection{Method \code{get_all_custom_locations()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_all_custom_locations()}\if{html}{\out{</div>}}
 }
 
 }
