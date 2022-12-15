@@ -1118,7 +1118,12 @@ ApolloEngine <- R6::R6Class(
     
     
     #--------- PRIVACY PROTOCOL  -------
-    
+    #' @description Get MPP changes since a given timestamp
+    #' @param time_since is timestamp
+    get_mpp_rows_since_timestamp = function(time_since){ 
+      self$query(glue("select count(*) from {self$schema}.model_privacy_protocol where timestamp > '{time_since}'::timestamp and archived IS NOT TRUE;"),
+                 quiet=TRUE)$count 
+    },
     #' @description Create MPP for registration
     create_MPP_for_registration = function(registration_id, user_id, data, createLog=TRUE){
       if(createLog) {self$log_user_event(user_id, description=glue("Heeft het privacy protocol van registratie {registration_id} aangemaakt"))}
