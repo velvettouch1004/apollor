@@ -555,8 +555,32 @@ ApolloEngine <- R6::R6Class(
       self$metadata 
     },
     
-    set_metadata = function(name, label, timestamp_provided,  owner, depends_on, step, colnames, description, timestamp_processed=Sys.time() ){
+    postgres_now = function(){
       
+      return(self$query("select now()", quiet = TRUE)$now)
+      
+    },
+    
+    set_metadata = function(name, 
+                            label, 
+                            step, 
+                            timestamp_provided = NULL,  
+                            owner = "", 
+                            depends_on = "{}", 
+                            
+                            colnames = "[]", 
+                            description = "", 
+                            timestamp_processed = NULL ){
+      
+      stopifnot(is.integer(step))
+      
+      if(is.null(timestamp_provided)){
+        timestamp_provided <- self$postgres_now()
+      }
+      
+      if(is.null(timestamp_processed)){
+        timestamp_processed <- self$postgres_now()
+      }
       
       metadata <- tibble::tibble(
         name=name, 
@@ -578,9 +602,19 @@ ApolloEngine <- R6::R6Class(
     
     edit_indicator_filter_transparency = function(id, short_desc, long_desc, depends, def, calc){
       
-      if(is.na(depends) && is.null(depends)){
-        depends <- "[]" 
-      } 
+      fixfun <- function(x, value = ""){
+        if(is.null(x) || is.na(x) || x == ""){
+          value
+        } else {
+          x
+        }
+      }
+      
+      short_desc <- fixfun(short_desc)
+      long_desc <- fixfun(long_desc)
+      depends <- fixfun(depends, "[]")
+      def <- fixfun(def)
+      calc <- fixfun(calc)
       
       if(is.null(self$schema)){
         qu <- glue("UPDATE indicator SET description = '{short_desc}', description_long = '{long_desc}', depends_on = ?val_depends, definitie = '{def}', berekening = '{calc}', datum_wijziging  = '{now()}' WHERE indicator_id = '{id}'") %>%
@@ -592,7 +626,10 @@ ApolloEngine <- R6::R6Class(
       
       query <- sqlInterpolate(DBI::ANSI(), qu, val_depends = depends)
       
-      dbExecute(self$con, query)
+      try(
+        dbExecute(self$con, query)  
+      )
+      
     },
     
     
