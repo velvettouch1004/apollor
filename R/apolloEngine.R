@@ -113,6 +113,7 @@ ApolloEngine <- R6::R6Class(
       if(is.null(geo_file)){
         geo_file <- glue("data_public/{gemeente}/geo_{gemeente}.rds")  
       }
+      
       if(!file.exists(geo_file)){
         self$have_geo <- FALSE
         message("No geo found. Continuing without geo data.")
@@ -417,9 +418,11 @@ ApolloEngine <- R6::R6Class(
     # Cache reader
     read_table_cached = function(table, rewrite_cache = FALSE){
       
+      gem_field <- gsub(" ", "", tolower(self$gemeente))
+      
       cache_path <- ifelse(self$is_local(), 
-                           glue::glue("cache/{tolower(self$gemeente)}-ondermijning"), 
-                           glue::glue("/data/{tolower(self$gemeente)}-ondermijning"))
+                           glue::glue("cache/{gem_field}-ondermijning"), 
+                           glue::glue("/data/{gem_field}-ondermijning"))
       
       if(self$is_local()){
         dir.create(cache_path, showWarnings = FALSE)
