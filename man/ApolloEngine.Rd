@@ -13,8 +13,6 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-NA-new}{\code{ApolloEngine$new()}}
-\item \href{#method-NA-fast_in}{\code{ApolloEngine$fast_in()}}
-\item \href{#method-NA-data_filter}{\code{ApolloEngine$data_filter()}}
 \item \href{#method-NA-encrypt}{\code{ApolloEngine$encrypt()}}
 \item \href{#method-NA-decrypt}{\code{ApolloEngine$decrypt()}}
 \item \href{#method-NA-is_encrypted}{\code{ApolloEngine$is_encrypted()}}
@@ -135,24 +133,6 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
   load_data = TRUE,
   use_cache = TRUE
 )}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-fast_in"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-fast_in}{}}}
-\subsection{Method \code{fast_in()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$fast_in(x, table)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-data_filter"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-data_filter}{}}}
-\subsection{Method \code{data_filter()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$data_filter(data, column, value)}\if{html}{\out{</div>}}
 }
 
 }

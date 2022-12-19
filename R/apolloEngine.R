@@ -7,7 +7,7 @@
 #' @importFrom safer encrypt_string decrypt_string
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom tibble tibble
-#' @importFrom fastmatch fmatch
+# #' @importFrom fastmatch fmatch
 #' @export
 
 ApolloEngine <- R6::R6Class(
@@ -129,21 +129,21 @@ ApolloEngine <- R6::R6Class(
       
     },
     
-    fast_in = function(x, table){
-      
-      fastmatch::fmatch(x, table, nomatch = 0L) > 0L
-      
-    },
+    # fast_in = function(x, table){
+    #   
+    #   fastmatch::fmatch(x, table, nomatch = 0L) > 0L
+    #   
+    # },
     
-    #----- Data filteren uit een inmemory dataset
-    data_filter = function(data, column, value){
-      if(!column %in% names(data)){
-        warning(paste(column,"not found in data ($data_filter)"))
-        return(data)
-      }
-      dplyr::filter(data, self$fast_in(data[[column]], value))
-      
-    },
+    # #----- Data filteren uit een inmemory dataset
+    # data_filter = function(data, column, value){
+    #   if(!column %in% names(data)){
+    #     warning(paste(column,"not found in data ($data_filter)"))
+    #     return(data)
+    #   }
+    #   dplyr::filter(data, self$fast_in(data[[column]], value))
+    #   
+    # },
     
     
     #----- Encrypt/decrypt utilities
