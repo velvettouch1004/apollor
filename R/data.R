@@ -13,3 +13,13 @@
 #'   \item{afdeling}{}
 #' }
 "sbi_key"
+
+#' KvK SBI mapping
+#'
+#'
+#' A data frame with 21 rows and 2 variables:
+#' \describe{
+#'   \item{afdeling}{}
+#'   \item{afdeling_omschrijving}{}
+#' }
+"sbi_mapping"
