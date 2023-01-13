@@ -124,6 +124,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$new(
+  tenant,
   gemeente,
   schema,
   pool,
@@ -131,6 +132,8 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
   secret = "",
   data_files = "",
   geo_file = NULL,
+  detail_network_settings = list(recode_icon = list(), recode_title = list(),
+    recode_icon_status = list()),
   load_data = TRUE,
   use_cache = TRUE
 )}\if{html}{\out{</div>}}
