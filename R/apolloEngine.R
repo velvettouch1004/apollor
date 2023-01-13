@@ -40,6 +40,10 @@ ApolloEngine <- R6::R6Class(
                           load_data = TRUE,
                           use_cache = TRUE){
       
+      if(!is.null(geo_file)){
+        warning("geo_file argument is no longer used in ApolloEngine$new")
+      }
+      
       flog.info("DB Connection", name = "DBR6")
       
       self$gemeente <- gemeente
@@ -110,17 +114,8 @@ ApolloEngine <- R6::R6Class(
       self$cbs_con <- shintobag::shinto_db_connection("data_cbs", file = config_file)
       
       # Geo data
-      if(is.null(geo_file)){
-        geo_file <- glue("data_public/{gemeente}/geo_{gemeente}.rds")  
-      }
-      
-      if(!file.exists(geo_file)){
-        self$have_geo <- FALSE
-        message("No geo found. Continuing without geo data.")
-      } else {
-        self$have_geo <- TRUE
-        self$geo <- readRDS(geo_file)
-      }
+      self$geo <- shintobag::get_geo_from_cache(gemeente, kws=TRUE,kws_jaar=2022)
+      self$have_geo <- TRUE
       
       # CBS kerncijfers
       self$cbs_kern_buurten <- self$get_cbs_buurt_data()
@@ -1407,6 +1402,7 @@ ApolloEngine <- R6::R6Class(
       
       network_edges
     },
+    
     save_custom_location = function(location_id, loc_name, loc_descr, wijk, buurt){
       self$append_data('custom_locations',
                        data.frame(location_id =  location_id,
@@ -1416,8 +1412,10 @@ ApolloEngine <- R6::R6Class(
                                   buurt = buurt )
                        ) 
     }, 
+    
     get_all_custom_locations = function(){
       self$read_table("custom_locations")
     }
+    
   )  
 )
