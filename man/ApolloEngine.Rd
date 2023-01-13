@@ -47,6 +47,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-postgres_now}{\code{ApolloEngine$postgres_now()}}
 \item \href{#method-NA-set_metadata}{\code{ApolloEngine$set_metadata()}}
 \item \href{#method-NA-edit_indicator_filter_transparency}{\code{ApolloEngine$edit_indicator_filter_transparency()}}
+\item \href{#method-NA-combine_signals_relations_business}{\code{ApolloEngine$combine_signals_relations_business()}}
 \item \href{#method-NA-label_indicator}{\code{ApolloEngine$label_indicator()}}
 \item \href{#method-NA-add_indicator}{\code{ApolloEngine$add_indicator()}}
 \item \href{#method-NA-remove_indicator}{\code{ApolloEngine$remove_indicator()}}
@@ -491,6 +492,20 @@ only the selected buurt code.s.}
   depends,
   def,
   calc
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-combine_signals_relations_business"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-combine_signals_relations_business}{}}}
+\subsection{Method \code{combine_signals_relations_business()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$combine_signals_relations_business(
+  signals,
+  relations,
+  sbi_key,
+  sbi_mapping
 )}\if{html}{\out{</div>}}
 }
 

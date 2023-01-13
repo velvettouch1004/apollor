@@ -624,6 +624,82 @@ ApolloEngine <- R6::R6Class(
     },
     
     
+    # Add 'address' to signals based on object_relations,
+    # and KvK branches based on selected business, if any.
+    combine_signals_relations_business = function(signals, relations, sbi_key, sbi_mapping){
+
+      # assume there is at most one primary address per registration
+      hoofdadressen <-  relations %>% 
+        filter(object_type == 'address' & relation_type == 'primary')
+      
+      sbi_colname <- .cc$get("global/kvk_parameters/sbi_column", 
+                             default="hoofdactiviteit")
+      
+      # for hollands kroon
+      if(!hasName(signals, "adresseerbaarobject")){
+        signals$adresseerbaarobject <- NA_character_
+      }    
+      
+      if(!hasName(signals, "kvk_branche")){
+        signals$kvk_branche <- NA_character_
+      }
+      
+      if(!hasName(signals, "kvk_sub_branche")){
+        signals$kvk_sub_branche <- NA_character_
+      }
+      
+      # koppelen van sbi aan signaal via:
+      # signal <> relations <> business <> sbi
+      hoofdbedrijven <- relations %>% 
+        filter(object_type == 'business' & relation_type == 'primary') %>% 
+        left_join(self$business, by=c("object_id"=  "business_id")) 
+      
+      # sbi code in levering is integer:
+      if(is.integer(hoofdbedrijven[[sbi_colname]])){
+        hoofdbedrijven <- hoofdbedrijven %>%
+          mutate(sbi_code_int = !!as.symbol(sbi_colname )) %>%
+          left_join(sbi_key, by="sbi_code_int")  
+      } else {
+        
+        # char (zoals het hoort - Diemen)
+        hoofdbedrijven <- hoofdbedrijven %>%
+          mutate(sbi_code_txt = !!as.symbol(sbi_colname )) %>%
+          left_join(sbi_key, by="sbi_code_txt")  
+      }
+      
+      hoofdbedrijven <- hoofdbedrijven %>% 
+        select(collector_id,  sbi_code_main, sbi_code_sub_1)
+      
+      signals %>% 
+        left_join(hoofdadressen %>% select(-status), 
+                  by = c('registration_id' = 'collector_id'), 
+                  suffix = c(".x", "")) %>% 
+        left_join(hoofdbedrijven, 
+                  by = c('registration_id' = 'collector_id'), 
+                  suffix = c(".x", "")) %>% 
+        mutate(adresseerbaarobject = ifelse(is.na(adresseerbaarobject),  
+                                            self$decrypt(object_id), 
+                                            self$decrypt(adresseerbaarobject)), 
+               # als kvk leeg is dan verkrijgen vanuit hoofdbedrijf
+               kvk_branche = ifelse(is.na(kvk_branche) | kvk_branche == '',  
+                                    sbi_code_main, 
+                                    kvk_branche),
+               kvk_sub_branche = ifelse(is.na(kvk_sub_branche) | kvk_sub_branche == '',  
+                                        sbi_code_sub_1, 
+                                        kvk_sub_branche) ) %>%
+        # from sbi code to omschrijving
+        left_join(sbi_key %>% select(kvk_branche=sbi_code_txt , 
+                                     kvk_branche_omsch=sbi_omschrijving, 
+                                     afdeling), 
+                  by="kvk_branche") %>%
+        left_join(sbi_key %>% select(kvk_sub_branche=sbi_code_txt , 
+                                     kvk_sub_branche_omsch=sbi_omschrijving), 
+                  by="kvk_sub_branche") %>%
+        left_join(sbi_mapping, by="afdeling")  
+        
+    },
+    
+    
     #--------- INDICATOR FUNCTIONS ----------
     
     
