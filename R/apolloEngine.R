@@ -16,27 +16,20 @@ ApolloEngine <- R6::R6Class(
   lock_objects = FALSE,
   
   public = list(
-    
-    # variables for recoding events
-    recode_icon = c(verhuisd_uit = "person-dash-fill", 
-                    verhuisd_naar = "person-plus-fill", 
-                    verhuisd_binnen = "arrows-move", 
-                    geboorte = "balloon-fill"), 
-    recode_title = c(verhuisd_uit = "Verhuisd buiten de gemeente", 
-                     verhuisd_naar = "Verhuisd naar de gemeente", 
-                     verhuisd_binnen = "Verhuisd binnen gemeente", 
-                     geboorte = "Geboren"), 
-    recode_icon_status = c(verhuisd_uit = "danger", 
-                           verhuisd_naar = "success", 
-                           verhuisd_binnen = "info", 
-                           geboorte = "success"),
+     
     
     # ---- Init
-    initialize = function(gemeente, schema, pool, 
+    initialize = function(tenant,
+                          gemeente, schema, pool, 
                           config_file = getOption("config_file","conf/config.yml"),
                           secret = "",
                           data_files = "", 
                           geo_file = NULL,
+                          detail_network_settings = list(
+                            recode_icon=list(),
+                            recode_title=list(),
+                            recode_icon_status=list()
+                          ), 
                           load_data = TRUE,
                           use_cache = TRUE){
       
@@ -48,18 +41,18 @@ ApolloEngine <- R6::R6Class(
       
       self$gemeente <- gemeente
       self$pool <- pool
-      self$schema <- schema 
-      what <- gemeente
+      self$schema <- schema  
+      self$detail_network_settings <- detail_network_settings
       
       # symmetric encrypt/decrypt
       self$secret <- secret
       
-      cf <- config::get(what, file = config_file)
+      cf <- config::get(tenant, file = config_file)
       flog.info(glue::glue("Connecting to DB: {cf$dbname} on host : {cf$dbhost} with user {cf$dbuser}"))
       
       
       response <- try({
-        shintobag::shinto_db_connection(what = what, 
+        shintobag::shinto_db_connection(what = tenant, 
                                         pool = pool, 
                                         file = config_file)
       })
@@ -1305,25 +1298,37 @@ ApolloEngine <- R6::R6Class(
     #' @param person_id Person's identifier FI: (pseudo)bsn 
     #' @param add_overlijden Boolean indicating if overlijden should be added as event 
     get_relocations_timeline = function(person_id, add_overlijden=TRUE){ 
-      
-      timelineData <- self$get_relocations_for_person(person_id) %>% 
-        mutate(
-          timestamp = event_datum,
-          title=recode(event, !!!self$recode_title, .default = 'Onbekende gebeurtenis', .missing = 'Onbekende gebeurtenis'), 
-          text=format_event_func(event, buurt_naam, gemeente_inschrijving),
-          icon_name=recode(event, !!!self$recode_icon, .default = "bookmark", .missing = 'bookmark'), 
-          icon_status=recode(event, !!!self$recode_icon_status, .default = 'warning', .missing = 'warning') 
-        )
-      if(add_overlijden & nrow(timelineData) > 0 & !is.na(timelineData$datum_overlijden[1])){
-        death_row = data.frame(timestamp=timelineData$datum_overlijden[1],
-                               title="Overleden",
-                               text="Is overleden",
-                               icon_name = "person-dash-fill",
-                               icon_status="danger")
-        
-        timelineData <- bind_rows(timelineData, death_row)
-      } 
-      timelineData %>% distinct(timestamp,title,text, .keep_all = TRUE)
+ 
+      if(is.null(self$relocations)){
+        print("- No Relocations Data! -")
+        return(NULL)
+      } else {
+         
+        timelineData <- self$get_relocations_for_person(person_id)
+        if(nrow(timelineData) > 0){
+          timelineData <- timelineData%>%  
+            mutate(
+              timestamp = event_datum,
+              title=recode(event, !!!self$detail_network_settings$recode_title, .default = 'Onbekende gebeurtenis', .missing = 'Onbekende gebeurtenis'), 
+              text=format_event_func(event, buurt_naam, gemeente_inschrijving),
+              icon_name=recode(event, !!!self$detail_network_settings$recode_icon, .default = "bookmark", .missing = 'bookmark'), 
+              icon_status=recode(event, !!!self$detail_network_settings$recode_icon_status, .default = 'warning', .missing = 'warning')
+            ) 
+        }  else {
+          return(NULL)
+        }
+         
+        if(add_overlijden & nrow(timelineData) > 0 & !is.na(timelineData$datum_overlijden[1])){
+          death_row = data.frame(timestamp=timelineData$datum_overlijden[1],
+                                 title="Overleden",
+                                 text="Is overleden",
+                                 icon_name = "person-dash-fill",
+                                 icon_status="danger")
+          
+          timelineData <- bind_rows(timelineData, death_row)
+        } 
+        return(timelineData %>% distinct(timestamp,title,text, .keep_all = TRUE))
+      }
     },
     
     #' @description Create suitable node format for network(Viz)
