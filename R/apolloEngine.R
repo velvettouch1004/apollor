@@ -777,10 +777,10 @@ ApolloEngine <- R6::R6Class(
         filter(grepl(!!theme, theme),
                !disabled, !deleted)
       
-      if(nrow(out) == 0){
-        stop(paste("Theme",theme,"not found"))
-      }
-      
+      # if(nrow(out) == 0){
+      #   stop(paste("Theme",theme,"not found"))
+      # }
+      # 
       out
       
     },
