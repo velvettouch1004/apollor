@@ -64,38 +64,41 @@ ApolloEngine <- R6::R6Class(
       self$data_files <- data_files
       
       if(load_data){
-        if(self$has_dataset("person") || paste(self$data_files, collapse = '') == ""){
+        if(self$has_dataset("person")){
           self$read_person(use_cache)
         }
         
-        if(self$has_dataset("business") || paste(self$data_files, collapse = '') == ""){
+        if(self$has_dataset("business")){
           self$read_business(use_cache)
         }
         
-        if(self$has_dataset("address") || paste(self$data_files, collapse = '') == ""){
+        if(self$has_dataset("address")){
           self$read_address(use_cache)
         }
         
-        if(self$has_dataset("indicator") || paste(self$data_files, collapse = '') == ""){
+        if(self$has_dataset("indicator")){
           self$read_indicator()
         }
         
-        if(self$has_dataset("signals") || paste(self$data_files, collapse = '') == ""){
+        if(self$has_dataset("signals")){
           self$read_signals()
         }
         
-        if(self$has_dataset("metadata") || paste(self$data_files, collapse = '') == ""){
+        if(self$has_dataset("metadata")){
           self$read_metadata()
         }
         
-        if(self$has_dataset("relocations") || paste(self$data_files, collapse = '') == ""){
+        if(self$has_dataset("relocations")){
           self$read_relocations()
         }
         
-        if(self$has_dataset("model_privacy_protocol") || paste(self$data_files, collapse = '') == ""){
+        if(self$has_dataset("model_privacy_protocol")){
           self$model_privacy_protocol <- self$read_table("model_privacy_protocol")
         }
-        
+
+        # if(self$has_dataset("bag")){
+        #   self$bag <- shintobag::get_bag_from_cache(gemeente)
+        # }
       }
       
       

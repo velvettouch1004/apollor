@@ -507,6 +507,7 @@ only the selected buurt code.s.}
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$combine_signals_relations_business(
   signals,
   relations,
+  sbi_colname,
   sbi_key,
   sbi_mapping
 )}\if{html}{\out{</div>}}
