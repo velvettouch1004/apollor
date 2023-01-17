@@ -626,15 +626,12 @@ ApolloEngine <- R6::R6Class(
     
     # Add 'address' to signals based on object_relations,
     # and KvK branches based on selected business, if any.
-    combine_signals_relations_business = function(signals, relations, sbi_key, sbi_mapping){
+    combine_signals_relations_business = function(signals, relations, sbi_colname, sbi_key, sbi_mapping){
 
       # assume there is at most one primary address per registration
       hoofdadressen <-  relations %>% 
         filter(object_type == 'address' & relation_type == 'primary')
-      
-      sbi_colname <- .cc$get("global/kvk_parameters/sbi_column", 
-                             default="hoofdactiviteit")
-      
+    
       # for hollands kroon
       if(!hasName(signals, "adresseerbaarobject")){
         signals$adresseerbaarobject <- NA_character_
