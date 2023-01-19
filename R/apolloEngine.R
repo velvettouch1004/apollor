@@ -633,7 +633,9 @@ ApolloEngine <- R6::R6Class(
 
       # assume there is at most one primary address per registration
       hoofdadressen <-  relations %>% 
-        filter(object_type == 'address' & relation_type == 'primary')
+        filter(object_type == 'address' & relation_type == 'primary') %>%
+        distinct(collector_id, .keep_all = TRUE) # als per ongeluk toch meer dan 1 hoofdadres
+      
     
       # for hollands kroon
       if(!hasName(signals, "adresseerbaarobject")){
@@ -668,7 +670,8 @@ ApolloEngine <- R6::R6Class(
       }
       
       hoofdbedrijven <- hoofdbedrijven %>% 
-        select(collector_id,  sbi_code_main, sbi_code_sub_1)
+        select(collector_id,  sbi_code_main, sbi_code_sub_1) %>%
+        distinct(collector_id, .keep_all = TRUE) # als per ongeluk toch meer dan 1 hoofdbedrijf.
       
       signals %>% 
         left_join(hoofdadressen %>% select(-status), 
