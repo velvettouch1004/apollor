@@ -353,7 +353,13 @@ ApolloEngine <- R6::R6Class(
         data_bag <- self$add_bag_adres_formatted(data_bag)
       }
       
-      sf::st_as_sf(dplyr::left_join(data, data_bag, by = setNames("adresseerbaarobject_id",id_column)))
+      out <- dplyr::left_join(data, data_bag, by = setNames("adresseerbaarobject_id",id_column))
+      
+      if(spatial){
+        out <- sf::st_as_sf(out)
+      }
+      
+      out
       
     },
     
