@@ -23,8 +23,8 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-get_cbs_buurt_metadata}{\code{ApolloEngine$get_cbs_buurt_metadata()}}
 \item \href{#method-NA-street_from_bagid}{\code{ApolloEngine$street_from_bagid()}}
 \item \href{#method-NA-get_bag_from_bagid}{\code{ApolloEngine$get_bag_from_bagid()}}
-\item \href{#method-NA-join_bag_geometry}{\code{ApolloEngine$join_bag_geometry()}}
 \item \href{#method-NA-join_bag}{\code{ApolloEngine$join_bag()}}
+\item \href{#method-NA-add_bag_adres_formatted}{\code{ApolloEngine$add_bag_adres_formatted()}}
 \item \href{#method-NA-to_json}{\code{ApolloEngine$to_json()}}
 \item \href{#method-NA-from_json}{\code{ApolloEngine$from_json()}}
 \item \href{#method-NA-has_dataset}{\code{ApolloEngine$has_dataset()}}
@@ -255,18 +255,8 @@ only the selected buurt code.s.}
   id,
   spatial = FALSE,
   geo_only = FALSE,
-  request_cols = NULL,
-  extra_cols = FALSE
+  request_cols = NULL
 )}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-join_bag_geometry"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-join_bag_geometry}{}}}
-\subsection{Method \code{join_bag_geometry()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$join_bag_geometry(data, id_column = "adresseerbaarobject_id")}\if{html}{\out{</div>}}
 }
 
 }
@@ -281,6 +271,15 @@ only the selected buurt code.s.}
   bag_columns = NULL,
   spatial = TRUE
 )}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-add_bag_adres_formatted"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-add_bag_adres_formatted}{}}}
+\subsection{Method \code{add_bag_adres_formatted()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$add_bag_adres_formatted(data)}\if{html}{\out{</div>}}
 }
 
 }

@@ -291,15 +291,13 @@ ApolloEngine <- R6::R6Class(
       
     },
     
-    get_bag_from_bagid = function(id, spatial = FALSE, geo_only = FALSE, request_cols = NULL,
-                                  extra_cols = FALSE
-                                  ){
+    get_bag_from_bagid = function(id, spatial = FALSE, geo_only = FALSE, request_cols = NULL){
       
       if(!geo_only){
         if(is.null(request_cols)){
           cols <- "*"
         } else {
-          request_cols <- unique(c(request_cols, "geopunt"))
+          request_cols <- unique(c("adresseerbaarobject_id", request_cols, "geopunt"))
           all_cols_correct <- identical(setdiff(request_cols, self$bag_columns), character(0))
           if(!all_cols_correct){
             stop("Not all requested columns are present in bagactueel.adres_plus!")
@@ -331,24 +329,6 @@ ApolloEngine <- R6::R6Class(
       
       out <- left_join(data_out, out, by = "adresseerbaarobject_id")
       
-      if(extra_cols){
-         out <- dplyr::mutate(out, 
-                       adres_display = paste0(
-                         openbareruimtenaam,
-                         " ",
-                         huisnummer,
-                         tidyr::replace_na(huisletter,""),
-                         ifelse(is.na(huisnummertoevoeging), 
-                                "",
-                                paste0(" ", huisnummertoevoeging)
-                         ),
-                         ", ",
-                         woonplaatsnaam
-                       )
-                      )
-      }
-      
-      
       if(spatial)out <- sf::st_as_sf(out)
       
       
@@ -356,24 +336,43 @@ ApolloEngine <- R6::R6Class(
       
     },
     
-    join_bag_geometry = function(data, id_column = "adresseerbaarobject_id"){
+
+    bag_adres_cols = c("openbareruimtenaam","huisnummer","huisletter","huisnummertoevoeging","woonplaatsnaam"), 
+    
+    join_bag = function(data, id_column = "adresseerbaarobject_id", bag_columns = NULL, spatial = TRUE){
       
-      data_bag <- self$get_bag_from_bagid(data[[id_column]], spatial = TRUE, geo_only = TRUE)
-      
-      if(!is.null(data_bag)){
-        sf::st_as_sf(dplyr::left_join(data, data_bag, by = setNames("adresseerbaarobject_id",id_column)))  
-      } else {
-        data
+      ask_formatted <- "adres_formatted" %in% bag_columns
+      bag_columns <- setdiff(bag_columns, "adres_formatted")
+      if(ask_formatted){
+        bag_columns <- unique(c(bag_columns, self$bag_adres_cols))
       }
       
+      data_bag <- self$get_bag_from_bagid(data[[id_column]], spatial = spatial, geo_only = FALSE, request_cols = bag_columns)
+      
+      if(ask_formatted){
+        data_bag <- self$add_bag_adres_formatted(data_bag)
+      }
+      
+      sf::st_as_sf(dplyr::left_join(data, data_bag, by = setNames("adresseerbaarobject_id",id_column)))
       
     },
     
-    join_bag = function(data, id_column = "adresseerbaarobject_id", bag_columns = NULL, spatial = TRUE){
-      # SQL Injection Sensitive?
-      data_bag <- self$get_bag_from_bagid(data[[id_column]], spatial = spatial, geo_only = FALSE, request_cols = bag_columns)
+    add_bag_adres_formatted = function(data){
       
-      sf::st_as_sf(dplyr::left_join(data, data_bag, by = setNames("adresseerbaarobject_id",id_column)))
+      if(!all(hasName(data,self$bag_adres_cols))){
+        message('add_bag_adres_formatted Error, sommige adres kolommen ontbreken')
+        return(data)
+      }
+      
+      mutate(data,  
+            adres_formatted = paste0(
+              openbareruimtenaam, " ",
+              huisnummer, 
+              ifelse(is.na(huisletter),"",huisletter),
+              ifelse(is.na(huisnummertoevoeging),"", paste0(" ", huisnummertoevoeging)),
+              " ", woonplaatsnaam
+            )
+          )
       
     },
     
