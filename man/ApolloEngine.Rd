@@ -74,6 +74,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-get_favorite}{\code{ApolloEngine$get_favorite()}}
 \item \href{#method-NA-add_favorite}{\code{ApolloEngine$add_favorite()}}
 \item \href{#method-NA-remove_favorite}{\code{ApolloEngine$remove_favorite()}}
+\item \href{#method-NA-get_object_relations_since_timestamp}{\code{ApolloEngine$get_object_relations_since_timestamp()}}
 \item \href{#method-NA-get_mpp_rows_since_timestamp}{\code{ApolloEngine$get_mpp_rows_since_timestamp()}}
 \item \href{#method-NA-create_MPP_for_registration}{\code{ApolloEngine$create_MPP_for_registration()}}
 \item \href{#method-NA-archive_MPP_for_registration_old}{\code{ApolloEngine$archive_MPP_for_registration_old()}}
@@ -938,6 +939,23 @@ Remove from favorites
 \item{\code{user_id}}{User to remove from}
 
 \item{\code{favorite_id}}{Identifier of the removable}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-get_object_relations_since_timestamp"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_object_relations_since_timestamp}{}}}
+\subsection{Method \code{get_object_relations_since_timestamp()}}{
+Get Obj Rel changes since a given timestamp
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_object_relations_since_timestamp(time_since)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{time_since}}{is timestamp}
 }
 \if{html}{\out{</div>}}
 }

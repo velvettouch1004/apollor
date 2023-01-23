@@ -1229,6 +1229,14 @@ ApolloEngine <- R6::R6Class(
     },
     
     
+    #--------- OBJECT REL  -------
+    #' @description Get Obj Rel changes since a given timestamp
+    #' @param time_since is timestamp
+    get_object_relations_since_timestamp = function(time_since){ 
+ 
+      self$query(glue("select count(*) from {self$schema}.object_relations where timestamp > '{time_since}'::timestamp;"),
+                 quiet=TRUE)$count 
+    },
     #--------- PRIVACY PROTOCOL  -------
     #' @description Get MPP changes since a given timestamp
     #' @param time_since is timestamp
