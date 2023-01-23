@@ -34,7 +34,6 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-read_person}{\code{ApolloEngine$read_person()}}
 \item \href{#method-NA-read_business}{\code{ApolloEngine$read_business()}}
 \item \href{#method-NA-read_address}{\code{ApolloEngine$read_address()}}
-\item \href{#method-NA-read_relocations}{\code{ApolloEngine$read_relocations()}}
 \item \href{#method-NA-read_signals}{\code{ApolloEngine$read_signals()}}
 \item \href{#method-NA-read_actions}{\code{ApolloEngine$read_actions()}}
 \item \href{#method-NA-read_indicator}{\code{ApolloEngine$read_indicator()}}
@@ -361,15 +360,6 @@ only the selected buurt code.s.}
 \subsection{Method \code{read_address()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_address(cache = TRUE)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-read_relocations"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-read_relocations}{}}}
-\subsection{Method \code{read_relocations()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_relocations(cache = TRUE)}\if{html}{\out{</div>}}
 }
 
 }
