@@ -88,9 +88,9 @@ ApolloEngine <- R6::R6Class(
           self$read_metadata()
         }
         
-        if(self$has_dataset("relocations")){
-          self$read_relocations()
-        }
+        # if(self$has_dataset("relocations")){
+        #   self$read_relocations()
+        # }
         
         if(self$has_dataset("model_privacy_protocol")){
           self$model_privacy_protocol <- self$read_table("model_privacy_protocol")
@@ -487,14 +487,14 @@ ApolloEngine <- R6::R6Class(
       invisible(self$address)
     },
     
-    read_relocations = function(cache = TRUE){
-      if(cache){
-        self$relocations <- self$read_table_cached("brp_verhuis_historie")
-      } else {
-        self$relocations <- self$read_table('brp_verhuis_historie')   
-      }
-      invisible(self$relocations)
-    },
+    # read_relocations = function(cache = TRUE){
+    #   if(cache){
+    #     self$relocations <- self$read_table_cached("brp_verhuis_historie")
+    #   } else {
+    #     self$relocations <- self$read_table('brp_verhuis_historie')   
+    #   }
+    #   invisible(self$relocations)
+    # },
     
     
     read_signals = function(){
@@ -1360,30 +1360,45 @@ ApolloEngine <- R6::R6Class(
     #' @description Get person details from the identifier
     #' @param person_id Person's identifier FI: (pseudo)bsn 
     get_person_from_id = function(person_id){ 
-      self$person[self$person$person_id == person_id, ]
+      self$person %>%
+        filter(person_id == !!person_id)
     },
     
     #' @description Get address details from the identifier
     #' @param address_id Address's identifier FI: (pseudo)adresseerbaarobject 
     get_address_from_id = function(address_id){
-      self$address[self$address$address_id == address_id, ]
+      self$address %>%
+        filter(address_id == !!address_id)
     }, 
     get_residents = function(address_id){
-      self$person[self$person$address_id == address_id, ]
+      self$person %>% 
+        filter(address_id == !!address_id)
     },
     get_businesses_at_address = function(address_id){
-      self$business[self$business$address_id == address_id, ]
+      self$business %>%
+        filter(address_id == address_id)
     },
     get_relocations_for_person = function(person_id){
-      self$relocations[self$relocations$person_id == person_id, ]
+      
+      if(!is.null(self$schema)){
+        qu <- glue::glue("SELECT * FROM {self$schema}.brp_verhuis_historie WHERE person_id = ?person_id")
+      } else {
+        qu <- glue::glue("SELECT * FROM brp_verhuis_historie WHERE person_id = ?person_id")
+      }
+      
+      query <- sqlInterpolate(DBI::ANSI(), 
+                              qu, 
+                              person_id = person_id)
+      
+      dbGetQuery(self$con, query)
     }, 
     
     #' @description Create data suitable for timeline plot
     #' @param person_id Person's identifier FI: (pseudo)bsn 
     #' @param add_overlijden Boolean indicating if overlijden should be added as event 
-    get_relocations_timeline = function(person_id, add_overlijden=TRUE){ 
+    get_relocations_timeline = function(person_id, add_overlijden=TRUE){
  
-      if(is.null(self$relocations)){
+      if(!self$has_dataset("relocations")){
         print("- No Relocations Data! -")
         return(NULL)
       } else {
