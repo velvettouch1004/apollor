@@ -39,6 +39,7 @@ ApolloEngine <- R6::R6Class(
       
       flog.info("DB Connection", name = "DBR6")
       
+      self$tenant <- tenant
       self$gemeente <- gemeente
       self$pool <- pool
       self$schema <- schema  
