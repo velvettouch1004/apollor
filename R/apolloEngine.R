@@ -414,7 +414,7 @@ ApolloEngine <- R6::R6Class(
     # Cache reader
     read_table_cached = function(table, rewrite_cache = FALSE){
       
-      gem_field <- gsub(" ", "", tolower(self$gemeente))
+      gem_field <- gsub(" ", "", tolower(self$tenant))
       
       cache_path <- ifelse(self$is_local(), 
                            glue::glue("cache/{gem_field}-ondermijning"), 
