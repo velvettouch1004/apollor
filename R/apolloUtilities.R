@@ -24,7 +24,7 @@ add_net_nodes <- function(., data, label, title, group, level){
   return(.)
 } 
 
-add_net_edges <- function(., data, label, title){ 
+add_net_edges <- function(., data, label, title){
   if(!is.null(data) && nrow(data) > 0){
     new_edges <- data.frame(label = rep(label, nrow(data)), title = rep(title, nrow(data)))      
     

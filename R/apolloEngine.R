@@ -25,7 +25,8 @@ ApolloEngine <- R6::R6Class(
                           secret = "",
                           data_files = "", 
                           geo_file = NULL,
-                          detail_network_settings = list(
+                          netwerk_settings = list(),
+                          detail_timeline_settings = list(
                             recode_icon=list(),
                             recode_title=list(),
                             recode_icon_status=list()
@@ -42,7 +43,7 @@ ApolloEngine <- R6::R6Class(
       self$gemeente <- gemeente
       self$pool <- pool
       self$schema <- schema  
-      self$detail_network_settings <- detail_network_settings
+      self$detail_timeline_settings <- detail_timeline_settings
       
       # symmetric encrypt/decrypt
       self$secret <- secret
@@ -1384,7 +1385,7 @@ ApolloEngine <- R6::R6Class(
     },
     get_businesses_at_address = function(address_id){
       self$business %>%
-        filter(address_id == address_id)
+        filter(address_id == !!address_id)
     },
     get_relocations_for_person = function(person_id){
       
@@ -1416,10 +1417,10 @@ ApolloEngine <- R6::R6Class(
           timelineData <- timelineData%>%  
             mutate(
               timestamp = event_datum,
-              title=recode(event, !!!self$detail_network_settings$recode_title, .default = 'Onbekende gebeurtenis', .missing = 'Onbekende gebeurtenis'), 
+              title=recode(event, !!!self$detail_timeline_settings$recode_title, .default = 'Onbekende gebeurtenis', .missing = 'Onbekende gebeurtenis'), 
               text=format_event_func(event, buurt_naam, gemeente_inschrijving),
-              icon_name=recode(event, !!!self$detail_network_settings$recode_icon, .default = "bookmark", .missing = 'bookmark'), 
-              icon_status=recode(event, !!!self$detail_network_settings$recode_icon_status, .default = 'warning', .missing = 'warning')
+              icon_name=recode(event, !!!self$detail_timeline_settings$recode_icon, .default = "bookmark", .missing = 'bookmark'), 
+              icon_status=recode(event, !!!self$detail_timeline_settings$recode_icon_status, .default = 'warning', .missing = 'warning')
             ) 
         }  else {
           return(NULL)
@@ -1472,7 +1473,7 @@ ApolloEngine <- R6::R6Class(
       # add subsequent nodes
       network_nodes  %>%
         add_net_nodes(business_data, 'business_id', 'business_id', 'business',level=2) %>%
-        add_net_nodes(registration_data, 'registration_id', 'registration_id', 'registration',level=5) %>% 
+        add_net_nodes(registration_data, 'collector_id', 'collector_type', 'registration',level=4) %>% 
         mutate(id=row_number())
       
     },
