@@ -132,7 +132,8 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
   secret = "",
   data_files = "",
   geo_file = NULL,
-  detail_network_settings = list(recode_icon = list(), recode_title = list(),
+  netwerk_settings = list(),
+  detail_timeline_settings = list(recode_icon = list(), recode_title = list(),
     recode_icon_status = list()),
   load_data = TRUE,
   use_cache = TRUE

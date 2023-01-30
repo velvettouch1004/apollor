@@ -167,7 +167,7 @@ ApolloEngine <- R6::R6Class(
     is_encrypted = function(x){
       
       res <- self$decrypt(x)
-      !is.na(res)
+      isTRUE(x != res)
       
     },
     
