@@ -4,6 +4,7 @@ Version: 0.5-5
 Author: Remko Duursma, Martijn Heijstek, Wesley Brants
 Maintainer: Remko Duursma <remko@shintolabs.nl>
 Description: Apollo as an R package. Used in apollo Frontend
+Imports: shintobag, shintodb
 Depends: 
     DBI,
     dbplyr,
@@ -12,7 +13,6 @@ Depends:
     dplyr,
     R6,
     pool,
-    shintobag,
     stringr,
     R (>= 2.10)
 License: CC0

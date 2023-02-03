@@ -7,6 +7,8 @@
 #' @importFrom safer encrypt_string decrypt_string
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom tibble tibble
+#' @importFrom shintodb connect encrypt decrypt
+#' @importFrom shintobag get_geo_from_cache get_bag_from_cache
 # #' @importFrom fastmatch fmatch
 #' @export
 
@@ -17,7 +19,6 @@ ApolloEngine <- R6::R6Class(
   
   public = list(
      
-    
     # ---- Init
     initialize = function(tenant,
                           gemeente, schema, pool, 
@@ -54,9 +55,9 @@ ApolloEngine <- R6::R6Class(
       
       
       response <- try({
-        shintobag::shinto_db_connection(what = tenant, 
-                                        pool = pool, 
-                                        file = config_file)
+        shintodb::connect(what = tenant, 
+                          pool = pool,
+                          file = config_file)
       })
       
       if(!inherits(response, "try-error")){
@@ -105,11 +106,11 @@ ApolloEngine <- R6::R6Class(
       
       
       # BAG connectie
-      self$bag_con <- shintobag::shinto_db_connection("data_bag", file = config_file)
+      self$bag_con <- shintodb::connect("data_bag", file = config_file)
       self$bag_columns <- dbListFields(self$bag_con, Id(schema = "bagactueel", table = "adres_plus"))
       
       # CBS connectie
-      self$cbs_con <- shintobag::shinto_db_connection("data_cbs", file = config_file)
+      self$cbs_con <- shintodb::connect("data_cbs", file = config_file)
       
       # Geo data
       self$geo <- shintobag::get_geo_from_cache(gemeente, kws=TRUE,kws_jaar=2022)
@@ -145,7 +146,7 @@ ApolloEngine <- R6::R6Class(
     #' @description Symmetric encrypt, using the secret 
     encrypt = function(x){
       if(self$secret != ""){
-        out <- shintobag::encrypt(x, secret = self$secret)
+        out <- shintodb::encrypt(x, secret = self$secret)
         out[is.na(x)] <- NA_character_
       } else {
         out <- x
@@ -156,7 +157,7 @@ ApolloEngine <- R6::R6Class(
     #' @description Symmetric decrypt, using the secret 
     decrypt = function(x){
       if(self$secret != ""){
-        shintobag::decrypt(x, secret = self$secret)
+        shintodb::decrypt(x, secret = self$secret)
       } else {
         x
       }
