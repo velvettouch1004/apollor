@@ -48,6 +48,9 @@ ApolloEngine <- R6::R6Class(
       self$detail_timeline_settings <- detail_timeline_settings
       
       # symmetric encrypt/decrypt
+      if(secret == ""){
+        warning("Geen secret gezet of secret is leeg,  ==--- Weet je het zeker?? ==--")
+      }
       self$secret <- secret
       
       cf <- config::get(tenant, file = config_file)
