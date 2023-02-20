@@ -303,6 +303,8 @@ ApolloEngine <- R6::R6Class(
       data_out <- data.frame(adresseerbaarobject_id = id)
       
       id_lookup <- unique(id[!is.na(id)])
+      id_lookup <- id_lookup[id_lookup != ""]
+      
       if(length(id_lookup) == 0){
         return(NULL) # TODO might need something else here
       }
@@ -667,7 +669,7 @@ ApolloEngine <- R6::R6Class(
         select(collector_id,  sbi_code_main, sbi_code_sub_1) %>%
         distinct(collector_id, .keep_all = TRUE) # als per ongeluk toch meer dan 1 hoofdbedrijf.
       
-      signals %>% 
+      o <- signals %>% 
         left_join(hoofdadressen %>% select(-status), 
                   by = c('registration_id' = 'collector_id'), 
                   suffix = c(".x", "")) %>% 
@@ -678,12 +680,12 @@ ApolloEngine <- R6::R6Class(
                                             self$decrypt(object_id), 
                                             self$decrypt(adresseerbaarobject)), 
                # als kvk leeg is dan verkrijgen vanuit hoofdbedrijf
-               kvk_branche = ifelse(is.na(kvk_branche) | kvk_branche == '',  
+               kvk_branche = as.character(ifelse(is.na(kvk_branche) | kvk_branche == '',  
                                     sbi_code_main, 
-                                    kvk_branche),
-               kvk_sub_branche = ifelse(is.na(kvk_sub_branche) | kvk_sub_branche == '',  
+                                    kvk_branche)),
+               kvk_sub_branche = as.character(ifelse(is.na(kvk_sub_branche) | kvk_sub_branche == '',  
                                         sbi_code_sub_1, 
-                                        kvk_sub_branche) ) %>%
+                                        kvk_sub_branche) )) %>%
         # from sbi code to omschrijving
         left_join(sbi_key %>% select(kvk_branche=sbi_code_txt , 
                                      kvk_branche_omsch=sbi_omschrijving, 
