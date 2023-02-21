@@ -88,6 +88,10 @@ ApolloEngine <- R6::R6Class(
           self$model_privacy_protocol <- self$read_table("model_privacy_protocol")
         }
 
+        if(self$has_dataset("dossiers")){
+          self$read_dossiers()
+        }
+        
         # if(self$has_dataset("bag")){
         #   self$bag <- shintobag::get_bag_from_cache(gemeente)
         # }
@@ -514,6 +518,10 @@ ApolloEngine <- R6::R6Class(
       invisible(self$metadata)
     }, 
     
+    read_dossiers = function(){ 
+      self$dossiers <- self$read_table('dossiers') 
+      invisible(self$dossiers)
+    }, 
     
     
     read_favorites = function(user_id=NULL){ 

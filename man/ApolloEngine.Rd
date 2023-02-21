@@ -38,6 +38,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-read_actions}{\code{ApolloEngine$read_actions()}}
 \item \href{#method-NA-read_indicator}{\code{ApolloEngine$read_indicator()}}
 \item \href{#method-NA-read_metadata}{\code{ApolloEngine$read_metadata()}}
+\item \href{#method-NA-read_dossiers}{\code{ApolloEngine$read_dossiers()}}
 \item \href{#method-NA-read_favorites}{\code{ApolloEngine$read_favorites()}}
 \item \href{#method-NA-read_log}{\code{ApolloEngine$read_log()}}
 \item \href{#method-NA-read_mpp}{\code{ApolloEngine$read_mpp()}}
@@ -394,6 +395,15 @@ only the selected buurt code.s.}
 \subsection{Method \code{read_metadata()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_metadata()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-read_dossiers"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_dossiers}{}}}
+\subsection{Method \code{read_dossiers()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_dossiers()}\if{html}{\out{</div>}}
 }
 
 }
