@@ -7,7 +7,7 @@
 An R6 object with methods for use in the Shiny application \code{apollo}.
 }
 \section{Super class}{
-\code{apollor::NA}
+\code{shintodb::NA}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -38,12 +38,12 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-read_actions}{\code{ApolloEngine$read_actions()}}
 \item \href{#method-NA-read_indicator}{\code{ApolloEngine$read_indicator()}}
 \item \href{#method-NA-read_metadata}{\code{ApolloEngine$read_metadata()}}
+\item \href{#method-NA-read_dossiers}{\code{ApolloEngine$read_dossiers()}}
 \item \href{#method-NA-read_favorites}{\code{ApolloEngine$read_favorites()}}
 \item \href{#method-NA-read_log}{\code{ApolloEngine$read_log()}}
 \item \href{#method-NA-read_mpp}{\code{ApolloEngine$read_mpp()}}
 \item \href{#method-NA-get_indicator}{\code{ApolloEngine$get_indicator()}}
 \item \href{#method-NA-get_metadata}{\code{ApolloEngine$get_metadata()}}
-\item \href{#method-NA-postgres_now}{\code{ApolloEngine$postgres_now()}}
 \item \href{#method-NA-set_metadata}{\code{ApolloEngine$set_metadata()}}
 \item \href{#method-NA-edit_indicator_filter_transparency}{\code{ApolloEngine$edit_indicator_filter_transparency()}}
 \item \href{#method-NA-combine_signals_relations_business}{\code{ApolloEngine$combine_signals_relations_business()}}
@@ -80,17 +80,12 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-archive_MPP_for_registration}{\code{ApolloEngine$archive_MPP_for_registration()}}
 \item \href{#method-NA-updateMPP}{\code{ApolloEngine$updateMPP()}}
 \item \href{#method-NA-update_MPP_for_registration}{\code{ApolloEngine$update_MPP_for_registration()}}
-\item \href{#method-NA-create_action}{\code{ApolloEngine$create_action()}}
-\item \href{#method-NA-update_action}{\code{ApolloEngine$update_action()}}
-\item \href{#method-NA-archive_action}{\code{ApolloEngine$archive_action()}}
 \item \href{#method-NA-get_person_from_id}{\code{ApolloEngine$get_person_from_id()}}
 \item \href{#method-NA-get_address_from_id}{\code{ApolloEngine$get_address_from_id()}}
 \item \href{#method-NA-get_residents}{\code{ApolloEngine$get_residents()}}
 \item \href{#method-NA-get_businesses_at_address}{\code{ApolloEngine$get_businesses_at_address()}}
 \item \href{#method-NA-get_relocations_for_person}{\code{ApolloEngine$get_relocations_for_person()}}
 \item \href{#method-NA-get_relocations_timeline}{\code{ApolloEngine$get_relocations_timeline()}}
-\item \href{#method-NA-create_network_nodes}{\code{ApolloEngine$create_network_nodes()}}
-\item \href{#method-NA-create_network_edges}{\code{ApolloEngine$create_network_edges()}}
 \item \href{#method-NA-save_custom_location}{\code{ApolloEngine$save_custom_location()}}
 \item \href{#method-NA-get_all_custom_locations}{\code{ApolloEngine$get_all_custom_locations()}}
 \item \href{#method-unknown-clone}{\code{ApolloEngine$clone()}}
@@ -99,22 +94,25 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \if{html}{\out{
 <details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="append_data"><a href='../../apollor/html/NA.html#method-NA-append_data'><code>apollor::NA$append_data()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="close"><a href='../../apollor/html/NA.html#method-NA-close'><code>apollor::NA$close()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="connect_to_database"><a href='../../apollor/html/NA.html#method-NA-connect_to_database'><code>apollor::NA$connect_to_database()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="delete_rows_where"><a href='../../apollor/html/NA.html#method-NA-delete_rows_where'><code>apollor::NA$delete_rows_where()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="execute_query"><a href='../../apollor/html/NA.html#method-NA-execute_query'><code>apollor::NA$execute_query()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="has_value"><a href='../../apollor/html/NA.html#method-NA-has_value'><code>apollor::NA$has_value()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="have_column"><a href='../../apollor/html/NA.html#method-NA-have_column'><code>apollor::NA$have_column()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="list_tables"><a href='../../apollor/html/NA.html#method-NA-list_tables'><code>apollor::NA$list_tables()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="make_column"><a href='../../apollor/html/NA.html#method-NA-make_column'><code>apollor::NA$make_column()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="query"><a href='../../apollor/html/NA.html#method-NA-query'><code>apollor::NA$query()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="read_table"><a href='../../apollor/html/NA.html#method-NA-read_table'><code>apollor::NA$read_table()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="replace_value_where"><a href='../../apollor/html/NA.html#method-NA-replace_value_where'><code>apollor::NA$replace_value_where()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="replace_value_where2"><a href='../../apollor/html/NA.html#method-NA-replace_value_where2'><code>apollor::NA$replace_value_where2()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="table_columns"><a href='../../apollor/html/NA.html#method-NA-table_columns'><code>apollor::NA$table_columns()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="table_info"><a href='../../apollor/html/NA.html#method-NA-table_info'><code>apollor::NA$table_info()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="apollor" data-topic="NA" data-id="to_sql_string"><a href='../../apollor/html/NA.html#method-NA-to_sql_string'><code>apollor::NA$to_sql_string()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="append_data"><a href='../../shintodb/html/NA.html#method-NA-append_data'><code>shintodb::NA$append_data()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="close"><a href='../../shintodb/html/NA.html#method-NA-close'><code>shintodb::NA$close()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="connect_to_database"><a href='../../shintodb/html/NA.html#method-NA-connect_to_database'><code>shintodb::NA$connect_to_database()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="delete_rows_where"><a href='../../shintodb/html/NA.html#method-NA-delete_rows_where'><code>shintodb::NA$delete_rows_where()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="execute_query"><a href='../../shintodb/html/NA.html#method-NA-execute_query'><code>shintodb::NA$execute_query()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="get_query"><a href='../../shintodb/html/NA.html#method-NA-get_query'><code>shintodb::NA$get_query()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="has_value"><a href='../../shintodb/html/NA.html#method-NA-has_value'><code>shintodb::NA$has_value()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="have_column"><a href='../../shintodb/html/NA.html#method-NA-have_column'><code>shintodb::NA$have_column()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="list_tables"><a href='../../shintodb/html/NA.html#method-NA-list_tables'><code>shintodb::NA$list_tables()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="make_column"><a href='../../shintodb/html/NA.html#method-NA-make_column'><code>shintodb::NA$make_column()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="postgres_now"><a href='../../shintodb/html/NA.html#method-NA-postgres_now'><code>shintodb::NA$postgres_now()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="query"><a href='../../shintodb/html/NA.html#method-NA-query'><code>shintodb::NA$query()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="read_table"><a href='../../shintodb/html/NA.html#method-NA-read_table'><code>shintodb::NA$read_table()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="replace_value_where"><a href='../../shintodb/html/NA.html#method-NA-replace_value_where'><code>shintodb::NA$replace_value_where()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="replace_value_where2"><a href='../../shintodb/html/NA.html#method-NA-replace_value_where2'><code>shintodb::NA$replace_value_where2()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="table_columns"><a href='../../shintodb/html/NA.html#method-NA-table_columns'><code>shintodb::NA$table_columns()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="table_info"><a href='../../shintodb/html/NA.html#method-NA-table_info'><code>shintodb::NA$table_info()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="update_where"><a href='../../shintodb/html/NA.html#method-NA-update_where'><code>shintodb::NA$update_where()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="shintodb" data-topic="NA" data-id="write_table_overwrite"><a href='../../shintodb/html/NA.html#method-NA-write_table_overwrite'><code>shintodb::NA$write_table_overwrite()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -132,7 +130,6 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
   secret = "",
   data_files = "",
   geo_file = NULL,
-  netwerk_settings = list(),
   detail_timeline_settings = list(recode_icon = list(), recode_title = list(),
     recode_icon_status = list()),
   load_data = TRUE,
@@ -402,6 +399,15 @@ only the selected buurt code.s.}
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-read_dossiers"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_dossiers}{}}}
+\subsection{Method \code{read_dossiers()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_dossiers()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NA-read_favorites"></a>}}
 \if{latex}{\out{\hypertarget{method-NA-read_favorites}{}}}
 \subsection{Method \code{read_favorites()}}{
@@ -443,15 +449,6 @@ only the selected buurt code.s.}
 \subsection{Method \code{get_metadata()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_metadata()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-postgres_now"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-postgres_now}{}}}
-\subsection{Method \code{postgres_now()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$postgres_now()}\if{html}{\out{</div>}}
 }
 
 }
@@ -1016,6 +1013,62 @@ Archive mpp for registration
 \if{latex}{\out{\hypertarget{method-NA-updateMPP}{}}}
 \subsection{Method \code{updateMPP()}}{
 Update mpp for registration
+#' @description Add action to actionlist
+#' @param uid User that creates the action
+#' @param acdate Date (yyyy-mm-dd) action occurs
+#' @param desc Content of action
+#' @param acname Short title
+#' @param rid Signal where the action relates to
+#' @param gid Group ID the action is a part of
+#' @param gname Group name the action is a part of
+#' @param aid The address the action is registered for
+create_action = function(uid, acdate, desc, stat, acname, rid, gid, gname, aid, uitv){
+self$log_user_event(uid, description=glue("Heeft actie {acname} aangemaakt"))
+
+try(
+self$append_data('actionlist',
+data.frame(user_id =  uid,
+action_date = acdate,
+description = desc,
+status = stat,
+timestamp = Sys.time(),
+expired = FALSE,
+action_name = acname,
+registration_id  =  rid,
+group_id = gid,
+group_name = gname,
+address_id = aid,
+uitvoerder = uitv
+))
+)
+},
+#' @description Update action in actionlist
+#' @param action_name Short title
+#' @param registration_id Signal where the action relates to
+#' @param user_id User that updates the action
+#' @param action_date Date (yyyy-mm-dd) action occurs
+#' @param description Content of action
+#' @param status Current action status
+update_action = function(action_id, action_name,  registration_id, user_id, action_date, description, status){
+self$log_user_event(user_id, description=glue("Heeft actie {action_name} gewijzigd"))
+
+try(
+self$execute_query(glue("UPDATE {self$schema}.actionlist SET action_name = '{action_name}', registration_id = '{registration_id}', user_id = '{user_id}', action_date = '{action_date}', description = '{description}', status = '{status}', timestamp = '{Sys.time()}' WHERE action_id = {action_id}"))
+)
+},
+
+#' @description Archive action in actionlist
+#' @param action_id Action to archive
+#' @param user_id User that archives the action
+#' @param action_name \link{optional} Short title
+archive_action = function(action_id, user_id, action_name=NULL){
+
+self$log_user_event(user_id, description=glue("Heeft actie {ifelse(!is.null(action_name), action_name, action_id)} gearchiveerd"))
+
+try(
+self$execute_query(glue("UPDATE {self$schema}.actionlist SET expired = TRUE, timestamp = '{Sys.time()}' WHERE action_id = {action_id}"))
+)
+},
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$updateMPP(registration_id, data, user_id)}\if{html}{\out{</div>}}
 }
@@ -1034,104 +1087,6 @@ Update mpp for registration
 )}\if{html}{\out{</div>}}
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-create_action"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-create_action}{}}}
-\subsection{Method \code{create_action()}}{
-Add action to actionlist
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_action(
-  uid,
-  acdate,
-  desc,
-  stat,
-  acname,
-  rid,
-  gid,
-  gname,
-  aid,
-  uitv
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{uid}}{User that creates the action}
-
-\item{\code{acdate}}{Date (yyyy-mm-dd) action occurs}
-
-\item{\code{desc}}{Content of action}
-
-\item{\code{acname}}{Short title}
-
-\item{\code{rid}}{Signal where the action relates to}
-
-\item{\code{gid}}{Group ID the action is a part of}
-
-\item{\code{gname}}{Group name the action is a part of}
-
-\item{\code{aid}}{The address the action is registered for}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-update_action"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-update_action}{}}}
-\subsection{Method \code{update_action()}}{
-Update action in actionlist
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$update_action(
-  action_id,
-  action_name,
-  registration_id,
-  user_id,
-  action_date,
-  description,
-  status
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{action_name}}{Short title}
-
-\item{\code{registration_id}}{Signal where the action relates to}
-
-\item{\code{user_id}}{User that updates the action}
-
-\item{\code{action_date}}{Date (yyyy-mm-dd) action occurs}
-
-\item{\code{description}}{Content of action}
-
-\item{\code{status}}{Current action status}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-archive_action"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-archive_action}{}}}
-\subsection{Method \code{archive_action()}}{
-Archive action in actionlist
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$archive_action(action_id, user_id, action_name = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{action_id}}{Action to archive}
-
-\item{\code{user_id}}{User that archives the action}
-
-\item{\code{action_name}}{\link{optional} Short title}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NA-get_person_from_id"></a>}}
@@ -1208,42 +1163,85 @@ Create data suitable for timeline plot
 \describe{
 \item{\code{person_id}}{Person's identifier FI: (pseudo)bsn}
 
-\item{\code{add_overlijden}}{Boolean indicating if overlijden should be added as event}
+\item{\code{add_overlijden}}{Boolean indicating if overlijden should be added as event
+#' @description Create suitable node format for network(Viz)
+create_network_nodes = function(person_data=NULL,
+address_data=NULL,
+resident_data=NULL,
+business_data=NULL,
+registration_data=NULL){intitialise node object with person data
+
+if(!is.null(person_data)){
+network_nodes <- data.frame(label = person_data$person_id,
+group = c("person"),
+title = person_data$person_id,
+level = 0)   \%>\%
+add_net_nodes(address_data, 'address_id', 'address_id', 'address', level= 2 )   \%>\%
+add_net_nodes(resident_data \%>\% filter(person_id != person_data$person_id), 'person_id', 'person_id', 'resident', level=0)
+}intitialise node object with address data
+
+else if(!is.null(address_data)){
+network_nodes <- data.frame(label = address_data$address_id,
+group = c("address"),
+title = address_data$address_id,
+level = 2)   \%>\%
+add_net_nodes(resident_data ,  'person_id', 'person_id', 'resident', level=0)
+
+} else {
+network_nodes <-  data.frame(label = c(),
+group =  c(),
+title =  c(),
+level =  c())
+}add subsequent nodes
+
+network_nodes  \%>\%
+add_net_nodes(business_data, 'business_id', 'business_id', 'business',level=2) \%>\%
+add_net_nodes(registration_data, 'collector_id', 'collector_type', 'registration',level=4) \%>\%
+mutate(id=row_number())
+
+},
+
+#' @description Create suitable edge format for network(Viz)
+create_network_edges = function(person_data=NULL,
+address_data=NULL,
+resident_data=NULL,
+business_data=NULL,
+registration_data=NULL){intitialise edge object empty
+
+network_edges <- data.frame(label = c(), title = c())naive -> only add edges if address is available
+
+if(!is.null(address_data) && nrow(address_data) > 0 && !is.null(person_data) && nrow(person_data) > 0){
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{network_edges <- network_edges \%>\% 
+  add_net_edges(person_data, 'Woont op', 'Woont op') \%>\%
+  add_net_edges(address_data, 'is', 'is') \%>\%
+  add_net_edges(resident_data \%>\% filter(person_id != person_data$person_id), 'Woont op', 'Woont op') \%>\%
+  add_net_edges(business_data, 'Gevestigd op', 'Gevestigd op') \%>\%
+  add_net_edges(registration_data, 'Signaal op', 'Signaal op') \%>\%
+  mutate(from = row_number(), to=2) \%>\% # naive -> connect everything to address 
+  filter(from != 2) # remove address identitiy
+}\if{html}{\out{</div>}}
+
+}
+
+else if(!is.null(address_data) && nrow(address_data) > 0){
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{network_edges <- network_edges \%>\%  
+  add_net_edges(address_data, 'is', 'is') \%>\%
+  add_net_edges(resident_data, 'Woont op', 'Woont op') \%>\%
+  add_net_edges(business_data, 'Gevestigd op', 'Gevestigd op') \%>\%
+  add_net_edges(registration_data, 'Signaal op', 'Signaal op') \%>\%
+  mutate(from = row_number(), to=1) \%>\% # naive -> connect everything to address 
+  filter(from != 1) # remove address identitiy
+}\if{html}{\out{</div>}}
+
+}
+
+network_edges
+},}
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-create_network_nodes"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-create_network_nodes}{}}}
-\subsection{Method \code{create_network_nodes()}}{
-Create suitable node format for network(Viz)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_network_nodes(
-  person_data = NULL,
-  address_data = NULL,
-  resident_data = NULL,
-  business_data = NULL,
-  registration_data = NULL
-)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NA-create_network_edges"></a>}}
-\if{latex}{\out{\hypertarget{method-NA-create_network_edges}{}}}
-\subsection{Method \code{create_network_edges()}}{
-Create suitable edge format for network(Viz)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$create_network_edges(
-  person_data = NULL,
-  address_data = NULL,
-  resident_data = NULL,
-  business_data = NULL,
-  registration_data = NULL
-)}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NA-save_custom_location"></a>}}

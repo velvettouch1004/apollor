@@ -9,11 +9,12 @@
 #' @importFrom tibble tibble
 #' @importFrom shintodb connect encrypt decrypt
 #' @importFrom shintobag get_geo_from_cache get_bag_from_cache
+#' @importFrom shintodb databaseClass
 # #' @importFrom fastmatch fmatch
 #' @export
 
 ApolloEngine <- R6::R6Class(
-  inherit = databaseObject,
+  inherit = shintodb::databaseClass,
   
   lock_objects = FALSE,
   
@@ -38,12 +39,8 @@ ApolloEngine <- R6::R6Class(
         warning("geo_file argument is no longer used in ApolloEngine$new")
       }
       
-      flog.info("DB Connection", name = "DBR6")
-      
       self$tenant <- tenant
       self$gemeente <- gemeente
-      self$pool <- pool
-      self$schema <- schema  
       self$detail_timeline_settings <- detail_timeline_settings
       
       # symmetric encrypt/decrypt
@@ -52,19 +49,9 @@ ApolloEngine <- R6::R6Class(
       }
       self$secret <- secret
       
-      cf <- config::get(tenant, file = config_file)
-      flog.info(glue::glue("Connecting to DB: {cf$dbname} on host : {cf$dbhost} with user {cf$dbuser}"))
-      
-      
-      response <- try({
-        shintodb::connect(what = tenant, 
-                          pool = pool,
-                          file = config_file)
-      })
-      
-      if(!inherits(response, "try-error")){
-        self$con <- response
-      }
+      # shintodb::databaseClass
+      super$initialize(what = tenant, config_file = config_file, pool = TRUE,
+                       schema = schema, log_level = "all")
       
       self$data_files <- data_files
       
@@ -103,6 +90,10 @@ ApolloEngine <- R6::R6Class(
         
         if(self$has_dataset("model_privacy_protocol")){
           self$model_privacy_protocol <- self$read_table("model_privacy_protocol")
+        }
+
+        if(self$has_dataset("dossiers")){
+          self$read_dossiers()
         }
         
         # if(self$has_dataset("bag")){
@@ -311,28 +302,33 @@ ApolloEngine <- R6::R6Class(
           if(!all_cols_correct){
             stop("Not all requested columns are present in bagactueel.adres_plus!")
           }
-          cols <- paste0(request_cols, collapse = ",") 
+          cols <- request_cols
         }
       } else { 
-        cols <- "adresseerbaarobject_id, geopunt"
+        cols <- c("adresseerbaarobject_id","geopunt")
       }
       
       data_out <- data.frame(adresseerbaarobject_id = id)
       
       id_lookup <- unique(id[!is.na(id)])
+      id_lookup <- id_lookup[id_lookup != ""]
+      
       if(length(id_lookup) == 0){
         return(NULL) # TODO might need something else here
       }
       
-      query <- glue::glue(
-        "select {cols} from bagactueel.adres_plus ",
-        "where adresseerbaarobject_id in {self$to_sql_string(id_lookup)}"
-      )
+      qu <- tbl(self$bag_con, in_schema("bagactueel","adres_plus")) %>%
+        filter(adresseerbaarobject_id %in% !!id_lookup)
       
-      if(!spatial){
-        out <- DBI::dbGetQuery(self$bag_con, query)  
-      } else {
-        out <- sf::st_read(self$bag_con, query = query) 
+      if(cols[1] != "*"){
+        qu <- qu %>% select(all_of(cols))
+      }
+      
+      out <- collect(qu)
+      
+      if(spatial){
+        out$geopunt <- st_as_sfc(out$geopunt)
+        out <- st_as_sf(out) 
         if(nrow(out) > 0)out <- out %>% st_transform(4326)
       }
       
@@ -531,6 +527,10 @@ ApolloEngine <- R6::R6Class(
       invisible(self$metadata)
     }, 
     
+    read_dossiers = function(){ 
+      self$dossiers <- self$read_table('dossiers') 
+      invisible(self$dossiers)
+    }, 
     
     
     read_favorites = function(user_id=NULL){ 
@@ -566,12 +566,6 @@ ApolloEngine <- R6::R6Class(
     
     get_metadata = function(){
       self$metadata 
-    },
-    
-    postgres_now = function(){
-      
-      return(self$query("select now()", quiet = TRUE)$now)
-      
     },
     
     set_metadata = function(name, 
@@ -692,7 +686,7 @@ ApolloEngine <- R6::R6Class(
         select(collector_id,  sbi_code_main, sbi_code_sub_1) %>%
         distinct(collector_id, .keep_all = TRUE) # als per ongeluk toch meer dan 1 hoofdbedrijf.
       
-      signals %>% 
+      o <- signals %>% 
         left_join(hoofdadressen %>% select(-status), 
                   by = c('registration_id' = 'collector_id'), 
                   suffix = c(".x", "")) %>% 
@@ -703,12 +697,12 @@ ApolloEngine <- R6::R6Class(
                                             self$decrypt(object_id), 
                                             self$decrypt(adresseerbaarobject)), 
                # als kvk leeg is dan verkrijgen vanuit hoofdbedrijf
-               kvk_branche = ifelse(is.na(kvk_branche) | kvk_branche == '',  
+               kvk_branche = as.character(ifelse(is.na(kvk_branche) | kvk_branche == '',  
                                     sbi_code_main, 
-                                    kvk_branche),
-               kvk_sub_branche = ifelse(is.na(kvk_sub_branche) | kvk_sub_branche == '',  
+                                    kvk_branche)),
+               kvk_sub_branche = as.character(ifelse(is.na(kvk_sub_branche) | kvk_sub_branche == '',  
                                         sbi_code_sub_1, 
-                                        kvk_sub_branche) ) %>%
+                                        kvk_sub_branche) )) %>%
         # from sbi code to omschrijving
         left_join(sbi_key %>% select(kvk_branche=sbi_code_txt , 
                                      kvk_branche_omsch=sbi_omschrijving, 
@@ -1321,17 +1315,20 @@ ApolloEngine <- R6::R6Class(
     #' @description Get Obj Rel changes since a given timestamp
     #' @param time_since is timestamp
     get_object_relations_since_timestamp = function(time_since){ 
-      
-      self$query(glue("select count(*) from {self$schema}.object_relations where timestamp > '{time_since}'::timestamp;"),
-                 quiet=TRUE)$count 
+      qu <- glue("select count(*) from {self$schema}.object_relations where timestamp > '{time_since}'::timestamp;")
+      out <- self$query(qu, quiet = TRUE)
+      out[["count"]]
     },
+    
     #--------- PRIVACY PROTOCOL  -------
     #' @description Get MPP changes since a given timestamp
     #' @param time_since is timestamp
     get_mpp_rows_since_timestamp = function(time_since){ 
-      self$query(glue("select count(*) from {self$schema}.model_privacy_protocol where timestamp > '{time_since}'::timestamp and archived IS NOT TRUE;"),
-                 quiet=TRUE)$count 
+      qu <- glue("select count(*) from {self$schema}.model_privacy_protocol where timestamp > '{time_since}'::timestamp and archived IS NOT TRUE;")
+      out <- self$query(qu, quiet = TRUE)
+      out[["count"]]
     },
+    
     #' @description Create MPP for registration
     create_MPP_for_registration = function(registration_id, user_id, data, createLog=TRUE){
       if(createLog) {self$log_user_event(user_id, description=glue("Heeft het privacy protocol van registratie {registration_id} aangemaakt"))}
@@ -1392,64 +1389,64 @@ ApolloEngine <- R6::R6Class(
     
     
     
-    #' @description Add action to actionlist
-    #' @param uid User that creates the action
-    #' @param acdate Date (yyyy-mm-dd) action occurs 
-    #' @param desc Content of action 
-    #' @param acname Short title
-    #' @param rid Signal where the action relates to
-    #' @param gid Group ID the action is a part of 
-    #' @param gname Group name the action is a part of
-    #' @param aid The address the action is registered for
-    create_action = function(uid, acdate, desc, stat, acname, rid, gid, gname, aid, uitv){
-      self$log_user_event(uid, description=glue("Heeft actie {acname} aangemaakt"))
-      
-      try( 
-        self$append_data('actionlist', 
-                         data.frame(user_id =  uid,
-                                    action_date = acdate,
-                                    description = desc,
-                                    status = stat,
-                                    timestamp = Sys.time(),
-                                    expired = FALSE, 
-                                    action_name = acname,
-                                    registration_id  =  rid,
-                                    group_id = gid,
-                                    group_name = gname,
-                                    address_id = aid,
-                                    uitvoerder = uitv
-                         ))
-      ) 
-    }, 
-    #' @description Update action in actionlist
-    #' @param action_name Short title
-    #' @param registration_id Signal where the action relates to
-    #' @param user_id User that updates the action 
-    #' @param action_date Date (yyyy-mm-dd) action occurs 
-    #' @param description Content of action 
-    #' @param status Current action status 
-    update_action = function(action_id, action_name,  registration_id, user_id, action_date, description, status){  
-      self$log_user_event(user_id, description=glue("Heeft actie {action_name} gewijzigd"))
-      
-      try( 
-        self$execute_query(glue("UPDATE {self$schema}.actionlist SET action_name = '{action_name}', registration_id = '{registration_id}', user_id = '{user_id}', action_date = '{action_date}', description = '{description}', status = '{status}', timestamp = '{Sys.time()}' WHERE action_id = {action_id}"))
-      ) 
-    },
-    
-    #' @description Archive action in actionlist
-    #' @param action_id Action to archive
-    #' @param user_id User that archives the action
-    #' @param action_name [optional] Short title 
-    archive_action = function(action_id, user_id, action_name=NULL){
-      
-      self$log_user_event(user_id, description=glue("Heeft actie {ifelse(!is.null(action_name), action_name, action_id)} gearchiveerd"))
-      
-      try( 
-        self$execute_query(glue("UPDATE {self$schema}.actionlist SET expired = TRUE, timestamp = '{Sys.time()}' WHERE action_id = {action_id}"))
-      ) 
-    },
-    
-    
+    #' #' @description Add action to actionlist
+    #' #' @param uid User that creates the action
+    #' #' @param acdate Date (yyyy-mm-dd) action occurs 
+    #' #' @param desc Content of action 
+    #' #' @param acname Short title
+    #' #' @param rid Signal where the action relates to
+    #' #' @param gid Group ID the action is a part of 
+    #' #' @param gname Group name the action is a part of
+    #' #' @param aid The address the action is registered for
+    #' create_action = function(uid, acdate, desc, stat, acname, rid, gid, gname, aid, uitv){
+    #'   self$log_user_event(uid, description=glue("Heeft actie {acname} aangemaakt"))
+    #'   
+    #'   try( 
+    #'     self$append_data('actionlist', 
+    #'                      data.frame(user_id =  uid,
+    #'                                 action_date = acdate,
+    #'                                 description = desc,
+    #'                                 status = stat,
+    #'                                 timestamp = Sys.time(),
+    #'                                 expired = FALSE, 
+    #'                                 action_name = acname,
+    #'                                 registration_id  =  rid,
+    #'                                 group_id = gid,
+    #'                                 group_name = gname,
+    #'                                 address_id = aid,
+    #'                                 uitvoerder = uitv
+    #'                      ))
+    #'   ) 
+    #' }, 
+    #' #' @description Update action in actionlist
+    #' #' @param action_name Short title
+    #' #' @param registration_id Signal where the action relates to
+    #' #' @param user_id User that updates the action 
+    #' #' @param action_date Date (yyyy-mm-dd) action occurs 
+    #' #' @param description Content of action 
+    #' #' @param status Current action status 
+    #' update_action = function(action_id, action_name,  registration_id, user_id, action_date, description, status){  
+    #'   self$log_user_event(user_id, description=glue("Heeft actie {action_name} gewijzigd"))
+    #'   
+    #'   try( 
+    #'     self$execute_query(glue("UPDATE {self$schema}.actionlist SET action_name = '{action_name}', registration_id = '{registration_id}', user_id = '{user_id}', action_date = '{action_date}', description = '{description}', status = '{status}', timestamp = '{Sys.time()}' WHERE action_id = {action_id}"))
+    #'   ) 
+    #' },
+    #' 
+    #' #' @description Archive action in actionlist
+    #' #' @param action_id Action to archive
+    #' #' @param user_id User that archives the action
+    #' #' @param action_name [optional] Short title 
+    #' archive_action = function(action_id, user_id, action_name=NULL){
+    #'   
+    #'   self$log_user_event(user_id, description=glue("Heeft actie {ifelse(!is.null(action_name), action_name, action_id)} gearchiveerd"))
+    #'   
+    #'   try( 
+    #'     self$execute_query(glue("UPDATE {self$schema}.actionlist SET expired = TRUE, timestamp = '{Sys.time()}' WHERE action_id = {action_id}"))
+    #'   ) 
+    #' },
+    #' 
+    #' 
     #--------  DETAILPAGINA ---------
     
     
@@ -1474,6 +1471,7 @@ ApolloEngine <- R6::R6Class(
       self$business %>%
         filter(address_id == !!address_id)
     },
+    
     get_relocations_for_person = function(person_id){
       
       if(!is.null(self$schema)){
@@ -1526,82 +1524,82 @@ ApolloEngine <- R6::R6Class(
       }
     },
     
-    #' @description Create suitable node format for network(Viz)
-    create_network_nodes = function(person_data=NULL, 
-                                    address_data=NULL, 
-                                    resident_data=NULL, 
-                                    business_data=NULL, 
-                                    registration_data=NULL){
-      
-      # intitialise node object with person data    
-      if(!is.null(person_data)){
-        network_nodes <- data.frame(label = person_data$person_id,   
-                                    group = c("person"),          
-                                    title = person_data$person_id,
-                                    level = 0)   %>% 
-          add_net_nodes(address_data, 'address_id', 'address_id', 'address', level= 2 )   %>%
-          add_net_nodes(resident_data %>% filter(person_id != person_data$person_id), 'person_id', 'person_id', 'resident', level=0)
-      }
-      # intitialise node object with address data    
-      else if(!is.null(address_data)){ 
-        network_nodes <- data.frame(label = address_data$address_id,   
-                                    group = c("address"),          
-                                    title = address_data$address_id,
-                                    level = 2)   %>%  
-          add_net_nodes(resident_data ,  'person_id', 'person_id', 'resident', level=0)
-        
-      } else {
-        network_nodes <-  data.frame(label = c(),   
-                                     group =  c(),          
-                                     title =  c(),
-                                     level =  c())  
-      }
-      
-      # add subsequent nodes
-      network_nodes  %>%
-        add_net_nodes(business_data, 'business_id', 'business_id', 'business',level=2) %>%
-        add_net_nodes(registration_data, 'collector_id', 'collector_type', 'registration',level=4) %>% 
-        mutate(id=row_number())
-      
-    },
-    
-    
-    #' @description Create suitable edge format for network(Viz)
-    create_network_edges = function(person_data=NULL, 
-                                    address_data=NULL, 
-                                    resident_data=NULL, 
-                                    business_data=NULL, 
-                                    registration_data=NULL){
-      
-      # intitialise edge object empty
-      network_edges <- data.frame(label = c(), title = c())
-      
-      # naive -> only add edges if address is available
-      if(!is.null(address_data) && nrow(address_data) > 0 && !is.null(person_data) && nrow(person_data) > 0){
-        
-        network_edges <- network_edges %>% 
-          add_net_edges(person_data, 'Woont op', 'Woont op') %>%
-          add_net_edges(address_data, 'is', 'is') %>%
-          add_net_edges(resident_data %>% filter(person_id != person_data$person_id), 'Woont op', 'Woont op') %>%
-          add_net_edges(business_data, 'Gevestigd op', 'Gevestigd op') %>%
-          add_net_edges(registration_data, 'Signaal op', 'Signaal op') %>%
-          mutate(from = row_number(), to=2) %>% # naive -> connect everything to address 
-          filter(from != 2) # remove address identitiy
-      }
-      
-      else if(!is.null(address_data) && nrow(address_data) > 0){
-        
-        network_edges <- network_edges %>%  
-          add_net_edges(address_data, 'is', 'is') %>%
-          add_net_edges(resident_data, 'Woont op', 'Woont op') %>%
-          add_net_edges(business_data, 'Gevestigd op', 'Gevestigd op') %>%
-          add_net_edges(registration_data, 'Signaal op', 'Signaal op') %>%
-          mutate(from = row_number(), to=1) %>% # naive -> connect everything to address 
-          filter(from != 1) # remove address identitiy
-      }  
-      
-      network_edges
-    },
+    #' #' @description Create suitable node format for network(Viz)
+    #' create_network_nodes = function(person_data=NULL, 
+    #'                                 address_data=NULL, 
+    #'                                 resident_data=NULL, 
+    #'                                 business_data=NULL, 
+    #'                                 registration_data=NULL){
+    #'   
+    #'   # intitialise node object with person data    
+    #'   if(!is.null(person_data)){
+    #'     network_nodes <- data.frame(label = person_data$person_id,   
+    #'                                 group = c("person"),          
+    #'                                 title = person_data$person_id,
+    #'                                 level = 0)   %>% 
+    #'       add_net_nodes(address_data, 'address_id', 'address_id', 'address', level= 2 )   %>%
+    #'       add_net_nodes(resident_data %>% filter(person_id != person_data$person_id), 'person_id', 'person_id', 'resident', level=0)
+    #'   }
+    #'   # intitialise node object with address data    
+    #'   else if(!is.null(address_data)){ 
+    #'     network_nodes <- data.frame(label = address_data$address_id,   
+    #'                                 group = c("address"),          
+    #'                                 title = address_data$address_id,
+    #'                                 level = 2)   %>%  
+    #'       add_net_nodes(resident_data ,  'person_id', 'person_id', 'resident', level=0)
+    #'     
+    #'   } else {
+    #'     network_nodes <-  data.frame(label = c(),   
+    #'                                  group =  c(),          
+    #'                                  title =  c(),
+    #'                                  level =  c())  
+    #'   }
+    #'   
+    #'   # add subsequent nodes
+    #'   network_nodes  %>%
+    #'     add_net_nodes(business_data, 'business_id', 'business_id', 'business',level=2) %>%
+    #'     add_net_nodes(registration_data, 'collector_id', 'collector_type', 'registration',level=4) %>% 
+    #'     mutate(id=row_number())
+    #'   
+    #' },
+    #' 
+    #' 
+    #' #' @description Create suitable edge format for network(Viz)
+    #' create_network_edges = function(person_data=NULL, 
+    #'                                 address_data=NULL, 
+    #'                                 resident_data=NULL, 
+    #'                                 business_data=NULL, 
+    #'                                 registration_data=NULL){
+    #'   
+    #'   # intitialise edge object empty
+    #'   network_edges <- data.frame(label = c(), title = c())
+    #'   
+    #'   # naive -> only add edges if address is available
+    #'   if(!is.null(address_data) && nrow(address_data) > 0 && !is.null(person_data) && nrow(person_data) > 0){
+    #'     
+    #'     network_edges <- network_edges %>% 
+    #'       add_net_edges(person_data, 'Woont op', 'Woont op') %>%
+    #'       add_net_edges(address_data, 'is', 'is') %>%
+    #'       add_net_edges(resident_data %>% filter(person_id != person_data$person_id), 'Woont op', 'Woont op') %>%
+    #'       add_net_edges(business_data, 'Gevestigd op', 'Gevestigd op') %>%
+    #'       add_net_edges(registration_data, 'Signaal op', 'Signaal op') %>%
+    #'       mutate(from = row_number(), to=2) %>% # naive -> connect everything to address 
+    #'       filter(from != 2) # remove address identitiy
+    #'   }
+    #'   
+    #'   else if(!is.null(address_data) && nrow(address_data) > 0){
+    #'     
+    #'     network_edges <- network_edges %>%  
+    #'       add_net_edges(address_data, 'is', 'is') %>%
+    #'       add_net_edges(resident_data, 'Woont op', 'Woont op') %>%
+    #'       add_net_edges(business_data, 'Gevestigd op', 'Gevestigd op') %>%
+    #'       add_net_edges(registration_data, 'Signaal op', 'Signaal op') %>%
+    #'       mutate(from = row_number(), to=1) %>% # naive -> connect everything to address 
+    #'       filter(from != 1) # remove address identitiy
+    #'   }  
+    #'   
+    #'   network_edges
+    #' },
     
     save_custom_location = function(location_id, loc_name, loc_descr, wijk, buurt){
       self$append_data('custom_locations',
