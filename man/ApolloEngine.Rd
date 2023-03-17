@@ -21,6 +21,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-add_geo_columns}{\code{ApolloEngine$add_geo_columns()}}
 \item \href{#method-NA-get_cbs_buurt_data}{\code{ApolloEngine$get_cbs_buurt_data()}}
 \item \href{#method-NA-get_cbs_buurt_metadata}{\code{ApolloEngine$get_cbs_buurt_metadata()}}
+\item \href{#method-NA-get_kvk_vestigingen_branche_jaar}{\code{ApolloEngine$get_kvk_vestigingen_branche_jaar()}}
 \item \href{#method-NA-street_from_bagid}{\code{ApolloEngine$street_from_bagid()}}
 \item \href{#method-NA-get_bag_from_bagid}{\code{ApolloEngine$get_bag_from_bagid()}}
 \item \href{#method-NA-join_bag}{\code{ApolloEngine$join_bag()}}
@@ -37,6 +38,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-read_signals}{\code{ApolloEngine$read_signals()}}
 \item \href{#method-NA-read_actions}{\code{ApolloEngine$read_actions()}}
 \item \href{#method-NA-read_indicator}{\code{ApolloEngine$read_indicator()}}
+\item \href{#method-NA-read_filter}{\code{ApolloEngine$read_filter()}}
 \item \href{#method-NA-read_metadata}{\code{ApolloEngine$read_metadata()}}
 \item \href{#method-NA-read_dossiers}{\code{ApolloEngine$read_dossiers()}}
 \item \href{#method-NA-read_favorites}{\code{ApolloEngine$read_favorites()}}
@@ -63,6 +65,12 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-set_indicator_riskmodel_field}{\code{ApolloEngine$set_indicator_riskmodel_field()}}
 \item \href{#method-NA-write_indicator_riskmodel}{\code{ApolloEngine$write_indicator_riskmodel()}}
 \item \href{#method-NA-copy_indicator_riskmodel_theme}{\code{ApolloEngine$copy_indicator_riskmodel_theme()}}
+\item \href{#method-NA-get_address_vector}{\code{ApolloEngine$get_address_vector()}}
+\item \href{#method-NA-get_filters_theme}{\code{ApolloEngine$get_filters_theme()}}
+\item \href{#method-NA-get_filter_choices}{\code{ApolloEngine$get_filter_choices()}}
+\item \href{#method-NA-get_selectfiltered_addresses}{\code{ApolloEngine$get_selectfiltered_addresses()}}
+\item \href{#method-NA-get_minmax_num_val}{\code{ApolloEngine$get_minmax_num_val()}}
+\item \href{#method-NA-get_numericfiltered_addresses}{\code{ApolloEngine$get_numericfiltered_addresses()}}
 \item \href{#method-NA-get_active_actions}{\code{ApolloEngine$get_active_actions()}}
 \item \href{#method-NA-list_actions}{\code{ApolloEngine$list_actions()}}
 \item \href{#method-NA-list_favorites}{\code{ApolloEngine$list_favorites()}}
@@ -236,6 +244,15 @@ only the selected buurt code.s.}
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-get_kvk_vestigingen_branche_jaar"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_kvk_vestigingen_branche_jaar}{}}}
+\subsection{Method \code{get_kvk_vestigingen_branche_jaar()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_kvk_vestigingen_branche_jaar(sbi_code = NULL, gemeente = NULL)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NA-street_from_bagid"></a>}}
 \if{latex}{\out{\hypertarget{method-NA-street_from_bagid}{}}}
 \subsection{Method \code{street_from_bagid()}}{
@@ -386,6 +403,15 @@ only the selected buurt code.s.}
 \subsection{Method \code{read_indicator()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_indicator()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-read_filter"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-read_filter}{}}}
+\subsection{Method \code{read_filter()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$read_filter()}\if{html}{\out{</div>}}
 }
 
 }
@@ -771,6 +797,79 @@ Copy risk model settings from one theme to a new theme
 \subsection{Details}{
 When adding a new theme, riskmodel settings must be added to the indicator_riskmodel
 table. Easiest to copy all settings from one theme to the new one.
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-get_address_vector"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_address_vector}{}}}
+\subsection{Method \code{get_address_vector()}}{
+Get unique addresses
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_address_vector()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+Use this function to find all addresses in the dataset
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-get_filters_theme"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_filters_theme}{}}}
+\subsection{Method \code{get_filters_theme()}}{
+Get rows of filter table for a theme
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_filters_theme(theme)}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+Use this function to find definitions for filters in a theme.
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-get_filter_choices"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_filter_choices}{}}}
+\subsection{Method \code{get_filter_choices()}}{
+Get unique values of a column in a dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_filter_choices(object_dataset, column)}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+Use this function to find the options for a select dropdown
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-get_selectfiltered_addresses"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_selectfiltered_addresses}{}}}
+\subsection{Method \code{get_selectfiltered_addresses()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_selectfiltered_addresses(dataset, column, choices)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-get_minmax_num_val"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_minmax_num_val}{}}}
+\subsection{Method \code{get_minmax_num_val()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_minmax_num_val(
+  object_dataset,
+  column,
+  min_max = c("min", "max")
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-get_numericfiltered_addresses"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_numericfiltered_addresses}{}}}
+\subsection{Method \code{get_numericfiltered_addresses()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_numericfiltered_addresses(dataset, column, boundaries)}\if{html}{\out{</div>}}
 }
 
 }

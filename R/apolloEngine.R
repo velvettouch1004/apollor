@@ -107,7 +107,10 @@ ApolloEngine <- R6::R6Class(
       self$bag_columns <- dbListFields(self$bag_con, Id(schema = "bagactueel", table = "adres_plus"))
       
       # CBS connectie
-      self$cbs_con <- shintodb::connect("data_cbs", file = config_file)
+      #self$cbs_con <- shintodb::connect("data_cbs", file = config_file)
+      
+      self$.cbs <- shintodb::databaseClass$new(what = "data_cbs", pool = TRUE, 
+                                               config_file = config_file)
       
       # Geo data
       self$geo <- shintobag::get_geo_from_cache(gemeente, kws=TRUE,
@@ -257,36 +260,33 @@ ApolloEngine <- R6::R6Class(
     #' only the selected buurt code.s.
     get_cbs_buurt_data = function(buurt_code_cbs = NULL){
       
+      query <- self$.cbs$read_table("cbs_kerncijfers_2013_2021", lazy = TRUE) %>%
+        filter(regio_type == "Buurt")
+      
       if(is.null(buurt_code_cbs)){
-        out <- tbl(self$cbs_con, "cbs_kerncijfers_2013_2021") %>%
-          filter(regio_type == "Buurt",
-                 gm_naam == !!self$gemeente) %>%
-          collect
+        query <- query %>% 
+          filter(gm_naam == !!self$gemeente)
       } else {
-        out <- tbl(self$cbs_con, "cbs_kerncijfers_2013_2021") %>%
-          filter(regio_type == "Buurt",
-                 gwb_code == !!buurt_code_cbs) %>%
-          collect  
+        query <- query 
+          filter(gwb_code == !!buurt_code_cbs)
       }
       
-      dplyr::rename(out, buurt_code_cbs = gwb_code)
-      
+      collect(query) %>% 
+        dplyr::rename(buurt_code_cbs = gwb_code)
       
     },
     
     get_cbs_buurt_metadata = function(){
       
-      tbl(self$cbs_con, "cbs_kerncijfers_2013_2021_metadata") %>%
-        collect
+      self$.cbs$read_table("cbs_kerncijfers_2013_2021_metadata")
       
     },
-    
     
     get_kvk_vestigingen_branche_jaar = function(sbi_code = NULL, gemeente = NULL){
     
       if(is.null(sbi_code))return(NULL)
       
-      qu <- tbl(self$cbs_con, "kvk_n_vestiging_jaar_gemeente") %>%
+      qu <- self$.cbs$read_table("kvk_n_vestiging_jaar_gemeente", lazy = TRUE) %>%
         filter(hoofdactiviteit == !!sbi_code)
       
       if(!is.null(gemeente)){
