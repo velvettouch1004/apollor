@@ -282,13 +282,13 @@ ApolloEngine <- R6::R6Class(
       
     },
     
-    get_kvk_vestigingen_branche_jaar = function(sbi_code = NULL, gemeente = NULL,
+    get_kvk_vestigingen_branche_jaar = function(sbi_naam = NULL, gemeente = NULL,
                                                 sum_by_gemeente_peiljaar = FALSE){
     
-      if(is.null(sbi_code))return(NULL)
+      if(is.null(sbi_naam))return(NULL)
       
       qu <- self$.cbs$read_table("kvk_n_vestiging_jaar_gemeente", lazy = TRUE) %>%
-        filter(hoofdactiviteit %in% !!sbi_code)
+        filter(omschrijving_hoofdactiviteit %in% !!sbi_naam)
       
       if(!is.null(gemeente)){
         qu <- filter(qu, gemeentenaam %in% !!gemeente)
@@ -307,6 +307,32 @@ ApolloEngine <- R6::R6Class(
       }
       
       out
+    },
+    
+    
+    get_kvk_vestigingen_trend_ranking = function(cutoff = 0.9, gemeente = NULL,
+                                                 how = c("in_gemeente","between_gemeente")){
+      
+      how <- match.arg(how)
+      
+      qu <- self$.cbs$read_table("kvk_vestiging_trend_ranking", lazy = TRUE)
+      
+      if(!is.null(gemeente)){
+        qu <- filter(qu, gemeentenaam %in% !!gemeente)
+      }
+      
+      if(how == "in_gemeente"){
+        qu <- filter(qu, rank_trend_in_gemeente > cutoff)  
+      }
+      
+      if(how == "between_gemeente"){
+        qu <- filter(qu, rank_trend_in_branche > cutoff)  
+      }
+      
+      collect(qu)
+      
+      
+      
     },
     
     

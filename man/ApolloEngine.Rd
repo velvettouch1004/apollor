@@ -22,6 +22,7 @@ An R6 object with methods for use in the Shiny application \code{apollo}.
 \item \href{#method-NA-get_cbs_buurt_data}{\code{ApolloEngine$get_cbs_buurt_data()}}
 \item \href{#method-NA-get_cbs_buurt_metadata}{\code{ApolloEngine$get_cbs_buurt_metadata()}}
 \item \href{#method-NA-get_kvk_vestigingen_branche_jaar}{\code{ApolloEngine$get_kvk_vestigingen_branche_jaar()}}
+\item \href{#method-NA-get_kvk_vestigingen_trend_ranking}{\code{ApolloEngine$get_kvk_vestigingen_trend_ranking()}}
 \item \href{#method-NA-street_from_bagid}{\code{ApolloEngine$street_from_bagid()}}
 \item \href{#method-NA-get_bag_from_bagid}{\code{ApolloEngine$get_bag_from_bagid()}}
 \item \href{#method-NA-join_bag}{\code{ApolloEngine$join_bag()}}
@@ -249,9 +250,22 @@ only the selected buurt code.s.}
 \subsection{Method \code{get_kvk_vestigingen_branche_jaar()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_kvk_vestigingen_branche_jaar(
-  sbi_code = NULL,
+  sbi_naam = NULL,
   gemeente = NULL,
   sum_by_gemeente_peiljaar = FALSE
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NA-get_kvk_vestigingen_trend_ranking"></a>}}
+\if{latex}{\out{\hypertarget{method-NA-get_kvk_vestigingen_trend_ranking}{}}}
+\subsection{Method \code{get_kvk_vestigingen_trend_ranking()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_kvk_vestigingen_trend_ranking(
+  cutoff = 0.9,
+  gemeente = NULL,
+  how = c("in_gemeente", "between_gemeente")
 )}\if{html}{\out{</div>}}
 }
 
