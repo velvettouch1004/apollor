@@ -282,19 +282,31 @@ ApolloEngine <- R6::R6Class(
       
     },
     
-    get_kvk_vestigingen_branche_jaar = function(sbi_code = NULL, gemeente = NULL){
+    get_kvk_vestigingen_branche_jaar = function(sbi_code = NULL, gemeente = NULL,
+                                                sum_by_gemeente_peiljaar = FALSE){
     
       if(is.null(sbi_code))return(NULL)
       
       qu <- self$.cbs$read_table("kvk_n_vestiging_jaar_gemeente", lazy = TRUE) %>%
-        filter(hoofdactiviteit == !!sbi_code)
+        filter(hoofdactiviteit %in% !!sbi_code)
       
       if(!is.null(gemeente)){
-        qu <- filter(qu, gemeentenaam == !!gemeente)
+        qu <- filter(qu, gemeentenaam %in% !!gemeente)
       }
       
-      collect(qu)
+      out <- collect(qu)
       
+      if(sum_by_gemeente_peiljaar){
+        out <- out %>%
+          filter(!is.na(n_bedrijven_per_1k_inw)) %>% 
+          arrange(peiljaar) %>%
+          group_by(gemeentenaam, peiljaar) %>%
+          summarize(n_bedrijven_per_1k_inw = sum(n_bedrijven_per_1k_inw), 
+                    a_inw = last(a_inw),
+                    .groups = "drop")
+      }
+      
+      out
     },
     
     

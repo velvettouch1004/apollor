@@ -248,7 +248,11 @@ only the selected buurt code.s.}
 \if{latex}{\out{\hypertarget{method-NA-get_kvk_vestigingen_branche_jaar}{}}}
 \subsection{Method \code{get_kvk_vestigingen_branche_jaar()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_kvk_vestigingen_branche_jaar(sbi_code = NULL, gemeente = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_kvk_vestigingen_branche_jaar(
+  sbi_code = NULL,
+  gemeente = NULL,
+  sum_by_gemeente_peiljaar = FALSE
+)}\if{html}{\out{</div>}}
 }
 
 }
