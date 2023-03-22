@@ -311,7 +311,7 @@ ApolloEngine <- R6::R6Class(
     
     
     get_kvk_vestigingen_trend_ranking = function(cutoff = 0.9, gemeente = NULL,
-                                                 how = c("in_gemeente","between_gemeente")){
+                                                 how = c("in_gemeente","between_gemeente","n_vest_2022")){
       
       how <- match.arg(how)
       
@@ -327,6 +327,10 @@ ApolloEngine <- R6::R6Class(
       
       if(how == "between_gemeente"){
         qu <- filter(qu, rank_trend_in_branche > cutoff)  
+      }
+      
+      if(how == "n_vest_2022"){
+        qu <- filter(qu, rank_n_in_branche > cutoff)  
       }
       
       collect(qu)

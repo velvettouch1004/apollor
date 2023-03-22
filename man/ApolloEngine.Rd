@@ -265,7 +265,7 @@ only the selected buurt code.s.}
 \if{html}{\out{<div class="r">}}\preformatted{ApolloEngine$get_kvk_vestigingen_trend_ranking(
   cutoff = 0.9,
   gemeente = NULL,
-  how = c("in_gemeente", "between_gemeente")
+  how = c("in_gemeente", "between_gemeente", "n_vest_2022")
 )}\if{html}{\out{</div>}}
 }
 
