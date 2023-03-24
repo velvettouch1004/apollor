@@ -41,7 +41,7 @@ set_tenant_menu <- function(){
 
     observeEvent(input$btn_set_klant, {
 
-      set_gemeente(input$sel_klant)
+      set_tenant(input$sel_klant)
       shiny::stopApp(glue::glue("Nieuwe tenant is {input$sel_klant}"))
     })
 
