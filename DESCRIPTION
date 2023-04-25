@@ -4,7 +4,7 @@ Version: 0.8
 Author: Remko Duursma, Martijn Heijstek, Wesley Brants
 Maintainer: Remko Duursma <remko@shintolabs.nl>
 Description: Apollo as an R package. Used in apollo Frontend
-Imports: shintobag, shintodb
+Imports: shintobag, shintodb, shintoshiny
 Depends: 
     DBI,
     dbplyr,
