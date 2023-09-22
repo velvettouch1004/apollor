@@ -111,6 +111,7 @@ deploy_now <- function(tenant,
   # Deploy de app
   resp <- rsconnect::deployApp(
     appDir = deploy_location,
+    appName = appname,
     appTitle = appname,
     appId = appid,
     account = posit_user,
